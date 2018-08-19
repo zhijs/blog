@@ -57,7 +57,7 @@ function square_difference(a,b) {
 基于上述的原因，就有了对上述问题的解决方案，即是javascript模块化规范，目前主流的有Commonjs,AMD,CMD,ES6 module这四种规范。
 
 ### 3.Javascript模块化规范之-CommonJs规范
-该规范的主要内容是，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过module.exports导出对外的变量或接口，通过require()来导入其他模块的输出到当前模块作用域中，下面以CommonJs规范实现的(其实Node并非完全按照Commonjs实现)Node.js讲述一下Commonjs在Node中的使用方式，及其加载机制。  
+该规范的主要内容是，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过module.exports导出对外的变量或接口，通过require()来导入其他模块的输出到当前模块作用域中，下面讲述一下commonjs在Node中的实现。 
 - a.使用方式  
 ```javascript
   // 模块定义add.js
@@ -78,8 +78,6 @@ function square_difference(a,b) {
   }
 
 ```
-- b. module变量
-每个模块文件内部都有一个module变量
 - b. exports 和module.exports  
 exports和module.exports是指向同一个东西的变量，即是module.exports === exports = {},所以你也可以这样导出模块
 ```javascript
@@ -104,6 +102,25 @@ exports和module.exports是指向同一个东西的变量，即是module.exports
   }
 ```
 代码的时候，其实就将exports指向了function,而module.exports的内容并没有改变，所以这个模块的导出为空对象。
+
+- c.Node的模块实现  
+在Node中引入模块，需要经历如下3个步骤  
+(1).路径分析  
+(2).文件定位  
+(3).编译执行  
+与前端浏览器会缓存静态脚本文件以提高性能一样，Node对引入过的模块都会进行缓存，以减少二次引入时的开销，不同的是，浏览器仅缓存文件。而Node缓存的是编译和执行后的对象。
+
+(1)(2).路径分析 + 文件定位   
+其流程如下图所示    
+![](./images/路径分析.jpg)  
+
+(3).模块编译  
+
+
+
+
+
+
 
 
 
