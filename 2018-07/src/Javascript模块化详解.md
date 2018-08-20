@@ -149,6 +149,16 @@ function Module (id, parent) {
 ```
 2.执行函数，注入变量对象的exports属性, require属性，对象实例，__filename, __dirname，然后执行模块的源码。  
 3.返回模块对象exports属性。
+以上就是Node中Commonjs的实现。
+
+### 4.Javascript模块化规范之-AMD  
+AMD, Asynchronous Module Definition，即异步模块加载机制，它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。其使用方式如下所示：  
+```javascript
+  // 模块定义，add.js
+  define()
+```
+
+
 
 
 
