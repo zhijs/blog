@@ -57,7 +57,7 @@ function square_difference(a,b) {
 基于上述的原因，就有了对上述问题的解决方案，即是javascript模块化规范，目前主流的有Commonjs,AMD,CMD,ES6 module这四种规范。
 
 ### 3.Javascript模块化规范之-CommonJs规范
-该规范的主要内容是，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过module.exports导出对外的变量或接口，通过require()来导入其他模块的输出到当前模块作用域中，下面讲述一下commonjs在Node中的实现。 
+该规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过module.exports导出对外的变量或接口，通过require()来导入其他模块的输出到当前模块作用域中，下面讲述一下Node是如何实现Commonjs的。 
 - a.使用方式  
 ```javascript
   // 模块定义add.js
@@ -95,7 +95,7 @@ exports和module.exports是指向同一个东西的变量，即是module.exports
   // main.js
   var add = require('./add.js')
 ```
-此时add是未定义的，因为require导入的是，对应模块的module.exports的内容，再上面的代码中，虽然一开始exports === module.exports,但是当执行
+此时add是未定义的，因为require导入的是，对应模块的module.exports的内容，在上面的代码中，虽然一开始exports === module.exports,但是当执行
 ```javascript
   exports = function (a, b) {
       return a + b
@@ -104,17 +104,52 @@ exports和module.exports是指向同一个东西的变量，即是module.exports
 代码的时候，其实就将exports指向了function,而module.exports的内容并没有改变，所以这个模块的导出为空对象。
 
 - c.Node的模块实现  
-在Node中引入模块，需要经历如下3个步骤  
+在Node中引入模块(require)，需要经历如下3个步骤  
 (1).路径分析  
 (2).文件定位  
 (3).编译执行  
-与前端浏览器会缓存静态脚本文件以提高性能一样，Node对引入过的模块都会进行缓存，以减少二次引入时的开销，不同的是，浏览器仅缓存文件。而Node缓存的是编译和执行后的对象。
+与前端浏览器会缓存静态脚本文件以提高性能一样，Node对引入过的模块都会进行缓存，以减少二次引入时的开销，不同的是，浏览器仅缓存文件,而Node缓存的是编译和执行后的对象。
 
 (1)(2).路径分析 + 文件定位   
 其流程如下图所示    
 ![](./images/路径分析.jpg)  
 
 (3).模块编译  
+在定位到文件后，首先会检查该文件是否有缓存，有的话直接读取缓存，否则，会新创建一个Module对象，其定义如下。
+```javascript
+function Module (id, parent) {
+  this.id = id; // 模块的识别符，通常是带有绝对路径的模块文件名。
+  this.exports = {}; //表示模块对外输出的值
+  this.parent = parent; //返回一个对象，表示调用该模块的模块。
+  if (parent && parent.children) {
+    this.parent.children.push(this);
+  }
+  this.filename = null;
+  this.loaded = false; // 返回一个布尔值，表示模块是否已经完成加载。
+  this.childrent = []; //返回一个数组，表示该模块要用到的其他模块。
+}
+```
+生成对象后设置缓存，会执行指定的处理函数，如下所示  
+![](./images/commonjs-require.png)  
+![](./images/commonjs-load.png) 
+![](./images/extension-js.png)  
+在这里同步读取模块，再执行编译操作,编译过程主要做了以下的操作  
+1.将js代码用函数体包装，隔离作用域，例如
+```javascript
+  //add.js
+  exports.add = function (a, b) { 
+    return a + b;
+  }
+  // 会被包装成
+  (function (exports, require, modules, __filename, __dirname) {
+    exports.add = function (a, b) { 
+      return a + b;
+    }
+  })
+```
+2.执行函数，注入变量对象的exports属性, require属性，对象实例，__filename, __dirname，然后执行模块的源码。  
+3.返回模块对象exports属性。
+
 
 
 
