@@ -152,11 +152,62 @@ function Module (id, parent) {
 以上就是Node中Commonjs的实现。
 
 ### 4.Javascript模块化规范之-AMD  
-AMD, Asynchronous Module Definition，即异步模块加载机制，它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。其使用方式如下所示：  
+AMD, Asynchronous Module Definition，即异步模块加载机制，它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。其API如下所示：  
+
+AMD 的诞生，就是为了解决这两个问题：  
+1.实现 js 文件的异步加载，避免网页失去响应  
+2.管理模块之间的依赖性，便于代码的编写和维护    
 ```javascript
-  // 模块定义，add.js
-  define()
+ // 模块定义
+ define(id?: String, dependencies?: String[], factory: Function|Object);
 ```
+id 是模块的名字，它是可选的参数。
+
+dependencies 指定了所要依赖的模块列表，它是一个数组，也是可选的参数，每个依赖的模块的输出将作为参数一次传入 factory 中。如果没有指定 dependencies，那么它的默认值是 ["require", "exports", "module"]。
+
+factory 是最后一个参数，它包裹了模块的具体实现，它是一个函数或者对象。如果是函数，那么它的返回值就是模块的输出接口或值，如果是对象，此对象应该为模块的输出值。
+
+举个例子
+```javascript
+ //模块定义，math.js
+ define(function(){
+   let add = function (a, b) {
+     return a + b;
+   }
+   return {
+     add: add
+   }
+ }) 
+
+ // 模块使用
+ 
+// main.js
+  require(['math'], function (math){
+    var a = require('./a.js')
+    console(math.add(1,1));
+  });
+```
+下面我们来看看，以AMD规范实现的require.js是如何实现模块化的  
+1.首先是模块定义过程，例如  
+```javascript
+ define('double',['math'], function(math){
+    let double = function (a) {
+      return math.add(a, a);
+    }
+    return {
+      double: double
+    }
+ })
+```
+再执行这个函数的过程中，会有以下步骤：
+- 1.收集依赖  
+dependencies和 factory里面函数内的require语句中的标识符，
+将factory参数依赖，和从factory函数体内收集到的require标识符组成一个依赖标识数组。例如main.js收集到的依赖为：
+``` javascript
+  ['math.js', './a.js'];
+```
+
+
 
 
 
