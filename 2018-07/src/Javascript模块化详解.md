@@ -205,6 +205,7 @@ dependencies和 factory里面函数内的require语句中的标识符，
 将factory参数依赖，和从factory函数体内收集到的require标识符组成一个依赖标识数组。例如main.js收集到的依赖为：
 ``` javascript
   ['math.js', './a.js'];
+  //https://github.com/requirejs/requirejs/blob/master/require.js
 ```
 
 
