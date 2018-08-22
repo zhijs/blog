@@ -181,32 +181,26 @@ factory 是最后一个参数，它包裹了模块的具体实现，它是一个
 
  // 模块使用
  
-// main.js
+// 模块依赖 main.js
   require(['math'], function (math){
     var a = require('./a.js')
     console(math.add(1,1));
   });
+
+// 使用
+requirejs.config({
+  baseUrl: '/public/js',
+  paths: {
+    app: 'mian'
+  }
+});
+
+requirejs(['app'], function(app) {
+  console.log('main')
+});
+
 ```
 下面我们来看看，以AMD规范实现的require.js是如何实现模块化的  
-1.首先是模块定义过程，例如  
-```javascript
- define('double',['math'], function(math){
-    let double = function (a) {
-      return math.add(a, a);
-    }
-    return {
-      double: double
-    }
- })
-```
-再执行这个函数的过程中，会有以下步骤：
-- 1.收集依赖  
-dependencies和 factory里面函数内的require语句中的标识符，
-将factory参数依赖，和从factory函数体内收集到的require标识符组成一个依赖标识数组。例如main.js收集到的依赖为：
-``` javascript
-  ['math.js', './a.js'];
-  //https://github.com/requirejs/requirejs/blob/master/require.js
-```
 
 
 
