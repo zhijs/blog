@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <script type="text/javascript">
+    // 测试动态外部脚本
+    var script = document.createElement('script');
+    script.src = './dynamic.js';
+    document.body.appendChild(script);
+    script.onload = () => {
+      console.log('script onload')
+    };
+    console.log('sssssss')
+  </script>
+</body>
+</html>
