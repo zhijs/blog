@@ -3,7 +3,5 @@
   let add = function (a, b) {
     return a + b;
   }
-  return {
-    add: add
-  }
+  return add
 }) 

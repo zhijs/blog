@@ -1,11 +1,12 @@
 // 使用
+console.log(document.currentScript);
 require.config({
   baseUrl: './',
   paths: {
-    'add': 'math'
+    'square': 'square'
   }
 });
 
-require(['math'], function(math) {
-  console.log(math.add(2, 3))
+require(['square'], function(math) {
+  console.log(square(6, 3))
 });

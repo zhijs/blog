@@ -70,8 +70,8 @@ CommonJs规范的主要内容有，一个单独的文件就是一个模块。每
   }
   
   // formula.js,模式使用，利用require()方法加载模块,require导出的即是module.exports的内容
-  const add = require('./add.js')
-  const decrease = require('./decrease.js')
+  const add = require('./add.js').add
+  const decrease = require('./decrease.js').decrease
   module.exports.square_difference = function(a,b) {
     return add(a,b) * decrease(a, b);
   }
@@ -191,7 +191,7 @@ factory 是最后一个参数，它包裹了模块的具体实现，它是一个
   require.config({
     baseUrl: './',
     paths: {
-      'add': 'math'
+      'math': 'math'
     }
   });
 
@@ -365,6 +365,16 @@ obj.a = 5
 Commonjs | 同步|服务端|运行时|
 AMD | 异步|浏览器|运行时|
 ES Module | 异步/同步 | 服务端/浏览器端|编译时|
+
+问题： 
+- 1.commonjs 导出的到底是什么？ 是引用还是复制？
+- 2.es modules 导出的到底是什么？ 与commonjs有什么不同？
+- 3.es modules import的时候到底做了那些操作？
+- 4.当存在循环引用的时候，几种模块的处理策略是什么？
+
+
+https://zhuanlan.zhihu.com/p/28478464
+http://www.ruanyifeng.com/blog/2015/11/circular-dependency.html
 
 
 
