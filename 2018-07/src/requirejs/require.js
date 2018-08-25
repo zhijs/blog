@@ -134,7 +134,8 @@ var requirejs, require, define;
             return fn.apply(obj, arguments);
         };
     }
-
+    
+    // 返回页面所有的script 标签
     function scripts() {
         return document.getElementsByTagName('script');
     }
@@ -1989,8 +1990,8 @@ var requirejs, require, define;
                 if (!cfg.baseUrl && mainScript.indexOf('!') === -1) {
                     //Pull off the directory of data-main for use as the
                     //baseUrl.
-                    src = mainScript.split('/');
-                    mainScript = src.pop();
+                    src = mainScript.split('/');//'./main.js' => ['.', 'main.js']
+                    mainScript = src.pop(); // 得到没有路径的js名称 './main.js' => 'main.js'
                     subPath = src.length ? src.join('/')  + '/' : './';
 
                     cfg.baseUrl = subPath;
@@ -1998,7 +1999,7 @@ var requirejs, require, define;
 
                 //Strip off any trailing .js since mainScript is now
                 //like a module name.
-                mainScript = mainScript.replace(jsSuffixRegExp, '');
+                mainScript = mainScript.replace(jsSuffixRegExp, ''); // main.js => main
 
                 //If mainScript is still a path, fall back to dataMain
                 if (req.jsExtRegExp.test(mainScript)) {

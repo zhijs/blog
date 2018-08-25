@@ -1,4 +1,4 @@
- //模块定义，math.js
+ //add.js
  define(function(){
   let add = function (a, b) {
     return a + b;

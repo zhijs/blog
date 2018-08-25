@@ -176,116 +176,58 @@ factory 是最后一个参数，它包裹了模块的具体实现，它是一个
 
 举个例子
 ```javascript
- //模块定义，math.js
- define(function(){
-   let add = function (a, b) {
-     return a + b;
-   }
-   return {
-     add: add
-   }
- }) 
-
- // 模块使用
-  // 使用
-  require.config({
-    baseUrl: './',
-    paths: {
-      'math': 'math'
+ //模块定义，add.js
+  define(function(){
+    let add = function (a, b) {
+      return a + b;
     }
-  });
+    return add
+  }) 
 
-  require(['math'], function(math) {
-    console.log(math.add(2, 3))
-  });
+ //模块定义，decrease.js
+ define(function() {
+  let decrease = function (a, b) {
+    return a - b;
+  }
+  return decrease
+ });
 
+ //模块定义，square.js
+ define([
+  './add',
+  './decrease'
+], function(add, decrease) {
+   let square = function (a, b) {
+     return add(a, b) * decrease(a, b);
+   }
+   return square;
+});
+
+// 模块使用，主入口文件 main.js
+require.config({
+  baseUrl: './',
+  paths: {
+    'square': 'square'
+  }
+});
+
+require(['square'], function(math) {
+  console.log(square(6, 3))
+});
 ```
-下面我们来看看，以AMD规范实现的require.js是如何实现异步模块加载的  
-其模块主要加载原理代码如下所示  
-```javascript
-/**
-     * Does the request to load a module for the browser case.
-     * Make this a separate function to allow other environments
-     * to override it.
-     *
-     * @param {Object} context the require context to find state.
-     * @param {String} moduleName the name of the module.
-     * @param {Object} url the URL to the module.
-     */
-    req.load = function (context, moduleName, url) {
-        var config = (context && context.config) || {},
-            node;
-        if (isBrowser) {
-            //In the browser so use a script tag
-            node = req.createNode(config, moduleName, url);
+下面我们就根据上面的例子，分析requireJS的工作过程及其原理
+![](./images/requirejs-main-html.png)
+![](./images/require-var.png)
+从上图可以看出，requireJS定义了全局变量requrieJS, require, define,再requreJS脚本加载完成的时候，就执行改函数，并将this(浏览器里是window)对象传入了该函数，然后做一些初始化操作。
+接下来会执行
 
-            node.setAttribute('data-requirecontext', context.contextName);
-            node.setAttribute('data-requiremodule', moduleName);
-            if (node.attachEvent &&
-                    !(node.attachEvent.toString && node.attachEvent.toString().indexOf('[native code') < 0) &&
-                    !isOpera) {
-                useInteractive = true;
 
-                node.attachEvent('onreadystatechange', context.onScriptLoad);
-            } else {
-                node.addEventListener('load', context.onScriptLoad, false);
-                node.addEventListener('error', context.onScriptError, false);
-            }
-            node.src = url;
 
-            if (config.onNodeCreated) {
-                config.onNodeCreated(node, config, moduleName, url);
-            }
 
-            currentlyAddingScript = node;
-            if (baseElement) {
-                head.insertBefore(node, baseElement);
-            } else {
-                head.appendChild(node);
-            }
-            currentlyAddingScript = null;
 
-            return node;
-        } else if (isWebWorker) {
-            try {
-                //In a web worker, use importScripts. This is not a very
-                //efficient use of importScripts, importScripts will block until
-                //its script is downloaded and evaluated. However, if web workers
-                //are in play, the expectation is that a build has been done so
-                //that only one script needs to be loaded anyway. This may need
-                //to be reevaluated if other use cases become common.
-
-                // Post a task to the event loop to work around a bug in WebKit
-                // where the worker gets garbage-collected after calling
-                // importScripts(): https://webkit.org/b/153317
-                setTimeout(function() {}, 0);
-                importScripts(url);
-
-                //Account for anonymous modules
-                context.completeLoad(moduleName);
-            } catch (e) {
-                context.onError(makeError('importscripts',
-                                'importScripts failed for ' +
-                                    moduleName + ' at ' + url,
-                                e,
-                                [moduleName]));
-            }
-        }
-    };
- req.createNode = function (config, moduleName, url) {
-        var node = config.xhtml ?
-                document.createElementNS('http://www.w3.org/1999/xhtml', 'html:script') :
-                document.createElement('script');
-        node.type = config.scriptType || 'text/javascript';
-        node.charset = 'utf-8';
-        node.async = true;
-        return node;
-    };
-```
-上面的代码主要做的是动态创建script标签，设置了src属性和async属性，并对script标签的加载事件和错误事件做了监听,这个也是异步脚本的核心之处，对于整个过程的到底做了什么，借用一个某博主的图  
-![](https://upload-images.jianshu.io/upload_images/4155372-9df154f1ddd19195.png?imageMogr2/auto-orient/) 
 
 CMD(Common Module Definition)和AMD差不多，都是异步加载模块，只不过，CMD则是依赖就近,也就是需要用到某个模块的地方，才执行require操作，其原理也是利用动态外部脚本，例如同样的模块，AMD和CMD写法分别如下。
+
 ```javascript
 // ADM
 define(['add', 'decrease'], function(add, decrease){
@@ -364,7 +306,8 @@ obj.a = 5
 ---- | --- | --- | --- | --- |
 Commonjs | 同步|服务端|运行时|
 AMD | 异步|浏览器|运行时|
-ES Module | 异步/同步 | 服务端/浏览器端|编译时|
+ES Module | 异步/同步 | 服务端/浏览器端|编译时|  
+
 
 问题： 
 - 1.commonjs 导出的到底是什么？ 是引用还是复制？

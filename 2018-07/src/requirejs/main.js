@@ -7,6 +7,6 @@ require.config({
   }
 });
 
-require(['square'], function(math) {
+require(['square'], function(square) {
   console.log(square(6, 3))
 });
