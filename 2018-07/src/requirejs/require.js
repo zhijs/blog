@@ -1612,7 +1612,6 @@ var requirejs, require, define;
                         callGetModule([moduleName, (shim.deps || []), shim.exportsFn]);
                     }
                 }
-
                 checkLoaded();
             },
 
@@ -1762,6 +1761,7 @@ var requirejs, require, define;
      * on a require that are not standardized), and to give a short
      * name for minification/local scope use.
      */
+    
     req = requirejs = function (deps, callback, errback, optional) {
 
         //Find the right context, use default
