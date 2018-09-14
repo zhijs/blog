@@ -571,23 +571,7 @@ import {add} from './example1.js';
 
 2.export 命令会有变量声明提前的效果。  
 
-3.ES6 模块输出的是值的引用(基本类型除外)，输出接口动态绑定。 
-```javascript
-// example2.js
-let obj = {
- a: 1
-}
-export default obj;
-setTimeout(() => {
-  console.log(obj.a) //5
-}, 1000)
-
-// main.js
-import obj from './example2.js';
-console.log(obj.a) // 1
-obj.a = 5
-
-```
+3.ES6 模块输出的是模块的动态引用，输出接口动态绑定。 
 
 ### 6.几种模块化比较
 最后再对几种模块化做个比较  
