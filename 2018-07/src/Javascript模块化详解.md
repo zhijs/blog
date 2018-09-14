@@ -498,7 +498,7 @@ function callGetModule(args) {
 
 
 
-接下来会调用checkLoaded函数
+接下来会调用checkLoaded函数,requirejs实现方式较为复杂，暂时不做深入分析。
 
 
 
