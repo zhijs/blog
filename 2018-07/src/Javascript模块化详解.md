@@ -606,9 +606,6 @@ ES Module | 异步/同步 | 服务端/浏览器端|编译时|
 - 4.当存在循环引用的时候，几种模块的处理策略是什么？
 
 
-https://zhuanlan.zhihu.com/p/28478464
-http://www.ruanyifeng.com/blog/2015/11/circular-dependency.html
-
 
 
 
