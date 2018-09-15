@@ -349,29 +349,13 @@ import {add} from './example1.js';
 
 2.export 命令会有变量声明提前的效果。  
 
-3.ES6 模块输出的是值的引用(基本类型除外)，输出接口动态绑定。 
-```javascript
-// example2.js
-let obj = {
- a: 1
-}
-export default obj;
-setTimeout(() => {
-  console.log(obj.a) //5
-}, 1000)
-
-// main.js
-import obj from './example2.js';
-console.log(obj.a) // 1
-obj.a = 5
-
-```
+3.ES6 模块输出的是模块的动态引用，输出接口动态绑定。 
 
 ### 6.几种模块化比较
 最后再对几种模块化做个比较  
 
 模块化方案 | 加载方式 | 适用端|何时加载|
----- | --- | --- | --- | --- |
+---- | --- | --- | --- |
 Commonjs | 同步|服务端|运行时|
 AMD | 异步|浏览器|运行时|
 ES Module | 异步/同步 | 服务端/浏览器端|编译时|  
@@ -383,9 +367,6 @@ ES Module | 异步/同步 | 服务端/浏览器端|编译时|
 - 3.es modules import的时候到底做了那些操作？
 - 4.当存在循环引用的时候，几种模块的处理策略是什么？
 
-
-https://zhuanlan.zhihu.com/p/28478464
-http://www.ruanyifeng.com/blog/2015/11/circular-dependency.html
 
 
 
