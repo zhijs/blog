@@ -328,7 +328,7 @@ ES module，是在ECMAScript 6 (ES6)中，引入的模块化功能。
 
  //模块使用 main.js
  import add from './add.js'
- console.log()
+ console.log(add(1,2)) // 3e
 
 ```
 目前已经有部分浏览器部分支持es module了
@@ -347,7 +347,7 @@ import {add} from './example1.js';
 ``` 
 ![](./images/es-import.png)  
 
-2.export 命令会有变量声明提前的效果。  
+2.export语句输出的接口，与其对应的值是动态绑定关系，即通过该接口，可以取到模块内部实时的值。 
 
 3.ES6 模块输出的是模块的动态引用，输出接口动态绑定。 
 
