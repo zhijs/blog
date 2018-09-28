@@ -331,25 +331,28 @@ ES module，是在ECMAScript 6 (ES6)中，引入的模块化功能。
  console.log(add(1,2)) // 3e
 
 ```
-目前已经有部分浏览器部分支持es module了
-关于ES module的详细用法这里不再累述，这里只对ES module几点特性进行阐述：
+对于es module的基本用法这里不做累述，下面主要讲解在我看来，比较容易混乱的点。  
+a. export 和 export default
+ -1.在一个文件或模块中，export可以有多个，export default仅有一个, export类似于具名导出，而default类似于导出一个变量名为default的变量，同时在import的时候，对于export的变量，必须要用具名的对象去承接，而对于default，则可以任意指定变量，如下所示
+ ```
+ // a.js
+  export var a = 2;
+  export var b = 3 ;
+// main.js 在导出的时候必须要用具名变量 a, b且用解构的方式得到导出变量
+import {a, b} from 'a.js' // √ a= 2, b = 3
+import a from 'a.js' // x
 
-1.import 命令会被 JavaScript 引擎静态分析，优先于模块内的其他内容执行。 
-```javascript
-// example1.js
-console.log('example.js');
-export function add(a, b) {
-  return a + b;
-}
-// main.js
-console.log('es module', add(3,4))
-import {add} from './example1.js';
-``` 
-![](./images/es-import.png)  
+// b.js export default 方式
+const a = 3
+export default a // 注意不能 export default const a = 3 ,因为这里default就相当于一个变量名
 
-2.export语句输出的接口，与其对应的值是动态绑定关系，即通过该接口，可以取到模块内部实时的值。 
+// 导出
+import b form 'b.js' // √
+import c form 'b.js' // √ 因为b模块导出的是default，对于导出的default，可以用任意变量去承接
+ ```
 
-3.ES6 模块输出的是模块的动态引用，输出接口动态绑定。 
+ b.
+
 
 ### 6.几种模块化比较
 最后再对几种模块化做个比较  
