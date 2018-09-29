@@ -351,7 +351,27 @@ import b form 'b.js' // √
 import c form 'b.js' // √ 因为b模块导出的是default，对于导出的default，可以用任意变量去承接
  ```
 
- b.
+ b.import 加载模块过程
+ 在import模块的过程中，主要有以下几个步骤：
+  - 1.构造(Construction)  
+  这个过程执行查找，下载，并将文件转化为模块记录(Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)。
+- 2.实例化(Instantiation)  
+  这个过程会在内存中开辟一个存储空间，然后将该模块所有的export 和import的内容指向这个内存，这个过程叫做链接。是其写入export示意图如下所示
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)  
+  然后是链接import,其示意图如下所示  
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)  
+  另外需要注意一点的是，在export的地方可以动态修改数据，但是在import处不能对export出来的内存区域进行修改
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)
+
+- 3.赋值(Evaluation)
+  这个过程，会执行代码，并用真实的值填充上一阶段开辟的内存空间。
+
+  对于构造过程(Construction)，又可以分为以下几个步骤。  
+  (1).find and fetch 寻找文件，并异步加载(fetch)这个文件。
+  (2).Parsing, 解析阶段，将代码转换为模块记录，并存入缓存map中。
+
+
+
 
 
 ### 6.几种模块化比较
@@ -363,12 +383,8 @@ Commonjs | 同步|服务端|运行时|
 AMD | 异步|浏览器|运行时|
 ES Module | 异步/同步 | 服务端/浏览器端|编译时|  
 
-
-问题： 
-- 1.commonjs 导出的到底是什么？ 是引用还是复制？
-- 2.es modules 导出的到底是什么？ 与commonjs有什么不同？
-- 3.es modules import的时候到底做了那些操作？
-- 4.当存在循环引用的时候，几种模块的处理策略是什么？
+下面是参考文章，写的很详细。
+[es-modules-a-cartoon-deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
 
 
 
