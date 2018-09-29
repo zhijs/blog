@@ -331,10 +331,10 @@ ES module，是在ECMAScript 6 (ES6)中，引入的模块化功能。
  console.log(add(1,2)) // 3e
 
 ```
-对于es module的基本用法这里不做累述，下面主要讲解在我看来，比较容易混乱的点。  
-a. export 和 export default
- -1.在一个文件或模块中，export可以有多个，export default仅有一个, export类似于具名导出，而default类似于导出一个变量名为default的变量，同时在import的时候，对于export的变量，必须要用具名的对象去承接，而对于default，则可以任意指定变量，如下所示
- ```
+下面讲述几个较为重要的点   
+a. export 和 export default  
+ -1.在一个文件或模块中，export可以有多个，export default仅有一个, export类似于具名导出，而default类似于导出一个变量名为default的变量，同时在import的时候，对于export的变量，必须要用具名的对象去承接，而对于default，则可以任意指定变量，如下所示  
+ ```javascript
  // a.js
   export var a = 2;
   export var b = 3 ;
@@ -351,25 +351,23 @@ import b form 'b.js' // √
 import c form 'b.js' // √ 因为b模块导出的是default，对于导出的default，可以用任意变量去承接
  ```
 
- b.import 加载模块过程
- 在import模块的过程中，主要有以下几个步骤：
-  - 1.构造(Construction)  
-  这个过程执行查找，下载，并将文件转化为模块记录(Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)。
-- 2.实例化(Instantiation)  
-  这个过程会在内存中开辟一个存储空间，然后将该模块所有的export 和import的内容指向这个内存，这个过程叫做链接。是其写入export示意图如下所示
-  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)  
-  然后是链接import,其示意图如下所示  
-  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)  
-  另外需要注意一点的是，在export的地方可以动态修改数据，但是在import处不能对export出来的内存区域进行修改
-  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)
+ b.import 加载模块过程  
+ 在import模块的过程中，主要有以下几个步骤：  
+  - 1.构造(Construction)   
+  这个过程执行查找，下载，并将文件转化为模块记录(Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)。  
+- 2.实例化(Instantiation)    
+  这个过程会在内存中开辟一个存储空间，然后将该模块所有的export 和import的内容指向这个内存，这个过程叫做链接。是其写入export示意图如下所示  
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)    
+  然后是链接import,其示意图如下所示   
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)    
+  另外需要注意一点的是，在export的地方可以动态修改数据，但是在import处不能对export出来的内存区域进行修改  
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)  
+- 3.赋值(Evaluation)  
+  这个过程，会执行代码，并用真实的值填充上一阶段开辟的内存空间。  
 
-- 3.赋值(Evaluation)
-  这个过程，会执行代码，并用真实的值填充上一阶段开辟的内存空间。
-
-  对于构造过程(Construction)，又可以分为以下几个步骤。  
-  (1).find and fetch 寻找文件，并异步加载(fetch)这个文件。
-  (2).Parsing, 解析阶段，将代码转换为模块记录，并存入缓存map中。
-
+  对于构造过程(Construction)，又可以分为以下几个步骤。    
+  (1).find and fetch 寻找文件，并异步加载(fetch)这个文件。  
+  (2).Parsing, 解析阶段，将代码转换为模块记录，并存入缓存map中。  
 
 
 
