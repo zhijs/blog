@@ -353,7 +353,7 @@ import c form 'b.js' // √ 因为b模块导出的是default，对于导出的de
 
  b.ES Module 模块加载和导出过程
  以如下代码为例子  
- ```
+ ```javascript
   // counter.js
   export let count = 5
 
