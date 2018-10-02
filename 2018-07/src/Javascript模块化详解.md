@@ -351,25 +351,41 @@ import b form 'b.js' // √
 import c form 'b.js' // √ 因为b模块导出的是default，对于导出的default，可以用任意变量去承接
  ```
 
- b.import 加载模块过程  
- 在import模块的过程中，主要有以下几个步骤：  
-  - 1.构造(Construction)   
-  这个过程执行查找，下载，并将文件转化为模块记录(Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)。  
+ b.ES Module 模块加载和导出过程
+ 以如下代码为例子  
+ ```
+  // counter.js
+  export let count = 5
+
+  // display.js
+  export function render() {
+    console.log('render')
+  }
+  //main.js
+  import {counter} from './counter.js';
+  import {render} from './display.js'
+  ......// more code
+ ```
+ 在模块加载模块的过程中，主要有以下几个步骤：  
+  - 1.构建(Construction)   
+  这个过程执行查找，下载，并将文件转化为模块记录(Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)，同样也是在这个过程对模块记录进行了缓存的操作，下图是一个模块记录表  
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/05_module_record.png)  
+
+  下图是缓存记录表  
+  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/25_module_map.png)  
+
+
 - 2.实例化(Instantiation)    
-  这个过程会在内存中开辟一个存储空间，然后将该模块所有的export 和import的内容指向这个内存，这个过程叫做链接。是其写入export示意图如下所示  
+  这个过程会在内存中开辟一个存储空间(此时还没有填充值)，然后将该模块所有的export 和import的内容指向这个内存，这个过程叫做链接。其写入export示意图如下所示  
   ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)    
   然后是链接import,其示意图如下所示   
   ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)    
-  另外需要注意一点的是，在export的地方可以动态修改数据，但是在import处不能对export出来的内存区域进行修改  
-  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)  
+ 
 - 3.赋值(Evaluation)  
-  这个过程，会执行代码，并用真实的值填充上一阶段开辟的内存空间。  
+  这个过程，会执行代码，并用真实的值填充上一阶段开辟的内存空间,此过程后，import链接到的值就是export导出的真实值。
 
-  对于构造过程(Construction)，又可以分为以下几个步骤。    
-  (1).find and fetch 寻找文件，并异步加载(fetch)这个文件。  
-  (2).Parsing, 解析阶段，将代码转换为模块记录，并存入缓存map中。  
-
-
+根据上面的过程我们可以知道。ES Module模块export 和import其实指向的是同一块内存，单有一个点需要注意的是，import处不能对这块内存的值进行修改，而export可以,其示意图如下。  
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)
 
 
 ### 6.几种模块化比较
@@ -380,9 +396,6 @@ import c form 'b.js' // √ 因为b模块导出的是default，对于导出的de
 Commonjs | 同步|服务端|运行时|
 AMD | 异步|浏览器|运行时|
 ES Module | 异步/同步 | 服务端/浏览器端|编译时|  
-
-下面是参考文章，写的很详细。
-[es-modules-a-cartoon-deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
 
 
 
