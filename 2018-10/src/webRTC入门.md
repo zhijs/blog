@@ -1,7 +1,7 @@
 ### WebRCT入门
 
 ### 1.背景
-  &nbsp;&nbsp;webRTC是Google在2010年收购GIP公司之后获得的一项技术。它提供了音视频的采集、处理(降噪，回声消除等)、编解码、传输等技术,webRTC的目标是实现无需安装任何插件就可以通过浏览器进行P2P的实时音视频通话及文件传输，目前webRCT被纳入万维网联盟的W3C推荐标准。
+  &nbsp;&nbsp;&nbsp;&nbsp;webRTC是Google在2010年收购GIP公司之后获得的一项技术。它提供了音视频的采集、处理(降噪，回声消除等)、编解码、传输等技术,webRTC的目标是实现无需安装任何插件就可以通过浏览器进行P2P的实时音视频通话及文件传输，目前webRCT被纳入万维网联盟的W3C推荐标准。
 
   WebRTC 主要由两个组织来制定。  
   - Web Real-Time Communications (WEBRTC) W3C 组织：定义浏览器 API
@@ -9,22 +9,68 @@
 
 
 ### 2.基本结构和基本原理
-  &nbsp;&nbsp;其结构图如下所示：  
+  其结构图如下所示：  
   ![](./images/webrct.png)  
-  &nbsp;&nbsp;有图可知，webRCT底层用C++编写，在上一层用javascript做了封装，所以webRCT既适用于浏览器端，也可以通过调用C++层的native code进行移动端的开发。
+  &nbsp;&nbsp;&nbsp;&nbsp;有图可知，webRCT底层用C++编写，在上一层用javascript做了封装，所以webRCT既适用于浏览器端，也可以通过调用C++层的native code进行移动端的开发。
 
-  &nbsp;&nbsp;webRCT原理图如下所示:   
+  webRCT原理图如下所示:   
   ![](./images/原理.png)  
-  &nbsp;&nbsp; webRCT中，客户端的之间的媒体流的数据传输是点对点的，也就说所谓的P2P传输。但是webRCT并非完全不需要服务器，对于流媒体传输通道构建之前，通信的双方需要进行数据协商，如初始化通信的session信息，双方的ip、端口，视频分辨率，编解码格式，流媒体数传输开始和结束控制，这些都是需要服务器来参与的，webRTC没有规定这些信息传输的机制，XHR、webSocket、Socket.io等都是可以的。
+  &nbsp;&nbsp;&nbsp;&nbsp;webRCT中，客户端的之间的媒体流的数据传输是点对点的，也就说所谓的P2P传输。但是webRCT并非完全不需要服务器，对于流媒体传输通道构建之前，通信的双方需要进行数据协商，如初始化通信的session信息，公网iP地址和端口号，视频分辨率，编解码格式，流媒体数传输开始和结束控制，这些都是需要服务器来参与的，webRTC没有规定这些信息传输的机制，XHR、webSocket、Socket.io等都是可以的，这个中转元数据的服务器叫做信令服务器。
 
 ### 3.关于点对点传输(P2P)的基础知识
- &nbsp;&nbsp; webRCT中，点对点的传输的建立是一个较为复杂也是较为基础的过程，在webRCT中，使用的是ICE(Interactive Connectivity Establishment)框架，ICE是一种综合性的**NAT穿越技术**，它整合了**STUN**、**TURN**,下面来依次介绍一下这几个概念。
+ &nbsp;&nbsp;&nbsp;&nbsp; webRCT中，点对点的传输的建立是一个较为复杂也是较为基础的过程，在webRCT中，使用的是ICE(Interactive Connectivity Establishment)框架，ICE是一种综合性的**NAT穿越技术**，它整合了**STUN**、**TURN**,后面会依次介绍这几个概念。
 
 1. NAT  
-&nbsp;&nbsp;NAT,Network Address Translation,即网络地址转换，接入广域网(WAN)技术,是一种将私有(保留)地址转化为合法IP地址的转换技术。NAT地解决了可以很好得解决lP地址不足的问题，而且还能够有效地避免来自网络外部的攻击，隐藏并保护网络内部的计算机。但是，这个对于大多数的p2p连接而言，这是不友好的。原因是因为在大多数的情况下，想要进行P2P连接的客户端一般都是位于NAT的后面，如果没有中间服务器的帮助，双方是无法直接建立P2P连接的，所以就有了NAT穿越，在将NAT穿越之前，我们先来了解NAT的工作过程。
+&nbsp;&nbsp;&nbsp;&nbsp;NAT,Network Address Translation,即网络地址转换，接入广域网(WAN)技术,是一种将私有(保留)地址转化为合法IP地址的转换技术。NAT地解决了可以很好得解决lP地址不足的问题，而且还能够有效地避免来自网络外部的攻击，隐藏并保护网络内部的计算机。但是，这个对于大多数的p2p连接而言，这是不友好的。原因是因为在大多数的情况下，想要进行P2P连接的客户端一般都是位于NAT的后面，如果没有中间服务器的帮助，双方是无法直接建立P2P连接的，所以就有了NAT穿越，在讲NAT穿越之前，我们先来了解NAT的工作过程。
 
 2. NAT工作过程  
-&nbsp;&nbsp;NAT本质上就是一个ip映射表，将内网的ip地址映射到公网的ip地址
+NAT本质上就是一个ip映射表，将内网的ip地址映射到公网的ip地址,其大致原理入下图所示。  
+![](./images/NAT.png)  
+&nbsp;&nbsp;&nbsp;&nbsp;因为内网地址的数据报文不会被公网的路由器转发，所以当某内网设置想要请求外网数据时，会将请求报文发送到NAT设备，NAT设备通过在映射表找到该内网设备所对应的公网ip地址，然后将数据报文的源ip修改未对应的这个公网ip，以此来和外部设备通信。同样，在外部设备应答的时候，NAT设备也会通过映射表，找到响应报文目的ip对应的内网ip，让后将目的ip从公网ip修改为内网ip，再将响应报文发回内部。  
+&nbsp;&nbsp;&nbsp;&nbsp;所以，我们要想实现p2p通信，得到对方的内网地址对应的公网地址是一个重要的必须前提，只有得到对应的公网地址，才有可能和对方建立P2P连接，而这个过程，也就是所谓的NAT穿透。注意，我这里用的是可能，因为对于NAT设置后的客户端而言，得到其公网ip和端口只是建立建立的必要而不充分条件，因为NAT有多种类型，每种类型的特性又有一些区别，下面，我们先了解一下NAT类型。  
+
+3. NAT类型及其特性  
+  - 完全锥形NAT(Full Cone NAT):  
+  &nbsp;&nbsp;&nbsp;&nbsp;所有从同一个内网IP和端口号发送过来的请求都会被映射成同一个外网IP和端口号，并且任何一个外网主机都可以通过这个映射的外网IP和端口号向这台内网主机发送包。  
+
+  - 限制锥形NAT(Restricted Cone NAT):  
+  &nbsp;&nbsp;&nbsp;&nbsp;它也是所有从同一个内网IP和端口号发送过来的请求都会被映射成同一个外网IP和端口号。与完全锥形不同的是，外网主机只能够向先前已经向它发送过数据包的内网主机发送包。  
+
+  - 端口限制锥形NAT(Port Restricted Cone NAT):  
+  &nbsp;&nbsp;&nbsp;&nbsp;与限制锥形NAT很相似，只不过它包括端口号。也就是说，一台IP地址X和端口P的外网主机想给内网主机发送包，必须是这台内网主机先前已经给这个IP地址X和端口P发送过数据包。  
+
+  - 对称NAT(Symmetric NAT):  
+   &nbsp;&nbsp;&nbsp;&nbsp;所有从同一个内网IP和端口号发送到一个特定的目的IP和端口号的请求，都会被映射到同一个IP和端口号。如果同一台主机使用相同的源地址和端口号发送包，但是发往不同的目的地，NAT将会使用不同的映射。此外，只有收到数据的外网主机才可以反过来向内网主机发送包。
+
+4. NAT穿越  
+&emsp;因为有了这些NAT设备，导致了P2P的连接变的异常困难，而穿过这些NAT设置，与内网设备建立p2p连接的过程，即称为NAT穿越(也就内网打洞)。
+
+
+### 4.webRCT连接建立框架-ICE(交互式连接建立)
+&emsp;由上面可知，由于NAT的存在，webRCT的p2p连接变得异常困难，甚至有可能连接失败，webRCT对于连接的建立和失败后的连接方案，制定了一套ICE(Interactive Connectivity Establishment)框架，ICE是一种综合性的NAT穿越技术，它整合了STUN、TURN。当穿越网络时。下图是ICE的架构图。  
+![](./images/ICE.png)  
+其中用到了TURN服务和Relay服务(即是STUN),那么TURN和STUN到底是干嘛的？有什么作用呢？
+
+
+### 5.ICE之STUN
+&emsp;STUN(Session Traversal Utilities for NAT),NAT会话穿越应用程序，是个轻量级的协议，是基于UDP的完整的穿透NAT的解决方案。它允许应用程序发现它们与公共互联网之间存在的NAT和防火墙及其他类型。它也可以让应用程序确定NAT分配给它们的公网IP地址和端口号。
+![](./images/STUN.png)  
+客户端通过和公网STUN服务进行通信，以此来判断自己是否在NAT后面以及自己的对应的公网地址和端口号，然后将这些信息通过信令服务器，发送给待连接的另一个的客户端。
+
+### 6.ICE之TURN  
+&emsp;TURN(Traversal Using Relays around NAT), NAT的中继穿越方式,通过TURN服务器中继所有数据的方式来绕过“对称型NAT”。你需要在TURN服务器上创建一个连接，然后告诉所有对端设备发包到服务器上，TURN服务器再把包转发给你。很显然这种方式是开销很大的，所以只有在没得选择的情况下采用。其图示如下:  
+![](./images/TURN.png)   
+至于为何对称型NAT会无法连接，原因是对称型NAT,对于不同的目标ip和端口，NAT会映射成不同的公网ip和端口，而通过STUN得到的IP和端口，是特定与STUN服务的ip和端口。即使将这个ip和端口发送给另外一个待连接端，也是无法连接的。  
+#### &emsp;综上，ICE其实就是一种探索式框架，如果无法建立直接的P2P连接，则会采用TURN做为中继服务来转发双方的通信数据。 
+
+### 7.浏览器p2p通信步骤
+&emsp;webRCT为浏览器提供了一套API用于建立webRCT连接，其步骤为:
+  1. 调用getUserMedia,获取本地的媒体流数据。
+  2. 从STUN获取自己的外网IP及端口，并通过信令服务器发送自己的ip地址端口，以及流媒体数据同时接受对方的类似数据，并保存到本地。
+  3. 建立P2P连接，开始传输媒体流数据。
+
+### 8.code-show(建立简单的浏览器视频通信例子)
+1. 首先建立一个信令服务器，用户交换连接双方的ip地址端口和媒体流信息
 
 
 
@@ -36,6 +82,14 @@
 
 
 
+
+
+
+### 参考文章
+[P2P技术之STUN、TURN、ICE详解](http://www.52im.net/thread-557-1-1.html)  
+[深入理解WebRTC](https://segmentfault.com/a/1190000011403597)  
+[webRTC——浏览器里的音视频通话](https://segmentfault.com/a/1190000011767066)  
+[WebRTC协议](https://developer.mozilla.org/zh-CN/docs/Web/API/WebRTC_API/Protocols)
 
 
  
