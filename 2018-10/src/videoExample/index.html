@@ -20,6 +20,8 @@
     var socket = io();
     var main = null;
     let video = document.getElementById('video')
+    navigator.getUserMedia = navigator.getUserMedia ||
+    navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     function chat() {
       main = getMain();
       console.log(main)
@@ -40,6 +42,7 @@
         video: true
       },function (stream) {
         // 将数据流创建成
+        console.log('媒体流', stream)
         let url = URL.createObjectURL(stream);
         // 设置video的src为媒体流
         video.setAttribute('src', url)
@@ -56,6 +59,8 @@
         }, function(err) {
           console.log('创建失败',err)
         });
+      }, function(err) {
+        console.log('获取视频流出错')
       })
       
       // 监听对方发来的描述信息

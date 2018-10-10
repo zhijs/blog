@@ -7,6 +7,7 @@ function getMain(){
     offer: null,
     name: null,
     init: function(){
+      window.RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection || window.msRTCPeerConnection;
       var ice = {
         "iceServers": [
             { "url": "stun:stun.l.google.com:19302" }, //使用google公共测试服务器
