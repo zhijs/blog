@@ -13,8 +13,16 @@ function handler (req, res) {
 }
 
 io.on('connection', function (socket) {
-  socket.on('my other event', function (data) {
-    console.log(data);
+  // 收到A的描述信息，转发给B
+  socket.on('answerOffer', function (data) {
+    console.log('服务端 收到offer包', data)
+    io.emit('answerOffer', data)
   });
+
+  // 收到ICE信息
+  socket.on('iceSwop', function(data) {
+    console.log('服务端 收到ICE包', data)
+    io.emit('iceSwop', data)
+  })
 });
       
