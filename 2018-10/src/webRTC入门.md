@@ -65,7 +65,9 @@ NAT本质上就是一个ip映射表，将内网的ip地址映射到公网的ip�
 
 ### 7.通过浏览器创建一个简单webRCT视频通信
 &emsp;在开始写代码之前，我们首先来看一下，用webRCT创建一个浏览器端的视频通信的主要过程以及其中涉及到的api，其过程图如下所示:  
-![](./images/webRCT-video-p2p.png)  
+![](./images/webRCT-video-p2p.png)    
+其实现代码如下所示:  
+
 
 
 
