@@ -41,7 +41,7 @@
       //获取媒体流
       navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
         connection = getRCTPeerConnection();
-        connection.onicecandidate(handleicecandidate)
+        connection.onicecandidate = handleicecandidate
         // 发送媒体设备拿到的数据流
         connection.addStream(stream);
 
