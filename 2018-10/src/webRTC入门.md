@@ -1,7 +1,7 @@
 ### WebRTC入门
 
 ### 1.背景
-  &nbsp;&nbsp;&nbsp;&nbsp;webRTC是Google在2010年收购GIP公司之后获得的一项技术。它提供了音视频的采集、处理(降噪，回声消除等)、编解码、传输等技术,webRTC的目标是实现无需安装任何插件就可以通过浏览器进行P2P的实时音视频通话及文件传输，目前webRCT被纳入万维网联盟的W3C推荐标准。
+  &nbsp;&nbsp;&nbsp;&nbsp;webRTC是Google在2010年收购GIP公司之后获得的一项技术。它提供了音视频的采集、处理(降噪，回声消除等)、编解码、传输等技术,webRTC的目标是实现无需安装任何插件就可以通过浏览器进行P2P的实时音视频通话及文件传输，目前webRTC被纳入万维网联盟的W3C推荐标准。
 
   WebRTC 主要由两个组织来制定。  
   - Web Real-Time Communications (WEBRTC) W3C 组织：定义浏览器 API
