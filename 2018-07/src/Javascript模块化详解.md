@@ -53,7 +53,7 @@ function square_difference(a,b) {
 - 2.会污染全局变量
 - 3.模块之间的依赖关系不明显
 
-基于上述的原因，就有了对上述问题的解决方案，即是javascript模块化规范，目前主流的有Commonjs,AMD,CMD,ES6 module这四种规范。
+基于上述的原因，就有了对上述问题的解决方案，即是Javascript模块化规范，目前主流的有Commonjs,AMD,CMD,ES6 Module这四种规范。
 
 ### 3.Javascript模块化之-CommonJs
 CommonJs规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过module.exports导出对外的变量或接口，通过require()来导入其他模块的输出到当前模块作用域中，下面讲述一下Node是如何实现Commonjs的。 
