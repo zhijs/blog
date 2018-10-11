@@ -23,6 +23,7 @@
     let name = '' // 保存当前用户标识
     let offerCreated = false;
     socket.on('offerState', function(data) {
+      console.log('offerState', data);
       offerCreated = data.offerCreated
     })
 
