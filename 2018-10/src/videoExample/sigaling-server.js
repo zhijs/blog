@@ -1,17 +1,15 @@
-var app = require('http').createServer(handler)
+var express = require('express');
+var app = express();
 var io = require('socket.io')(app);
 var fs = require('fs');
+var path = require('path')
 
 let offerCreated = false;
-app.listen(8081);
-console.log('server running on localhost:8081')
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    res.writeHead(200);
-    res.end(data);
-  });
-}
+app.listen(8081, function() {
+  console.log('server running on localhost:8081')
+});
+
+pp.use(express.static(path.join(__dirname, 'public')))
 
 io.on('connection', function (socket) {
   
