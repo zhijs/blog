@@ -222,7 +222,13 @@ io.on('connection', function (socket) {
   })
 });
 ```
-
+效果，有两台带有摄像头的笔记本，须有firefox浏览器，执行
+```javascript
+  node sigaling-server.js // 开启信令服务器
+```
+ 一台笔记本 firefox 访问 localhost:8081/indexB  打开待连接客户端
+ 
+ 另一台访问笔记本 firefox 访问 localhost:8081/indexA  输入名称，点击连接
 
 
 

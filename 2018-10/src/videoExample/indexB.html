@@ -19,7 +19,7 @@
   <script>
 
     // indexB 应答方
-    var socket = io.connect('http://localhost:8081');
+    var socket = io.connect('http://211.159.182.124:8081');
     let video = document.getElementById('video')
     let connection = null;
     let name = 'B' // 保存当前用户标识
@@ -76,6 +76,7 @@
     var ice = {
         "iceServers": [
           { "url": "stun:stun.l.google.com:19302" }, //使用google公共测试服务器
+          { "url": "turn:stun.freeswitch.org" }
         ]
       };
     let connection =  new RTCPeerConnection(ice);
