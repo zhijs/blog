@@ -40,7 +40,7 @@
     // 监听offer发来事件
     socket.on('offer', function(data) {
       console.log('get offer', data);
-      connection.setRemoteDescription(RTCSessionDescription(data.sdp))
+      connection.setRemoteDescription(new RTCSessionDescription(data.sdp))
       connection.createAnswer().then(function(offer) {
         return connection.setLocalDescription(offer)
       }).then(function() {

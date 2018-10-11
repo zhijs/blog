@@ -37,12 +37,12 @@ io.on('connection', function (socket) {
       return;
     }
     console.log('服务端 收到ICE包', data)
-    socket.emit('swapcandidate', data)
+    io.sockets.emit('swapcandidate', data)
     iceCanditate.push(data.name);
   })
 
   socket.on('answer', function(data) {
-    socket.emit('answer', data)
+    io.sockets.emit('answer', data)
   })
 });
       
