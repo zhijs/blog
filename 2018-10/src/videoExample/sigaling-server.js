@@ -27,7 +27,7 @@ io.on('connection', function (socket) {
   socket.on('offer', function (data) {
     if (offerUsers.includes(data.name)) return;
     console.log('服务端收到offer包', data)
-    socket.emit('offer', data)
+    io.sockets.emit('offer', data)
     offerUsers.push(data.name);
   });
 
