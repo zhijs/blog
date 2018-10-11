@@ -66,7 +66,167 @@ NAT本质上就是一个ip映射表，将内网的ip地址映射到公网的ip�
 ### 7.通过浏览器创建一个简单webRCT视频通信
 &emsp;在开始写代码之前，我们首先来看一下，用webRCT创建一个浏览器端的视频通信的主要过程以及其中涉及到的api，其过程图如下所示:  
 ![](./images/webRCT-video-p2p.png)    
-这里用firefox 浏览器进行测试，因为chrome浏览器需要再https的环境下才能使用，其实现代码如下所示:  
+这里用firefox 浏览器进行测试，因为chrome浏览器需要再https的环境下才能使用，其实客户端现代码如下所示: 
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div style="width: 500px; margin:50px auto">
+    <video id="video" autoplay style="width: 500px; height: 300px; border: 1px solid"></video>
+    <div>
+      <input type="text" placeholder="请输入你的名字" id="name_input">
+      <button onclick="chat()">开始连接</button>
+    </div>
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script src="./js/main.js"></script>
+  <script>
+
+    // 客户端代码
+    var socket = io.connect('http://localhost:8081');
+    let video = document.getElementById('video')
+    let connection = null;
+    let name = 'A' // 保存当前用户标识
+    let offerCreated = false;
+    socket.on('offerState', function(data) {
+      offerCreated = data.offerCreated
+    })
+
+    // 监听对方ICE应答事件
+    socket.on('swapcandidate', function(data) {
+      console.log('swapcandidate', data);
+      if (data.name !== name) {
+        connection.addIceCandidate(data.candidate)
+      }
+    })
+    let constraints = {
+      video: true,
+      audio: false
+    }
+    function chat() {
+      name = document.getElementById('name_input').value;
+      console.log('name', name)
+        //获取媒体流
+      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+        connection = getRCTPeerConnection();
+        connection.onicecandidate = handleicecandidate
+        // 发送媒体设备拿到的数据流
+        connection.addStream(stream);
+        
+        // 监听对方媒体流到来事件
+        connection.onaddstream = function(stream) {
+          console.log('收到媒体流', stram);
+          // 将媒体流写入video中
+          video.srcObject = stream;
+        }
+        // 创建媒体描述对象
+        socket.on('answer', function(data) {
+          console.log('收到应答answer', data);
+          connection.setRemoteDescription(RTCSessionDescription(data.sdp))
+        })
+        connection.createOffer().then(function(offer){
+          console.log('createOffer', offer)
+          connection.setLocalDescription(offer).then(function() {
+            console.log('发送offer', offer)
+            // 将媒体协商信息发给对方
+            socket.emit('offer', {
+              name: name,
+              sdp: connection.localDescription
+            })
+          }).catch(function(err) {
+            console.log('setLocalDescription error', e);
+          })
+          }).catch(function(e) {
+          console.log('createOffer error', e);
+        })
+      }).catch(function(err) {
+        console.log('获取媒体流出错', err);
+      })
+    }
+  // 构建连接对像
+  function getRCTPeerConnection() {
+    var ice = {
+        "iceServers": [
+          { "url": "stun:stun.l.google.com:19302" }, //使用google公共测试服务器
+        ]
+      };
+    let connection =  new RTCPeerConnection(ice);
+    return connection;
+  }
+  
+  // 处理ice信息到来事件，即是通过TURN的带自己的ip信息
+  function handleicecandidate(event) {
+    // 将这些信息发送给对方
+    socket.emit('swapcandidate', {
+      name: name,
+      candidate: event.candidate
+    })
+  }
+  </script>
+</body>
+</html>
+``` 
+服务端代码(信令服务器): 服务端主要是用于交换双方的协商数据。
+```javascript
+var express = require('express');
+var app = express();
+var http = require("http");
+var server=http.createServer(app);
+var fs = require('fs');
+var path = require('path')
+var iceCanditate = [];
+var offerUsers = [];
+const expressSrver = app.listen(8081, function() {
+  console.log('server running on localhost:8081')
+});
+var io = require('socket.io')(expressSrver);
+
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+})
+app.use(function(req, res) {
+  fs.readFile(__dirname + `/${req.path}.html`, function(err, data) {
+    res.writeHead(200)
+    res.end(data);
+  })
+})
+io.origins('*:*');
+io.on('connection', function (socket) {
+  // 收到A的描述信息，转发给B
+  socket.on('offer', function (data) {
+    if (offerUsers.includes(data.name)) return;
+    console.log('服务端收到offer包', data)
+    io.sockets.emit('offer', data)
+    offerUsers.push(data.name);
+  });
+
+  // 收到ICE信息
+  socket.on('swapcandidate', function(data) {
+    if (iceCanditate.includes(data.name)) {
+      return;
+    }
+    console.log('服务端 收到ICE包', data)
+    io.sockets.emit('swapcandidate', data)
+    iceCanditate.push(data.name);
+  })
+
+  socket.on('answer', function(data) {
+    io.sockets.emit('answer', data)
+  })
+});
+```
+
+
+
+
+
 
 
 
