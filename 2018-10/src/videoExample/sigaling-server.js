@@ -1,18 +1,23 @@
-var app = require('http').createServer(handler)
-var io = require('socket.io')(app);
+var express = require('express');
+var app = express();
+var http = require("http");
+var server=http.createServer(app);
+var io = require('socket.io').listen(server);
 var fs = require('fs');
+var path = require('path')
 
-let offerCreated = false;
-app.listen(8081);
-console.log('server running on localhost:8081')
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    res.writeHead(200);
+app.listen(8081, function() {
+  console.log('server running on localhost:8081')
+});
+
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(function(req, res) {
+  console.log('path--', req.path)
+  fs.readFile(__dirname + `/${req.path}.html`, function(err, data) {
+    res.writeHead(200)
     res.end(data);
-  });
-}
-
+  })
+})
 io.on('connection', function (socket) {
   
   console.log('收到连接')
