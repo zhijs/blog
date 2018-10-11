@@ -18,83 +18,93 @@
   <script src="./js/main.js"></script>
   <script>
     var socket = io();
-    var main = null;
     let video = document.getElementById('video')
-    navigator.getUserMedia = navigator.getUserMedia ||
-    navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    function chat() {
-      main = getMain();
-      console.log(main)
-      main.init();
-      main.name = document.getElementById('name_input').value;
-      // 监听ice
-      main.pc.onicecandidate = function(event) {
-        if (event.candidate) {
-          socket.emit('iceSwop', {
-            name:  main.name,
-            iceData: event.candidate
-          });
-			  }
-      }
-      
-      // 获取媒体输入流
-      navigator.getUserMedia({
-        video: true
-      },function (stream) {
-        // 将数据流创建成
-        console.log('媒体流', stream)
-        let url = URL.createObjectURL(stream);
-        // 设置video的src为媒体流
-        video.setAttribute('src', url)
-         // 创建描述符,并发送
-        main.pc.createOffer(function (desc) {
-          console.log('创建offer 成功',  desc)
-          main.pc.setLocalDescription(desc, function () {
-            console.log('设置本地描述符成功--desc', desc)
-            socket.emit('answerOffer', {
-              name:  main.name,
-              sdp: desc
-            });
-          });
-        }, function(err) {
-          console.log('创建失败',err)
-        });
-      }, function(err) {
-        console.log('获取视频流出错')
-      })
-      
-      // 监听对方发来的描述信息
-      socket.on('answerOffer', function(data) {
-        console.log('客户端 收到offer包', data)
-        if (data.name === main.name) return
-        main.pc.setRemoteDescription(new RTCSessionDescription(data.sdp))
-      })
+    let connection = null;
+    let name = '' // 保存当前用户标识
+    let offerCreated = false;
+    socket.on('offerState', function(data) {
+      offerCreated = data.offerCreated
+    })
 
-      // 监听ICE信息
-      socket.on('iceSwop', function(data) {
-        console.log('客户端 收到ICE包', data)
-        if (data.name === main.name) return
-        main.pc.addIceCandidate(new RTCIceCandidate(data.iceData))
+    // 监听对方ICE应答事件
+    socket.on('swapcandidate', function(data) {
+      if (data.name !== name) {
+        connection.addIceCandidate(data.candidate)
+      }
+    })
+    function chat() {
+      name = document.getElementById('name_input').value;
+      let constraints = {
+        video: true,
+        audio: false
+      }
+      //获取媒体流
+      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+        connection = getRCTPeerConnection();
+        connection.onicecandidate(handleicecandidate)
+        // 发送媒体设备拿到的数据流
+        connection.addStream(stream);
+
+        // 创建媒体描述对象
+        if (offerCreated) { // 当前属于应答方
+          socket.on('offer', function(data) {
+            connection.setRemoteDescription(RTCSessionDescription(data.sdp))
+            connection.createAnswer().then(function(offer) {
+              return connection.setLocalDescription(offer)
+            }).then(function() {
+              socket.emit('answer', {
+                name: name,
+                sdp: connection.localDescription
+              })
+            })
+          })
+        } else { // 当前属于主动方
+          connection.createOffer().then(function(offer){
+            return connection.setLocalDescription(offer)
+          }).then(function() {
+            // 将媒体协商信息发给对方
+            socket.emit('offer', {
+              name: name,
+              sdp: connection.localDescription
+            })
+
+            // 监听应答
+            socket.on('answer', function(data) {
+              connection.setRemoteDescription(RTCSessionDescription(data.sdp))
+            })
+          })
+        }
+
+        // 监听对方媒体发送事件
+        socket.on('offer', function(data) {
+          if (data.name !== name){  // 不是自己发的消息
+            
+          }
+        })
+      }).catch(function(err) {
+        console.log('获取媒体流出错', err);
       })
     }
-   
-  function getMain(){
-    var main  = 
-    { 
-      pc: null,
-      offer: null,
-      name: null,
-      init: function(){
-        var ice = {
-          "iceServers": [
-              { "url": "stun:stun.l.google.com:19302" }, //使用google公共测试服务器
-          ]
-        };
-        // 创建pc对象
-        this.pc = new RTCPeerConnection(ice);
-      }
-    }
-    return main;
+  
+  // 构建连接对像
+  function getRCTPeerConnection() {
+    var ice = {
+        "iceServers": [
+          { "url": "stun:stun.l.google.com:19302" }, //使用google公共测试服务器
+          { "url": "turn:user@turnserver.com", "credential": "pass" } // 如有turn服务器，可在此配置
+        ]
+      };
+    let connection =  new RTCPeerConnection(ice);
+    return connection;
+  }
+  
+  // 处理ice信息到来事件，即是通过TURN的带自己的ip信息
+  function handleicecandidate(event) {
+    // 将这些信息发送给对方
+    socket.emti('swapcandidate', {
+      name: name,
+      candidate: evt.candidate
+    })
   }
   </script>
 </body>
