@@ -63,9 +63,9 @@
         
         // 监听对方媒体流到来事件
         connection.onaddstream = function(stream) {
-          console.log('收到媒体流', stram);
+          console.log('收到媒体流', stream);
           // 将媒体流写入video中
-          video.srcObject = stream;
+          video.srcObject = stream.stream;
         }    
       }).catch(function(err) {
         console.log('获取媒体流出错', err);
