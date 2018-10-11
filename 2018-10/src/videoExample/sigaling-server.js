@@ -20,19 +20,19 @@ io.on('connection', function (socket) {
     offerCreated
   })
   // 收到A的描述信息，转发给B
-  socket.on('offer', function (data) {
+  io.on('offer', function (data) {
     offerCreated = true
     console.log('服务端 收到offer包', data)
     io.emit('offer', data)
   });
 
   // 收到ICE信息
-  socket.on('swapcandidate', function(data) {
+  io.on('swapcandidate', function(data) {
     console.log('服务端 收到ICE包', data)
     io.emit('swapcandidate', data)
   })
 
-  socket('answer', function(data) {
+  io.on('answer', function(data) {
     io.emit('answer', data)
   })
 });
