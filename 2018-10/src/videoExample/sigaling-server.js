@@ -2,40 +2,43 @@ var express = require('express');
 var app = express();
 var http = require("http");
 var server=http.createServer(app);
-var io = require('socket.io').listen(server);
 var fs = require('fs');
 var path = require('path')
-
-app.listen(8081, function() {
+var iceCanditate = [];
+var offerUsers = [];
+const expressSrver = app.listen(8081, function() {
   console.log('server running on localhost:8081')
 });
+var io = require('socket.io')(expressSrver);
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+})
 app.use(function(req, res) {
-  console.log('path--', req.path)
   fs.readFile(__dirname + `/${req.path}.html`, function(err, data) {
     res.writeHead(200)
     res.end(data);
   })
 })
+io.origins('*:*');
 io.on('connection', function (socket) {
-  
-  console.log('收到连接')
-  // 用于却别是否已经创建offer完毕，另外一方需要采用createAnser 应答
-  socket.emit('offerState', {
-    offerCreated
-  })
   // 收到A的描述信息，转发给B
   socket.on('offer', function (data) {
-    offerCreated = true
+    if (offerUsers.includes(data.name)) return;
     console.log('服务端收到offer包', data)
     socket.emit('offer', data)
+    offerUsers.push(data.name);
   });
 
   // 收到ICE信息
   socket.on('swapcandidate', function(data) {
+    if (iceCanditate.includes(data.name)) {
+      return;
+    }
     console.log('服务端 收到ICE包', data)
     socket.emit('swapcandidate', data)
+    iceCanditate.push(data.name);
   })
 
   socket.on('answer', function(data) {

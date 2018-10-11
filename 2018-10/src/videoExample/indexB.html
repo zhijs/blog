@@ -19,10 +19,10 @@
   <script>
 
     // indexB 应答方
-    var socket = io();
+    var socket = io('http://localhost:8081');
     let video = document.getElementById('video')
     let connection = null;
-    let name = '' // 保存当前用户标识
+    let name = 'B' // 保存当前用户标识
     let offerCreated = false;
     socket.on('offerState', function(data) {
       console.log('offerState', data);
@@ -36,8 +36,20 @@
         connection.addIceCandidate(data.candidate)
       }
     })
-    console.log('offerCreated---', offerCreated)
-      name = document.getElementById('name_input').value;
+
+    // 监听offer发来事件
+    socket.on('offer', function(data) {
+      console.log('get offer', data);
+      connection.setRemoteDescription(RTCSessionDescription(data.sdp))
+      connection.createAnswer().then(function(offer) {
+        return connection.setLocalDescription(offer)
+      }).then(function() {
+        socket.emit('answer', {
+          name: name,
+          sdp: connection.localDescription
+        })
+      })
+    })
       let constraints = {
         video: true,
         audio: false
@@ -54,20 +66,7 @@
           console.log('收到媒体流', stram);
           // 将媒体流写入video中
           video.srcObject = stream;
-        }
-        // 创建媒体描述对象
-      socket.on('offer', function(data) {
-        console.log('get offer', data);
-        connection.setRemoteDescription(RTCSessionDescription(data.sdp))
-        connection.createAnswer().then(function(offer) {
-          return connection.setLocalDescription(offer)
-        }).then(function() {
-          socket.emit('answer', {
-            name: name,
-            sdp: connection.localDescription
-          })
-        })
-      })
+        }    
       }).catch(function(err) {
         console.log('获取媒体流出错', err);
     })
