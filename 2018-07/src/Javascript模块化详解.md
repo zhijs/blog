@@ -384,7 +384,7 @@ import c form 'b.js' // √ 因为b模块导出的是default，对于导出的de
 - 3.赋值(Evaluation)  
   这个过程，会执行代码，并用真实的值填充上一阶段开辟的内存空间,此过程后，import链接到的值就是export导出的真实值。
 
-根据上面的过程我们可以知道。ES Module模块export 和import其实指向的是同一块内存，单有一个点需要注意的是，import处不能对这块内存的值进行修改，而export可以,其示意图如下。  
+根据上面的过程我们可以知道。ES Module模块export 和import其实指向的是同一块内存，但有一个点需要注意的是，import处不能对这块内存的值进行修改，而export可以,其示意图如下。  
 ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)
 
 
@@ -396,6 +396,10 @@ import c form 'b.js' // √ 因为b模块导出的是default，对于导出的de
 Commonjs | 同步|服务端|运行时|
 AMD | 异步|浏览器|运行时|
 ES Module | 异步/同步 | 服务端/浏览器端|编译时|  
+
+
+参考文章:
+[ES modules: A cartoon deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
 
 
 
