@@ -51,14 +51,14 @@
         
         // 监听对方媒体流到来事件
         connection.onaddstream = function(stream) {
-          console.log('收到媒体流', stram);
+          console.log('收到媒体流', stream);
           // 将媒体流写入video中
-          video.srcObject = stream;
+          video.srcObject = stream.stream;
         }
         // 创建媒体描述对象
         socket.on('answer', function(data) {
           console.log('收到应答answer', data);
-          connection.setRemoteDescription(RTCSessionDescription(data.sdp))
+          connection.setRemoteDescription(new RTCSessionDescription(data.sdp))
         })
         connection.createOffer().then(function(offer){
           console.log('createOffer', offer)
