@@ -64,7 +64,7 @@ function square_difference(a, b) {
 
 ## 3.Javascript 模块化之 CommonJS
 
-CommonJS 规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过 module.exports 导出对外的变量或接口，通过 require()来导入其他模块的输出到当前模块作用域中，下面讲述一下 NodeJs 是如何实现 CommonJS 的。
+CommonJS 规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过 module.exports 导出对外的变量或接口，通过 require()来导入其他模块的输出到当前模块作用域中，下面讲述一下 NodeJs 中 CommonJS 的模块化机制。
 
 ### 使用方式
 
@@ -117,7 +117,7 @@ exports = function(a, b) {
 };
 ```
 
-### CommonJS 在 NodeJs 中的模块实现
+### CommonJS 在 NodeJs 中的模块加载机制
 
 在 NodeJs 中引入模块(require)，需要经历如下 3 个步骤
 
