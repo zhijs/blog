@@ -1,1 +1,3 @@
-export let count = 5;
+export function add(a, b){
+  return a + b;
+}
