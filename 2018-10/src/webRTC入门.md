@@ -14,7 +14,7 @@ WebRTC 主要由两个组织来制定。
 其结构图如下所示：  
  ![](./images/webrct.png)
 
-有图可知，WebRTC 中 webAPI 下一层是由 C++编写，在上一层用 Javascript 做了封装，所以 WebRTC 既适用于浏览器端，也可以通过调用 C++层的 native code 进行移动端的开发。
+由图可知，WebRTC 中 webAPI 下一层是由 C++编写，在上一层用 Javascript 做了封装，所以 WebRTC 既适用于浏览器端，也可以通过调用 C++层的 native code 进行移动端的开发。
 
 WebRTC 原理图如下所示:  
  ![](./images/原理.png)
@@ -83,7 +83,7 @@ TURN(Traversal Using Relays around NAT), NAT 的中继穿越方式,通过 TURN �
 在开始写代码之前，我们首先来看一下，用 WebRTC 创建一个浏览器端的视频通信的主要过程以及其中涉及到的 api，其过程图如下所示
 ![](./images/webRCT-video-p2p.png)  
 
-下面的代码适用于 firefox，因为 chrome 浏览器需要在 https 的环境下才能使用 WebRTC 通信，其客户端现代码如下所示 (这个是其中一个客户端代码，另外一个在 [indexB.html](./indexB.html) 文件中)
+下面的代码适用于 firefox，因为 chrome 浏览器需要在 https 的环境下才能使用 WebRTC 通信，其客户端现代码如下所示 (这个是其中一个客户端代码，另外一个在 [indexB.html](https://github.com/zhijs/blog/blob/master/2018-10/src/videoExample/indexB.html) 文件中)
 
 ```html
 <!doctype html>
