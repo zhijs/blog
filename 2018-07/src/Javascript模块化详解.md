@@ -32,7 +32,7 @@ function square_difference(a, b) {
 }
 ```
 
-上面我们在三个 JavaScript 文件里面，实现了几个功能函数。其中，第三个功能函数需要依赖第一个和第二个 jJavaScript 文件的功能函数，所以我们在使用的时候，一般会这样写
+上面我们在三个 JavaScript 文件里面，实现了几个功能函数。其中，第三个功能函数需要依赖第一个和第二个 JavaScript 文件的功能函数，所以我们在使用的时候，一般会这样写
 
 ```html
 <html lang="en">
