@@ -290,7 +290,7 @@ requirejs源码较为复杂，这里只对异步模块加载原理做一个分�
         return node;
     };
 ```
-可以看出，这里主要将指定的模块，根据url，创建了一个异步的script标签，并将模块id名称添加到的标签的data-requiremodule上，再添加到了html页面中，同时为script标签的load事件添加了处理函数，当该script标签被加载完毕的时候，就会触发context.onScriptLoad。添加完之后，页面就会加载js资源，然后加载完毕的时候调用context.onScriptLoad。我们再onScriptLoad添加断点，可以看到页面如下所示。  
+可以看出，这里主要将指定的模块，根据url，创建了一个异步的script标签，并将模块id名称添加到的标签的data-requiremodule上，再添加到了html页面中，同时为script标签的load事件添加了处理函数，当该script标签被加载完毕的时候，就会触发context.onScriptLoad。添加完之后，页面就会加载js资源，然后加载完毕的时候调用context.onScriptLoad。我们在onScriptLoad添加断点，可以看到页面如下所示。  
 ![](./images/requirejs-js-load.png)  
 有图可以看到，html中添加了一个script标签，这也就是异步加载模块的原理。
 
