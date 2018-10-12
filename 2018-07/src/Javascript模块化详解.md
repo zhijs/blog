@@ -69,7 +69,7 @@ CommonJs规范的主要内容有，一个单独的文件就是一个模块。每
     return a - b;
   }
   
-  // formula.js,模式使用，利用require()方法加载模块,require导出的即是module.exports的内容
+  // formula.js,模块使用，利用require()方法加载模块,require导出的即是module.exports的内容
   const add = require('./add.js').add
   const decrease = require('./decrease.js').decrease
   module.exports.square_difference = function(a,b) {
@@ -162,7 +162,7 @@ function Module (id, parent) {
 AMD, Asynchronous Module Definition，即异步模块加载机制，它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。  
 
 AMD 的诞生，就是为了解决这两个问题：  
-1.实现 js 文件的异步加载，避免网页失去响应  
+1.实现js文件的异步加载，避免网页失去响应  
 2.管理模块之间的依赖性，便于代码的编写和维护    
 ```javascript
  // 模块定义
@@ -292,11 +292,10 @@ requirejs源码较为复杂，这里只对异步模块加载原理做一个分�
 ```
 可以看出，这里主要将指定的模块，根据url，创建了一个异步的script标签，并将模块id名称添加到的标签的data-requiremodule上，再添加到了html页面中，同时为script标签的load事件添加了处理函数，当该script标签被加载完毕的时候，就会触发context.onScriptLoad。添加完之后，页面就会加载js资源，然后加载完毕的时候调用context.onScriptLoad。我们再onScriptLoad添加断点，可以看到页面如下所示。  
 ![](./images/requirejs-js-load.png)  
-这也就是异步加载模块的原理，requirejs也对加载的模块进行了缓存
+有图可以看到，html中添加了一个script标签，这也就是异步加载模块的原理。
 
 ### Javascript模块化之-CMD
-CMD(Common Module Definition) 通用模块定义,CMD在浏览器端的实现有sea.js， 和requirejs一样。sea.js加载原理也是动态创建异步script标签。二者的区别主要是依赖写法上不同，ADM推崇一开始就加载所有的依赖，而CMD则推崇在需要用的地方才进行依赖加载。(这个个人觉得描述欠妥，无论是AMD还是CMD应该都是首先会加载所有的依赖，只不过CMD收集依赖的方式是匹配代码字符串而已)
-
+CMD(Common Module Definition) 通用模块定义,CMD在浏览器端的实现有sea.js， 和requirejs一样。sea.js加载原理也是动态创建异步script标签。二者的区别主要是依赖写法上不同，ADM推崇一开始就加载所有的依赖，而CMD则推崇在需要用的地方才进行依赖加载。
 ```javascript
 // ADM 在执行以下代码的时候，requiejs会首先分析依赖数组，然后依次加载，直到所有加载完毕再执行回到函数
 define(['add', 'decrease'], function(add, decrease){
@@ -305,7 +304,7 @@ define(['add', 'decrease'], function(add, decrease){
    console.log(result1 * result2)
 });
 
-// CMD 在执行以下代码的时候， sea.js会首先匹配出里面所有的require语句，拿到依赖，然后依次加载，加载完成再执行回调函数
+// CMD 在执行以下代码的时候， sea.js会首先用正则匹配出代码里面所有的require语句，拿到依赖，然后依次加载，加载完成再执行回调函数
 define(function(require){
    let add = require ('add')
    let result1 = add(9 ,7);
@@ -315,9 +314,9 @@ define(function(require){
 });
 ```
 
-### 5.Javascript模块化之-ES module 
-ES module，是在ECMAScript 6 (ES6)中，引入的模块化功能。  
-模块功能主要由两个命令构成：export和import。export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。
+### 5.Javascript模块化之-ES Module 
+ES Module，是在ECMAScript 6 (ES6)中，引入的模块化功能。  
+模块功能主要由两个命令构成：export和import,export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。
 
 其使用方式如下
 ```javascript
@@ -327,8 +326,8 @@ ES module，是在ECMAScript 6 (ES6)中，引入的模块化功能。
  }
 
  //模块使用 main.js
- import add from './add.js'
- console.log(add(1,2)) // 3e
+ import {add} from './add.js'
+ console.log(add(1,2)) // 3
 
 ```
 下面讲述几个较为重要的点   
@@ -376,13 +375,13 @@ import c form 'b.js' // √ 因为b模块导出的是default，对于导出的de
 
 
 - 2.实例化(Instantiation)    
-  这个过程会在内存中开辟一个存储空间(此时还没有填充值)，然后将该模块所有的export 和import的内容指向这个内存，这个过程叫做链接。其写入export示意图如下所示  
+  这个过程会在内存中开辟一个存储空间(此时还没有填充值)，然后将该模块所有的export和import了改模块的变量指向这个内存，这个过程叫做链接。其写入export示意图如下所示  
   ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)    
   然后是链接import,其示意图如下所示   
   ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)    
  
 - 3.赋值(Evaluation)  
-  这个过程，会执行代码，并用真实的值填充上一阶段开辟的内存空间,此过程后，import链接到的值就是export导出的真实值。
+  这个过程，会执行模块代码，并用真实的值填充上一阶段开辟的内存空间,此过程后，import链接到的值就是export导出的真实值。
 
 根据上面的过程我们可以知道。ES Module模块export 和import其实指向的是同一块内存，但有一个点需要注意的是，import处不能对这块内存的值进行修改，而export可以,其示意图如下。  
 ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)
