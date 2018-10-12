@@ -80,7 +80,7 @@ TURN(Traversal Using Relays around NAT), NAT 的中继穿越方式,通过 TURN �
 
 ## 7.通过浏览器创建一个简单 WebRTC 视频通信
 
-在开始写代码之前，我们首先来看一下，用 WebRTC 创建一个浏览器端的视频通信的主要过程以及其中涉及到的 api，其过程图如下所示
+在开始写代码之前，我们首先来看一下，用 WebRTC 创建一个浏览器端的视频通信的主要过程以及其中涉及到的 api，其过程图如下所示  
 ![](./images/webRCT-video-p2p.png)  
 
 下面的代码适用于 firefox，因为 chrome 浏览器需要在 https 的环境下才能使用 WebRTC 通信，其客户端现代码如下所示 (这个是其中一个客户端代码，另外一个在 [indexB.html](https://github.com/zhijs/blog/blob/master/2018-10/src/videoExample/indexB.html) 文件中)
