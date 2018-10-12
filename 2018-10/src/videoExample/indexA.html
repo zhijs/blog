@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div style="width: 500px; margin:50px auto">
+    <video id="video" autoplay style="width: 500px; height: 300px; border: 1px solid"></video>
+    <div>
+      <input type="text" placeholder="请输入你的名字" id="name_input">
+      <button onclick="chat()">开始连接</button>
+    </div>
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script src="./js/main.js"></script>
+  <script>
+
+    // indexA 请求方
+    var socket = io.connect('/');
+    let video = document.getElementById('video')
+    let connection = null;
+    let name = 'A' // 保存当前用户标识
+    let offerCreated = false;
+    socket.on('offerState', function(data) {
+      offerCreated = data.offerCreated
+    })
+
+    // 监听对方ICE应答事件
+    socket.on('swapcandidate', function(data) {
+      console.log('swapcandidate', data);
+      if (data.name !== name) {
+        connection.addIceCandidate(data.candidate)
+      }
+    })
+    let constraints = {
+      video: true,
+      audio: false
+    }
+    function chat() {
+      name = document.getElementById('name_input').value;
+      console.log('name', name)
+        //获取媒体流
+      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+        connection = getRTCPeerConnection();
+        connection.onicecandidate = handleicecandidate
+        // 发送媒体设备拿到的数据流
+        connection.addStream(stream);
+        
+        // 监听对方媒体流到来事件
+        connection.onaddstream = function(stream) {
+          console.log('收到媒体流', stream);
+          // 将媒体流写入video中
+          video.srcObject = stream.stream;
+        }
+        // 创建媒体描述对象
+        socket.on('answer', function(data) {
+          console.log('收到应答answer', data);
+          connection.setRemoteDescription(new RTCSessionDescription(data.sdp))
+        })
+        connection.createOffer().then(function(offer){
+          console.log('createOffer', offer)
+          connection.setLocalDescription(offer).then(function() {
+            console.log('发送offer', offer)
+            // 将媒体协商信息发给对方
+            socket.emit('offer', {
+              name: name,
+              sdp: connection.localDescription
+            })
+          }).catch(function(err) {
+            console.log('setLocalDescription error', e);
+          })
+          }).catch(function(e) {
+          console.log('createOffer error', e);
+        })
+      }).catch(function(err) {
+        console.log('获取媒体流出错', err);
+      })
+    }
+  // 构建连接对像
+  function getRTCPeerConnection() {
+    var ice = {
+        "iceServers": [
+          { "url": "stun:stun.l.google.com:19302" }, //使用google公共测试服务器
+        ]
+      };
+    let connection =  new RTCPeerConnection(ice);
+    return connection;
+  }
+  
+  // 处理ice信息到来事件，即是通过TURN的带自己的ip信息
+  function handleicecandidate(event) {
+    // 将这些信息发送给对方
+    socket.emit('swapcandidate', {
+      name: name,
+      candidate: event.candidate
+    })
+  }
+  </script>
+</body>
+</html>

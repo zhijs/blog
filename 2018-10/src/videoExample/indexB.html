@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div style="width: 500px; margin:50px auto">
+    <video id="video" autoplay style="width: 500px; height: 300px; border: 1px solid"></video>
+    <div>
+      <input type="text" placeholder="请输入你的名字" id="name_input">
+      <button onclick="chat()">开始连接</button>
+    </div>
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script src="./js/main.js"></script>
+  <script>
+
+    // indexB 应答方
+    var socket = io.connect('/');
+    let video = document.getElementById('video')
+    let connection = null;
+    let name = 'B' // 保存当前用户标识
+    let offerCreated = false;
+    socket.on('offerState', function(data) {
+      console.log('offerState', data);
+      offerCreated = data.offerCreated
+    })
+
+    // 监听对方ICE应答事件
+    socket.on('swapcandidate', function(data) {
+      console.log('swapcandidate', data);
+      if (data.name !== name) {
+        connection.addIceCandidate(data.candidate)
+      }
+    })
+
+    // 监听offer发来事件
+    socket.on('offer', function(data) {
+      console.log('get offer', data);
+      connection.setRemoteDescription(new RTCSessionDescription(data.sdp))
+      connection.createAnswer().then(function(offer) {
+        return connection.setLocalDescription(offer)
+      }).then(function() {
+        socket.emit('answer', {
+          name: name,
+          sdp: connection.localDescription
+        })
+      })
+    })
+      let constraints = {
+        video: true,
+        audio: false
+      }
+      //获取媒体流
+      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+        connection = getRTCPeerConnection();
+        connection.onicecandidate = handleicecandidate
+        // 发送媒体设备拿到的数据流
+        connection.addStream(stream);
+        
+        // 监听对方媒体流到来事件
+        connection.onaddstream = function(stream) {
+          console.log('收到媒体流', stream);
+          // 将媒体流写入video中
+          video.srcObject = stream.stream;
+        }    
+      }).catch(function(err) {
+        console.log('获取媒体流出错', err);
+    })
+  
+  // 构建连接对像
+  function getRTCPeerConnection() {
+    var ice = {
+        "iceServers": [
+          { "url": "stun:stun.l.google.com:19302" } //使用google公共测试服务器
+        ]
+      };
+    let connection =  new RTCPeerConnection(ice);
+    return connection;
+  }
+  
+  // 处理ice信息到来事件，即是通过TURN的带自己的ip信息
+  function handleicecandidate(event) {
+    // 将这些信息发送给对方
+    socket.emit('swapcandidate', {
+      name: name,
+      candidate: event.candidate
+    })
+  }
+  </script>
+</body>
+</html>
