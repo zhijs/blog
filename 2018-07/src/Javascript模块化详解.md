@@ -8,11 +8,11 @@
 - JavaScript 模块化之 ES Module
 - 总结
 
-## 1.什么是模块
+## 1 什么是模块
 
 模块，又称构件，是能够单独命名并独立地完成一定功能的程序语句的集合 (即程序代码和数据结构的集合体)。它具有两个基本的特征，外部特征和内部特征。外部特征是指模块跟外部环境联系的接口 (即其他模块或程序调用该模块的方式，包括有输入输出参数、引用的全局变量) 和模块的功能，内部特征是指模块的内部环境具有的特点 (即该模块的局部数据和程序代码)。简而言之，模块就是一个具有独立作用域，对外暴露特定功能接口的代码集合。
 
-## 2.为什么需要模块化
+## 2 为什么需要模块化
 
 首先让我们回到过去，看看原始 JavaScript 模块文件的写法
 
@@ -62,7 +62,7 @@ function square_difference(a, b) {
 
 基于上述的原因，就有了对上述问题的解决方案，即是 JavaScript 模块化规范，目前主流的有 CommonJS,AMD,CMD,ES6 Module 这四种规范。
 
-## 3.Javascript 模块化之 CommonJS
+## 3 Javascript 模块化之 CommonJS
 
 CommonJS 规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，模块必须通过 module.exports 导出对外的变量或接口，通过 require() 来导入其他模块的输出到当前模块作用域中，下面讲述一下 NodeJs 中 CommonJS 的模块化机制。
 
@@ -184,7 +184,7 @@ exports.add = (function(a, b) {
 
 3. 返回模块对象 exports 属性。
 
-## 4.JavaScript 模块化之 AMD
+## 4 JavaScript 模块化之 AMD
 
 AMD, Asynchronous Module Definition，即异步模块加载机制，它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句都定义在一个回调函数中，等到依赖加载完成之后，这个回调函数才会运行。
 
@@ -334,7 +334,7 @@ req.createNode = function(config, moduleName, url) {
 
 由图可以看到，Html 中添加了一个 Script 标签，这也就是异步加载模块的原理。
 
-## 5.JavaScript 模块化之 CMD
+## 5 JavaScript 模块化之 CMD
 
 CMD (Common Module Definition) 通用模块定义，CMD 在浏览器端的实现有 SeaJS， 和 RequireJS 一样，SeaJS 加载原理也是动态创建异步 Script 标签。二者的区别主要是依赖写法上不同，ADM 推崇一开始就加载所有的依赖，而 CMD 则推崇在需要用的地方才进行依赖加载。
 
@@ -356,7 +356,7 @@ define(function(require) {
 });
 ```
 
-## 6.JavaScript 模块化之 ES Module
+## 6 JavaScript 模块化之 ES Module
 
 ES Module 是在 ECMAScript 6 中引入的模块化功能。模块功能主要由两个命令构成，分别是 export 和 import。export 命令用于规定模块的对外接口，import 命令用于输入其他模块提供的功能。
 
@@ -439,7 +439,7 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
 根据上面的过程我们可以知道。ES Module 模块 export 和 import 其实指向的是同一块内存，但有一个点需要注意的是，import 处不能对这块内存的值进行修改，而 export 可以，其示意图如下。  
 ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)
 
-## 7.总结
+## 7 总结
 
 本文主要对目前主流的 JavaScript 模块化方案 CommonJs，AMD，CMD, ES Module 进行了学习和了解，并对其中最有代表性的模块化实现 (NodeJs，RequireJS，SeaJS，ES6)做了一个简单的分析。对于服务端的模块而言，由于其模块都是存储在本地的，模块加载方便，所以通常是采用同步读取文件的方式进行模块加载。而对于浏览器而言，其模块一般是存储在远程网络上的，模块的下载是一个十分耗时的过程，所以通常是采用动态异步脚本加载的方式加载模块文件。另外，无论是客户端还是服务端的 JavaScript 模块化实现，都会对模块进行缓存，以此减少二次加载的开销。以下是这几种规范的一个表格对比。
 
