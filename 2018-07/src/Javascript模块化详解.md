@@ -66,7 +66,7 @@ function square_difference(a, b) {
 
 CommonJS 规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，模块必须通过 module.exports 导出对外的变量或接口，通过 require() 来导入其他模块的输出到当前模块作用域中，下面讲述一下 NodeJs 中 CommonJS 的模块化机制。
 
-### 使用方式
+### 3.1 使用方式
 
 ```javascript
 // 模块定义 add.js
@@ -87,7 +87,7 @@ module.exports.square_difference = function(a, b) {
 };
 ```
 
-### exports 和 module.exports
+### 3.2 exports 和 module.exports
 
 exports 和 module.exports 是指向同一个东西的变量，即是 module.exports === exports = {}，所以你也可以这样导出模块
 
@@ -117,7 +117,7 @@ exports = function(a, b) {
 };
 ```
 
-### CommonJS 在 NodeJs 中的模块加载机制
+### 3.3 CommonJS 在 NodeJs 中的模块加载机制
 
 在 NodeJs 中引入模块 (require)，需要经历如下 3 个步骤
 
@@ -127,12 +127,12 @@ exports = function(a, b) {
 
 与前端浏览器会缓存静态脚本文件以提高性能一样，NodeJs 对引入过的模块都会进行缓存，以减少二次引入时的开销。不同的是，浏览器仅缓存文件，而在 NodeJs 中缓存的是编译和执行后的对象。
 
-#### 路径分析 + 文件定位
+#### 3.3.1 路径分析 + 文件定位
 
 其流程如下图所示  
 ![](./images/路径分析.jpg)
 
-#### 模块编译
+#### 3.3.2 模块编译
 
 在定位到文件后，首先会检查该文件是否有缓存，有的话直接读取缓存，否则，会新创建一个 Module 对象，其定义如下。
 
@@ -375,7 +375,7 @@ console.log(add(1, 2)); // 3
 
 下面讲述几个较为重要的点
 
-### export 和 export default
+### 6.1 export 和 export default
 
 在一个文件或模块中，export 可以有多个，export default 仅有一个, export 类似于具名导出，而 default 类似于导出一个变量名为 default 的变量。同时在 import 的时候，对于 export 的变量，必须要用具名的对象去承接，而对于 default，则可以任意指定变量名，例如
 
@@ -396,7 +396,7 @@ import b form 'b.js' // √
 import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出的default，可以用任意变量去承接
 ```
 
-### ES Module 模块加载和导出过程
+### 6.2 ES Module 模块加载和导出过程
 
 以如下代码为例子
 
@@ -416,7 +416,7 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
 
 在模块加载模块的过程中，主要经历以下几个步骤
 
-#### 1.构建 (Construction)
+#### 6.2.1 构建 (Construction)
 
 这个过程执行查找，下载，并将文件转化为模块记录 (Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)。同样也是在这个过程对模块记录进行了缓存的操作，下图是一个模块记录表  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/05_module_record.png)
@@ -424,7 +424,7 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
 下图是缓存记录表  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/25_module_map.png)
 
-#### 2.实例化 (Instantiation)
+#### 6.2.2 实例化 (Instantiation)
 
 这个过程会在内存中开辟一个存储空间(此时还没有填充值)，然后将该模块所有的 export 和 import 了改模块的变量指向这个内存，这个过程叫做链接。其写入 export 示意图如下所示  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)  
@@ -432,7 +432,7 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
  然后是链接 import，其示意图如下所示  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)
 
-#### 3.赋值(Evaluation)
+#### 6.3.3 赋值(Evaluation)
 
 这个过程会执行模块代码，并用真实的值填充上一阶段开辟的内存空间，此过程后 import 链接到的值就是 export 导出的真实值。
 
