@@ -408,9 +408,9 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
  export function render() {
    console.log('render')
  }
- //main.js
- import {counter} from './counter.js';
- import {render} from './display.js'
+ // main.js
+ import { counter } from './counter.js';
+ import { render } from './display.js'
  ......// more code
 ```
 
