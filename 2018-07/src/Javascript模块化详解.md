@@ -64,12 +64,12 @@ function square_difference(a, b) {
 
 ## 3.Javascript 模块化之 CommonJS
 
-CommonJS 规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域,模块必须通过 module.exports 导出对外的变量或接口，通过 require()来导入其他模块的输出到当前模块作用域中，下面讲述一下 NodeJs 中 CommonJS 的模块化机制。
+CommonJS 规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，模块必须通过 module.exports 导出对外的变量或接口，通过 require() 来导入其他模块的输出到当前模块作用域中，下面讲述一下 NodeJs 中 CommonJS 的模块化机制。
 
 ### 使用方式
 
 ```javascript
-// 模块定义add.js
+// 模块定义 add.js
 module.eports.add = function(a, b) {
   return a + b;
 };
@@ -79,7 +79,7 @@ module.exports.decrease = function(a, b) {
   return a - b;
 };
 
-// formula.js,模块使用，利用require()方法加载模块,require导出的即是module.exports的内容
+// formula.js,模块使用，利用 require() 方法加载模块,require 导出的即是 module.exports 的内容
 const add = require("./add.js").add;
 const decrease = require("./decrease.js").decrease;
 module.exports.square_difference = function(a, b) {
@@ -119,13 +119,13 @@ exports = function(a, b) {
 
 ### CommonJS 在 NodeJs 中的模块加载机制
 
-在 NodeJs 中引入模块(require)，需要经历如下 3 个步骤
+在 NodeJs 中引入模块 (require)，需要经历如下 3 个步骤
 
 1. 路径分析
 2. 文件定位
 3. 编译执行
 
-与前端浏览器会缓存静态脚本文件以提高性能一样，NodeJs 对引入过的模块都会进行缓存，以减少二次引入时的开销，不同的是，浏览器仅缓存文件,而在 NodeJs 中缓存的是编译和执行后的对象。
+与前端浏览器会缓存静态脚本文件以提高性能一样，NodeJs 对引入过的模块都会进行缓存，以减少二次引入时的开销。不同的是，浏览器仅缓存文件，而在 NodeJs 中缓存的是编译和执行后的对象。
 
 #### 路径分析 + 文件定位
 
@@ -139,14 +139,14 @@ exports = function(a, b) {
 ```javascript
 function Module(id, parent) {
   this.id = id; // 模块的识别符，通常是带有绝对路径的模块文件名。
-  this.exports = {}; //表示模块对外输出的值
-  this.parent = parent; //返回一个对象，表示调用该模块的模块。
+  this.exports = {}; // 表示模块对外输出的值
+  this.parent = parent; // 返回一个对象，表示调用该模块的模块。
   if (parent && parent.children) {
     this.parent.children.push(this);
   }
   this.filename = null;
   this.loaded = false; // 返回一个布尔值，表示模块是否已经完成加载。
-  this.childrent = []; //返回一个数组，表示该模块要用到的其他模块。
+  this.childrent = []; // 返回一个数组，表示该模块要用到的其他模块。
 }
 ```
 
@@ -167,7 +167,7 @@ function Module(id, parent) {
 1. 将 JavaScript 代码用函数体包装，隔离作用域，例如
 
 ```javascript
-//add.js
+//a dd.js
 exports.add = (function(a, b) {
   return a + b;
 })(
@@ -207,7 +207,7 @@ factory 是最后一个参数，它包裹了模块的具体实现，它是一个
 举个例子
 
 ```javascript
-//模块定义，add.js
+// 模块定义，add.js
 define(function() {
   let add = function(a, b) {
     return a + b;
@@ -215,7 +215,7 @@ define(function() {
   return add;
 });
 
-//模块定义，decrease.js
+// 模块定义，decrease.js
 define(function() {
   let decrease = function(a, b) {
     return a - b;
@@ -223,7 +223,7 @@ define(function() {
   return decrease;
 });
 
-//模块定义，square.js
+// 模块定义，square.js
 define(["./add", "./decrease"], function(add, decrease) {
   let square = function(a, b) {
     return add(a, b) * decrease(a, b);
@@ -339,14 +339,14 @@ req.createNode = function(config, moduleName, url) {
 CMD (Common Module Definition) 通用模块定义,CMD 在浏览器端的实现有 SeaJS， 和 RequireJS 一样，SeaJS 加载原理也是动态创建异步 Script 标签。二者的区别主要是依赖写法上不同，ADM 推崇一开始就加载所有的依赖，而 CMD 则推崇在需要用的地方才进行依赖加载。
 
 ```javascript
-// ADM 在执行以下代码的时候，RequireJS会首先分析依赖数组，然后依次加载，直到所有加载完毕再执行回到函数
+// ADM 在执行以下代码的时候，RequireJS 会首先分析依赖数组，然后依次加载，直到所有加载完毕再执行回到函数
 define(["add", "decrease"], function(add, decrease) {
   let result1 = add(9, 7);
   let result2 = decrease(9, 7);
   console.log(result1 * result2);
 });
 
-// CMD 在执行以下代码的时候， SeaJS会首先用正则匹配出代码里面所有的require语句，拿到依赖，然后依次加载，加载完成再执行回调函数
+// CMD 在执行以下代码的时候， SeaJS 会首先用正则匹配出代码里面所有的 require 语句，拿到依赖，然后依次加载，加载完成再执行回调函数
 define(function(require) {
   let add = require("add");
   let result1 = add(9, 7);
@@ -368,7 +368,7 @@ export function add(a, b) {
   return a + b;
 }
 
-//模块使用 main.js
+// 模块使用 main.js
 import { add } from "./add.js";
 console.log(add(1, 2)); // 3
 ```
@@ -377,23 +377,23 @@ console.log(add(1, 2)); // 3
 
 ### export 和 export default
 
-在一个文件或模块中，export 可以有多个，export default 仅有一个, export 类似于具名导出，而 default 类似于导出一个变量名为 default 的变量，同时在 import 的时候，对于 export 的变量，必须要用具名的对象去承接，而对于 default，则可以任意指定变量，例如
+在一个文件或模块中，export 可以有多个，export default 仅有一个, export 类似于具名导出，而 default 类似于导出一个变量名为 default 的变量。同时在 import 的时候，对于 export 的变量，必须要用具名的对象去承接，而对于 default，则可以任意指定变量名，例如
 
 ```javascript
 // a.js
  export var a = 2;
  export var b = 3 ;
-// main.js 在导出的时候必须要用具名变量 a, b且用解构的方式得到导出变量
+// main.js 在导出的时候必须要用具名变量 a, b 且以解构的方式得到导出变量
 import {a, b} from 'a.js' // √ a= 2, b = 3
 import a from 'a.js' // x
 
 // b.js export default 方式
 const a = 3
-export default a // 注意不能 export default const a = 3 ,因为这里default就相当于一个变量名
+export default a // 注意不能 export default const a = 3 ,因为这里 default 就相当于一个变量名
 
 // 导出
 import b form 'b.js' // √
-import c form 'b.js' // √ 因为b模块导出的是default，对于导出的default，可以用任意变量去承接
+import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出的default，可以用任意变量去承接
 ```
 
 ### ES Module 模块加载和导出过程
@@ -418,7 +418,7 @@ import c form 'b.js' // √ 因为b模块导出的是default，对于导出的de
 
 #### 1.构建 (Construction)
 
-这个过程执行查找，下载，并将文件转化为模块记录(Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)，同样也是在这个过程对模块记录进行了缓存的操作，下图是一个模块记录表  
+这个过程执行查找，下载，并将文件转化为模块记录 (Module record),所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法(这里不是很明白)。同样也是在这个过程对模块记录进行了缓存的操作，下图是一个模块记录表  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/05_module_record.png)
 
 下图是缓存记录表  
@@ -428,19 +428,20 @@ import c form 'b.js' // √ 因为b模块导出的是default，对于导出的de
 
 这个过程会在内存中开辟一个存储空间(此时还没有填充值)，然后将该模块所有的 export 和 import 了改模块的变量指向这个内存，这个过程叫做链接。其写入 export 示意图如下所示  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)  
- 然后是链接 import,其示意图如下所示  
+ 
+ 然后是链接 import，其示意图如下所示  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)
 
 #### 3.赋值(Evaluation)
 
 这个过程会执行模块代码，并用真实的值填充上一阶段开辟的内存空间，此过程后 import 链接到的值就是 export 导出的真实值。
 
-根据上面的过程我们可以知道。ES Module 模块 export 和 import 其实指向的是同一块内存，但有一个点需要注意的是，import 处不能对这块内存的值进行修改，而 export 可以,其示意图如下。  
+根据上面的过程我们可以知道。ES Module 模块 export 和 import 其实指向的是同一块内存，但有一个点需要注意的是，import 处不能对这块内存的值进行修改，而 export 可以，其示意图如下。  
 ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_04.png)
 
 ## 7.总结
 
-本文主要对目前主流的 JavaScript 模块化方案进行了详解，并对其中最有代表性的模块化实现做了一个简单的分析。对于服务端的模块而言，由于其模块都是存储在本地的，模块加载方便，所以通常是采用同步读取文件的方式进行模块加载。而对于浏览器而言，其模块一般是存储在远程网络上的，模块的下载是一个十分耗时的过程，所以通常是采用动态异步脚本加载的方式加载模块文件。另外，无论是客户端还是服务端的 JavaScript 模块化实现，都会对模块进行缓存，以此减少二次加载的开销。以下是这几种规范的一个表格对比。
+本文主要对目前主流的 JavaScript 模块化方案进行了学习和了解，并对其中最有代表性的模块化实现做了一个简单的分析。对于服务端的模块而言，由于其模块都是存储在本地的，模块加载方便，所以通常是采用同步读取文件的方式进行模块加载。而对于浏览器而言，其模块一般是存储在远程网络上的，模块的下载是一个十分耗时的过程，所以通常是采用动态异步脚本加载的方式加载模块文件。另外，无论是客户端还是服务端的 JavaScript 模块化实现，都会对模块进行缓存，以此减少二次加载的开销。以下是这几种规范的一个表格对比。
 
 | 模块化方案 | 加载方式  | 适用端          | 何时加载 |
 | ---------- | --------- | --------------- | -------- |
