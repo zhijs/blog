@@ -426,7 +426,7 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
 
 #### 6.2.2 实例化 (Instantiation)
 
-这个过程会在内存中开辟一个存储空间 (此时还没有填充值)，然后将该模块所有的 export 和 import 了改模块的变量指向这个内存，这个过程叫做链接。其写入 export 示意图如下所示  
+这个过程会在内存中开辟一个存储空间 (此时还没有填充值)，然后将该模块所有的 export 和 import 了该模块的变量指向这个内存，这个过程叫做链接。其写入 export 示意图如下所示  
  ![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)  
  
  然后是链接 import，其示意图如下所示  
