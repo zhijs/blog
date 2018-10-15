@@ -336,7 +336,7 @@ req.createNode = function(config, moduleName, url) {
 
 ## 5.JavaScript 模块化之 CMD
 
-CMD (Common Module Definition) 通用模块定义,CMD 在浏览器端的实现有 SeaJS， 和 RequireJS 一样，SeaJS 加载原理也是动态创建异步 Script 标签。二者的区别主要是依赖写法上不同，ADM 推崇一开始就加载所有的依赖，而 CMD 则推崇在需要用的地方才进行依赖加载。
+CMD (Common Module Definition) 通用模块定义，CMD 在浏览器端的实现有 SeaJS， 和 RequireJS 一样，SeaJS 加载原理也是动态创建异步 Script 标签。二者的区别主要是依赖写法上不同，ADM 推崇一开始就加载所有的依赖，而 CMD 则推崇在需要用的地方才进行依赖加载。
 
 ```javascript
 // ADM 在执行以下代码的时候，RequireJS 会首先分析依赖数组，然后依次加载，直到所有加载完毕再执行回到函数
