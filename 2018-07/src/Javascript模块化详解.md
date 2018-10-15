@@ -156,7 +156,7 @@ function Module(id, parent) {
 这里解析模块路径，判断是否有缓存，生成 Module 对象  
 ![](./images/commonjs-load.png)
 
-得到模块对象后，执行载入操作(如果未缓存的话)  
+得到模块对象后，执行载入操作 (如果未缓存的话)  
 ![](./images/common-js-load.png)
 
 在这里同步读取模块，再执行编译操作  
