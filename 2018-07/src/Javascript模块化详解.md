@@ -231,17 +231,16 @@ function tryModuleLoad(module, filename) {
 1. 将 JavaScript 代码用函数体包装，隔离作用域，例如：
 
 ```javascript
-  //a dd.js
   exports.add = function(a, b) {
     return a + b;
   }
 
   // 会被包装成
-  function(exports, require, modules, __filename, __dirname) {
+  (function(exports, require, modules, __filename, __dirname) {
     exports.add = function(a, b) {
       return a + b;
     };
-  }
+  })
 ```
 
 2. 执行函数，注入模块对象的 exports 属性，require 全局方法，以及对象实例，**filename, **dirname，然后执行模块的源码。
