@@ -386,7 +386,7 @@ req.load = function(context, moduleName, url) {
   }
 };
 
-// 常见异步 Script 标签
+// 创建异步 Script 标签
 req.createNode = function(config, moduleName, url) {
   var node = config.xhtml
     ? document.createElementNS("http://www.w3.org/1999/xhtml", "html:script")
