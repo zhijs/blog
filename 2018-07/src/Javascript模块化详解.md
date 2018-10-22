@@ -119,6 +119,8 @@ exports = function(a, b) {
 
 ### 3. CommonJS 在 NodeJs 中的模块加载机制
 
+以下根据 [NodeJs 模块加载源码](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js) 来分析 NodeJS 中模块的加载机制。
+
 在 NodeJs 中引入模块 (require)，需要经历如下 3 个步骤：
 
 1. 路径分析
