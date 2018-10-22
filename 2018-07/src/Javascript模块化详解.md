@@ -133,7 +133,7 @@ exports = function(a, b) {
 
 其流程如下图所示：
 
-![](https://github.com/zhijs/blog/master/2018-07/src/images/路径分析.jpg)
+![](https://raw.githubusercontent.com/zhijs/blog/master/2018-07/src/images/%E8%B7%AF%E5%BE%84%E5%88%86%E6%9E%90.jpg)
 
 #### 3.2 模块编译
 
