@@ -66,7 +66,7 @@ function square_difference(a, b) {
 
 CommonJS 规范的主要内容有，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，模块必须通过 module.exports 导出对外的变量或接口，通过 require() 来导入其他模块的输出到当前模块作用域中，下面讲述一下 NodeJs 中 CommonJS 的模块化机制。
 
-### 1. 使用方式
+### 使用方式
 
 ```javascript
 // 模块定义 add.js
@@ -87,7 +87,7 @@ module.exports.square_difference = function(a, b) {
 };
 ```
 
-### 2. exports 和 module.exports
+### exports 和 module.exports
 
 exports 和 module.exports 是指向同一个东西的变量，即是 module.exports = exports = {}，所以你也可以这样导出模块
 
@@ -117,7 +117,7 @@ exports = function(a, b) {
 };
 ```
 
-### 3. CommonJS 在 NodeJs 中的模块加载机制
+### CommonJS 在 NodeJs 中的模块加载机制
 
 以下根据 [NodeJs 中 CommonJS 模块加载源码](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js) 来分析 NodeJS 中模块的加载机制。
 
@@ -129,13 +129,13 @@ exports = function(a, b) {
 
 与前端浏览器会缓存静态脚本文件以提高性能一样，NodeJs 对引入过的模块都会进行缓存，以减少二次引入时的开销。不同的是，浏览器仅缓存文件，而在 NodeJs 中缓存的是编译和执行后的对象。
 
-#### 3.1 路径分析 + 文件定位
+#### 路径分析 + 文件定位
 
 其流程如下图所示：
 
 ![](https://raw.githubusercontent.com/zhijs/blog/master/2018-07/src/images/%E8%B7%AF%E5%BE%84%E5%88%86%E6%9E%90.jpg)
 
-#### 3.2 模块编译
+#### 模块编译
 
 在定位到文件后，首先会检查该文件是否有缓存，有的话直接读取缓存，否则，会新创建一个 Module 对象，其定义如下：
 
@@ -153,9 +153,21 @@ function Module(id, parent) {
 }
 ```
 
-生成对象后设置缓存，会执行指定的处理函数，如下所示：
+require 操作代码如下所示：
 
-![](./images/commonjs-require.png)
+```javascript
+Module.prototype.require = function(id) {
+  // 检查模块标识符
+  if (typeof id !== "string") {
+    throw new ERR_INVALID_ARG_TYPE("id", "string", id);
+  }
+  if (id === "") {
+    throw new ERR_INVALID_ARG_VALUE("id", id, "must be a non-empty string");
+  }
+  // 调用模块加载方法
+  return Module._load(id, this, /* isMain */ false);
+};
+```
 
 接下来是解析模块路径，判断是否有缓存，然后生成 Module 对象：
 
@@ -220,30 +232,80 @@ function tryModuleLoad(module, filename) {
 
 模块对象执行载入操作 module.load 代码如下所示：
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/2018-07/src/images/common-js-load.png)
+```javascript
+Module.prototype.load = function(filename) {
+  debug("load %j for module %j", filename, this.id);
+
+  assert(!this.loaded);
+  this.filename = filename;
+
+  // 解析路径
+  this.paths = Module._nodeModulePaths(path.dirname(filename));
+
+  // 判断扩展名，并且默认为 .js 扩展
+  var extension = path.extname(filename) || ".js";
+
+  // 判断是否有对应格式文件的处理函数， 没有的话，扩展名改为 .js
+  if (!Module._extensions[extension]) extension = ".js";
+
+  // 调用相应的文件处理方法，并传入模块对象
+  Module._extensions[extension](this, filename);
+  this.loaded = true;
+
+  // 处理 ES Module
+  if (experimentalModules) {
+    if (asyncESM === undefined) lazyLoadESM();
+    const ESMLoader = asyncESM.ESMLoader;
+    const url = pathToFileURL(filename);
+    const urlString = `${url}`;
+    const exports = this.exports;
+    if (ESMLoader.moduleMap.has(urlString) !== true) {
+      ESMLoader.moduleMap.set(
+        urlString,
+        new ModuleJob(ESMLoader, url, async () => {
+          const ctx = createDynamicModule(["default"], url);
+          ctx.reflect.exports.default.set(exports);
+          return ctx;
+        })
+      );
+    } else {
+      const job = ESMLoader.moduleMap.get(urlString);
+      if (job.reflect) job.reflect.exports.default.set(exports);
+    }
+  }
+};
+```
 
 在这里同步读取模块，再执行编译操作：
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/2018-07/src/images/extension-js.png)
+```javascript
+Module._extensions[".js"] = function(module, filename) {
+  // 同步读取文件
+  var content = fs.readFileSync(filename, "utf8");
+
+  // 编译代码
+  module._compile(stripBOM(content), filename);
+};
+```
 
 编译过程主要做了以下的操作：
 
 1. 将 JavaScript 代码用函数体包装，隔离作用域，例如：
 
 ```javascript
-  exports.add = function(a, b) {
-    return a + b;
-  }
-
+exports.add = (function(a, b) {
+  return a + b;
+})(
   // 会被包装成
-  (function(exports, require, modules, __filename, __dirname) {
+  function(exports, require, modules, __filename, __dirname) {
     exports.add = function(a, b) {
       return a + b;
     };
-  })
+  }
+);
 ```
 
-2. 执行函数，注入模块对象的 exports 属性，require 全局方法，以及对象实例，__filename, __dirname，然后执行模块的源码。
+2. 执行函数，注入模块对象的 exports 属性，require 全局方法，以及对象实例，**filename, **dirname，然后执行模块的源码。
 
 3. 返回模块对象 exports 属性。
 
@@ -444,7 +506,7 @@ console.log(add(1, 2)); // 3
 
 下面讲述几个较为重要的点。
 
-### 1. export 和 export default
+### export 和 export default
 
 在一个文件或模块中，export 可以有多个，export default 仅有一个, export 类似于具名导出，而 default 类似于导出一个变量名为 default 的变量。同时在 import 的时候，对于 export 的变量，必须要用具名的对象去承接，而对于 default，则可以任意指定变量名，例如：
 
@@ -465,7 +527,7 @@ import b form 'b.js' // √
 import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出的default，可以用任意变量去承接
 ```
 
-### 2. ES Module 模块加载和导出过程
+### ES Module 模块加载和导出过程
 
 以如下代码为例子：
 
@@ -485,27 +547,27 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
 
 在模块加载模块的过程中，主要经历以下几个步骤：
 
-#### 2.1 构建 (Construction)
+#### 构建 (Construction)
 
 这个过程执行查找，下载，并将文件转化为模块记录 (Module record)。所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法 (这里不是很明白)。同样也是在这个过程对模块记录进行了缓存的操作，下图是一个模块记录表：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/05_module_record.png)  
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/05_module_record.png)
 
 下图是缓存记录表：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/25_module_map.png)  
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/25_module_map.png)
 
-#### 2.2 实例化 (Instantiation)
+#### 实例化 (Instantiation)
 
 这个过程会在内存中开辟一个存储空间 (此时还没有填充值)，然后将该模块所有的 export 和 import 了该模块的变量指向这个内存，这个过程叫做链接。其写入 export 示意图如下所示：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)  
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)
 
 然后是链接 import，其示意图如下所示：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)  
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)
 
-#### 2.3 赋值(Evaluation)
+#### 赋值(Evaluation)
 
 这个过程会执行模块代码，并用真实的值填充上一阶段开辟的内存空间，此过程后 import 链接到的值就是 export 导出的真实值。
 
@@ -515,14 +577,7 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
 
 ## 总结
 
-本文主要对目前主流的 JavaScript 模块化方案 CommonJs，AMD，CMD, ES Module 进行了学习和了解，并对其中最有代表性的模块化实现 (NodeJs，RequireJS，SeaJS，ES6) 做了一个简单的分析。对于服务端的模块而言，由于其模块都是存储在本地的，模块加载方便，所以通常是采用同步读取文件的方式进行模块加载。而对于浏览器而言，其模块一般是存储在远程网络上的，模块的下载是一个十分耗时的过程，所以通常是采用动态异步脚本加载的方式加载模块文件。另外，无论是客户端还是服务端的 JavaScript 模块化实现，都会对模块进行缓存，以此减少二次加载的开销。最后再对几种规范的做一个简单的表格对比。
-
-| 模块化方案 | 加载方式  | 适用端          | 何时加载 |
-| ---------- | --------- | --------------- | -------- |
-| CommonJS   | 同步      | 服务端          | 运行时   |
-| AMD        | 异步      | 浏览器          | 运行时   |
-| CMD        | 异步      | 浏览器          | 运行时   |
-| ES Module  | 异步/同步 | 服务端/浏览器端 | 编译时   |
+本文主要对目前主流的 JavaScript 模块化方案 CommonJs，AMD，CMD, ES Module 进行了学习和了解，并对其中最有代表性的模块化实现 (NodeJs，RequireJS，SeaJS，ES6) 做了一个简单的分析。对于服务端的模块而言，由于其模块都是存储在本地的，模块加载方便，所以通常是采用同步读取文件的方式进行模块加载。而对于浏览器而言，其模块一般是存储在远程网络上的，模块的下载是一个十分耗时的过程，所以通常是采用动态异步脚本加载的方式加载模块文件。另外，无论是客户端还是服务端的 JavaScript 模块化实现，都会对模块进行缓存，以此减少二次加载的开销。
 
 参考文章:
 [ES modules: A cartoon deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
