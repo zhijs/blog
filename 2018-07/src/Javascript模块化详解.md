@@ -133,7 +133,7 @@ exports = function(a, b) {
 
 其流程如下图所示：
 
-![](./images/路径分析.jpg)
+![](https://github.com/zhijs/blog/edit/master/2018-07/src/images/路径分析.jpg)
 
 #### 3.2 模块编译
 
