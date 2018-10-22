@@ -490,21 +490,21 @@ import c form 'b.js' // √ 因为 b 模块导出的是 default，对于导出�
 
 这个过程执行查找，下载，并将文件转化为模块记录 (Module record)。所谓的模块记录是指一个记录了对应模块的语法树，依赖信息，以及各种属性和方法 (这里不是很明白)。同样也是在这个过程对模块记录进行了缓存的操作，下图是一个模块记录表：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/05_module_record.png)
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/05_module_record.png)  
 
 下图是缓存记录表：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/25_module_map.png)
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/25_module_map.png)  
 
 #### 2.2 实例化 (Instantiation)
 
 这个过程会在内存中开辟一个存储空间 (此时还没有填充值)，然后将该模块所有的 export 和 import 了该模块的变量指向这个内存，这个过程叫做链接。其写入 export 示意图如下所示：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_01.png)  
 
 然后是链接 import，其示意图如下所示：
 
-![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)
+![](https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2018/03/30_live_bindings_02.png)  
 
 #### 2.3 赋值(Evaluation)
 
