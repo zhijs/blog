@@ -443,7 +443,7 @@ import { add } from "./add.js";
 console.log(add(1, 2)); // 3
 ```
 
-下面讲述几个较为重要的点：
+下面讲述几个较为重要的点。
 
 ### 1. export 和 export default
 
