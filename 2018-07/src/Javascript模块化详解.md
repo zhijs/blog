@@ -243,7 +243,7 @@ function tryModuleLoad(module, filename) {
   })
 ```
 
-2. 执行函数，注入模块对象的 exports 属性，require 全局方法，以及对象实例，**filename, **dirname，然后执行模块的源码。
+2. 执行函数，注入模块对象的 exports 属性，require 全局方法，以及对象实例，__filename, __dirname，然后执行模块的源码。
 
 3. 返回模块对象 exports 属性。
 
