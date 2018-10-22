@@ -157,7 +157,7 @@ function Module(id, parent) {
 
 ![](./images/commonjs-require.png)
 
-这里解析模块路径，判断是否有缓存，生成 Module 对象：
+接下来是解析模块路径，判断是否有缓存，然后生成 Module 对象：
 
 ```javascript
 Module._load = function(request, parent, isMain) {
