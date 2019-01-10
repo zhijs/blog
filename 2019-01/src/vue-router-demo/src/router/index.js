@@ -5,7 +5,7 @@ import foo from '@/components/foo'
 import bar from '@/components/bar'
 Vue.use(Router)
 
-export default new Router({
+const router =  new Router({
   routes: [
     {
       path: '/',
@@ -24,3 +24,13 @@ export default new Router({
     }
   ]
 })
+console.log('router-----')
+console.log(router)
+router.afterEach((to, from) => {
+  console.log('afterEach to')
+  console.log(to)
+  console.log('-------------------')
+  console.log('afterEach from')
+  console.log(from)
+})
+export default router;
