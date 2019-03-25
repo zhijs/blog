@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = {
   entry: {
     app: './src/index.js',
-    vendor: ['vue']
+    // vendor: ['vue']
   },
   output: {
     filename: '[name].js',
@@ -38,12 +38,12 @@ module.exports = {
       }
     ] 
   },
-  optimization: {
-    splitChunks: {
-      name: true,
-      chunks: 'all'
-    }
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     name: true,
+  //     chunks: 'all'
+  //   }
+  // },
   plugins: [
     new VueLoaderPlugin(),
     new CleanWebpackPlugin(),

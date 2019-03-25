@@ -1,9 +1,5 @@
-import app from './App.vue'
-import Vue from 'vue'
+import {add, decrease} from './util/index'
+import {findDom} from './util/dom'
 
-new Vue({
-  el: '#app',
-  render: (h) =>　{
-    return h(app)
-  }   
-})
+let dom = findDom('#app')
+dom.innerText = add(4,3) *　decrease(4, 3);
