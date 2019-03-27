@@ -101,8 +101,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_util_dom__WEBPACK_IMPORTED_MODULE_1__);
 
 
-var dom = Object(_util_dom__WEBPACK_IMPORTED_MODULE_1__["findDom"])('#app');
-dom.innerText = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["add"])(4, 3) * Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["decrease"])(4, 3);
+
+let dom = Object(_util_dom__WEBPACK_IMPORTED_MODULE_1__["findDom"])('#app')
+dom.innerText = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["add"])(4,3) *　Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["decrease"])(4, 3);
+
 
 /***/ }),
 
@@ -113,9 +115,9 @@ dom.innerText = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["add"])(4, 3) * 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-exports.findDom = function (selector) {
-  return document.querySelector(selector);
-};
+exports.findDom = function(selector) {
+  return document.querySelector(selector)  
+}
 
 /***/ }),
 
@@ -127,12 +129,12 @@ exports.findDom = function (selector) {
 /***/ (function(module, exports) {
 
 exports.add = function (a, b) {
-  return a + b;
-};
+  return a +　b;
+}
 
-exports.decrease = function (a, b) {
+exports.decrease = function(a, b) {
   return a - b;
-};
+}
 
 /***/ })
 

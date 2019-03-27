@@ -14,40 +14,40 @@ module.exports = {
   },
   mode: 'development',
   devtool: 'source-map',
-  module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        include: [path.resolve(__dirname, 'src')],
-        use:[
-          {
-            loader: 'vue-loader'  
-          }
-        ]
-      },
-      {
-        test: /\.js$/,
-        include: [path.resolve(__dirname, 'src')],
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env']
-            }
-          }
-        ]
-      }
-    ] 
-  },
+  // module: {
+  //   rules: [
+  //     {
+  //       test: /\.vue$/,
+  //       include: [path.resolve(__dirname, 'src')],
+  //       use:[
+  //         {
+  //           loader: 'vue-loader'  
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       test: /\.js$/,
+  //       include: [path.resolve(__dirname, 'src')],
+  //       use: [
+  //         {
+  //           loader: 'babel-loader',
+  //           options: {
+  //             presets: ['@babel/preset-env']
+  //           }
+  //         }
+  //       ]
+  //     }
+  //   ] 
+  // },
   // optimization: {
   //   splitChunks: {
   //     name: true,
   //     chunks: 'all'
   //   }
   // },
-  plugins: [
-    new VueLoaderPlugin(),
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({template: './src/index.html'})
-  ]
+  // plugins: [
+  //   new VueLoaderPlugin(),
+  //   new CleanWebpackPlugin(),
+  //   new HtmlWebpackPlugin({template: './src/index.html'})
+  // ]
 }
