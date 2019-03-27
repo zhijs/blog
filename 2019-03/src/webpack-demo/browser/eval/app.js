@@ -94,15 +94,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/index */ "./src/util/index.js");
-/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_util_index__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/dom */ "./src/util/dom.js");
-/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_util_dom__WEBPACK_IMPORTED_MODULE_1__);
-
-
-var dom = Object(_util_dom__WEBPACK_IMPORTED_MODULE_1__["findDom"])('#app');
-dom.innerText = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["add"])(4, 3) * Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["decrease"])(4, 3);
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/index */ \"./src/util/index.js\");\n/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_util_index__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/dom */ \"./src/util/dom.js\");\n/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_util_dom__WEBPACK_IMPORTED_MODULE_1__);\n\n\nvar dom = Object(_util_dom__WEBPACK_IMPORTED_MODULE_1__[\"findDom\"])('#app');\ndom.innerText = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__[\"add\"])(4, 3) * Object(_util_index__WEBPACK_IMPORTED_MODULE_0__[\"decrease\"])(4, 3);\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -113,9 +105,7 @@ dom.innerText = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["add"])(4, 3) * 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-exports.findDom = function (selector) {
-  return document.querySelector(selector);
-};
+eval("exports.findDom = function (selector) {\n  return document.querySelector(selector);\n};\n\n//# sourceURL=webpack:///./src/util/dom.js?");
 
 /***/ }),
 
@@ -126,15 +116,8 @@ exports.findDom = function (selector) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-exports.add = function (a, b) {
-  return a + b;
-};
-
-exports.decrease = function (a, b) {
-  return a - b;
-};
+eval("exports.add = function (a, b) {\n  return a + b;\n};\n\nexports.decrease = function (a, b) {\n  return a - b;\n};\n\n//# sourceURL=webpack:///./src/util/index.js?");
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=app.js.map
