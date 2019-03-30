@@ -95,19 +95,21 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/dom */ "./src/util/dom.js");
-/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_util_dom__WEBPACK_IMPORTED_MODULE_0__);
-// import {add, decrease} from './util/index'
+/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/index */ "./src/util/index.js");
+/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_util_index__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/dom */ "./src/util/dom.js");
+/* harmony import */ var _util_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_util_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _util_log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util/log */ "./src/util/log.js");
 
-// import log, {helloLog} from './util/log'
 
-// let sum = decrease(4, 3) *  add(4,3);
-// let dom = findDom('#app')
-// dom.innerText =　sum
-// findDom.hello()
-// log('export default log')
-// helloLog('export real name')
-Object(_util_dom__WEBPACK_IMPORTED_MODULE_0__["domHello"])()
+
+
+let sum = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["decrease"])(4, 3) *  Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["add"])(4,3);
+let dom = Object(_util_dom__WEBPACK_IMPORTED_MODULE_1__["findDom"])('#app')
+dom.innerText =　sum
+_util_dom__WEBPACK_IMPORTED_MODULE_1__["findDom"].hello()
+Object(_util_log__WEBPACK_IMPORTED_MODULE_2__["default"])('export default log')
+Object(_util_log__WEBPACK_IMPORTED_MODULE_2__["helloLog"])('export real name')
 
 
 /***/ }),
@@ -117,14 +119,13 @@ Object(_util_dom__WEBPACK_IMPORTED_MODULE_0__["domHello"])()
   !*** ./src/util/dom.js ***!
   \*************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var  {add}  = __webpack_require__(/*! ./index.js */ "./src/util/index.js")
-// exports.findDom = function(selector) {
-//   return document.querySelector(selector)  
-// }
-exports.domHello = function() {
-  console.log('domHello', add(1,4))
+exports.findDom = function(selector) {
+  return document.querySelector(selector)  
+}
+exports.findDom.hello = function() {
+  console.log('hello')  
 }
 
 /***/ }),
@@ -136,16 +137,16 @@ exports.domHello = function() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var {helloLog} = __webpack_require__(/*! ./log */ "./src/util/log.js")
+var {findDom} = __webpack_require__(/*! ./dom */ "./src/util/dom.js")
+findDom.hello = '篡改对象'
 
 exports.add = function (a, b) {
-  helloLog(`index ${a} + ${b}`)
   return a +　b;
 }
 
-// exports.decrease = function(a, b) {
-//   return a - b;
-// }
+exports.decrease = function(a, b) {
+  return a - b;
+}
 
 /***/ }),
 
@@ -160,15 +161,11 @@ exports.add = function (a, b) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return log; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "helloLog", function() { return helloLog; });
-/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom */ "./src/util/dom.js");
-/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_dom__WEBPACK_IMPORTED_MODULE_0__);
-
 function log(str) {
   console.log(str)
 }
 function helloLog (str) {
-  Object(_dom__WEBPACK_IMPORTED_MODULE_0__["domHello"])()
-  console.log('log helloLog', str) 
+  console.log('hello', str)  
 }
 
 /***/ })

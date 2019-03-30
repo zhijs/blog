@@ -1,12 +1,10 @@
-# 理解 webpack 中 JavaScript 的模块机制
-### 在现今的前端开发中，webpack 已经成为项目中可以算的是必不可少的工具了，我们常常会用 webpack 来构建我们的项目，管理我们项目的依赖，特别是我们项目的中用到的 Javascript 模块代码，今天我们就来分析一下 webpack 是如何管理我们项目中用到的 JavaScript 模块的。本文主要包含以下几部分内容：
-1. webpack 如何打包编译模块
-2. webpack 对模块的唯一标识，命名冲突的处理
-3. webpack 对模块依赖加载
-4. webpack 如何处理模块调用上下文
-5. webpack 如何循环依赖
+## 理解 webpack 中 JavaScript 的模块机制
+### 在现今的前端开发中，webpack 已经成为项目中可以算的是必不可少的工具了，我们常常会用 webpack 来构建我们的项目，管理我们项目的依赖，特别是我们项目的中用到的 Javascript 模块代码，今天我们就来分析一下 webpack 是如何管理我们项目中用到的 JavaScript 模块的。本文主要包含以下几部分内容 (webpack 4)：
+- webpack 如何打包编译模块
+- webpack 对模块依赖加载
+- webpack 对模块的唯一标识，命名冲突的处理
 
-### 1.webpack 如何打包编译模块
+### webpack 打包编译模块
 我们都知道 webpack 会从我们配置的入口文件开始寻找依赖，在只有一个编译出口的情况下，会将该入口文件所依赖的模块都打包提取到一个 bundle.js 文件中，我们首先从一个简单的例子来看看 webpack 是如何处理打包编译的。
 
  #### 入口文件及其依赖和 webpack 配置
@@ -95,7 +93,7 @@ module.exports = {
   }  
 )
 ```
-打包编译后的源代码为了便于阅读整体内容，去除了实体代码和注释部分，由上面的内容可以很容易的看出，webpack 将入口文件的逻辑代码和其依赖的代码都放进了一个立即执行函数中，其中入口文件逻辑和依赖的逻辑代码都作为 webpack 立即执行函数的参数传入。这个立即函数主要分为两大部分：
+为了便于阅读整体内容打包编译后的源代码，去除了实体代码和注释部分，由上面的内容可以很容易的看出，webpack 将入口文件的逻辑代码和其依赖的代码都放进了一个立即执行函数中，其中入口文件逻辑和依赖的逻辑代码都作为 webpack 立即执行函数的参数传入。这个立即函数主要分为两大部分：
 
 1. webpack 模块化管理初始化逻辑部分  
 2. 入口及其依赖逻辑部分(立即执行函数参数对象)
@@ -142,7 +140,7 @@ module.exports = {
 2. 设置导出模块的 default 属性的取值函数
 3. 设置导出模块的具名导出属性的取值函数
 
-有上述的内容可以知道，webpack 处理模块标识符和模块内容的过程，就是通过构造标识符为键，webpack 包装源码后的函数为值的一个对象集合。并将这个对象集合作为一个参数，传入 webpack 立即执行函数中。接下来我们来看看立即执行函数部分的内容。
+由上述的内容可以知道，webpack 处理模块标识符和模块内容的过程，就是通过构造标识符为键，webpack 包装源码后的函数为值的一个对象集合。并将这个对象集合作为一个参数，传入 webpack 立即执行函数中。接下来我们来看看立即执行函数部分的内容。
 
  #### webpack 模块化管理初始化逻辑部分(立即执行函数体部分)
 
@@ -166,7 +164,7 @@ module.exports = {
      };
     
     // 以缓存模块的 exports 上下文来调用模块的包装函数，并传入 modules 对象， module.exports 对象，模块加载器
-     modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+    modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 
     // 标识模块已经被加载完毕了
  		module.l = true;
@@ -250,7 +248,38 @@ module.exports = {
  3. 定义模块操作相关的功能函数
  4. 返回并加载执行入口模块
 
- 
+ #### 入口文件模块部分
+ 根据上述的内容我们知道，webpack 打包后的 bundle 文件，本质上就是一个立即执行函数，这个函数会在 bundle 文件加载成功的时候执行，而执行的函数入口就是入口文件内容部分, 上述例子中，入口文件模块的包装函数如下所示：  
+```javascript
+(function(module, __webpack_exports__, __webpack_require__) {
+  __webpack_require__.r(__webpack_exports__);
+  // 解析依赖模块
+  var _util_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/index */ "./src/util/index.js");
+
+  var _util_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_util_index__WEBPACK_IMPORTED_MODULE_0__);
+
+  var _util_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/dom */ "./src/util/dom.js");
+
+  var _util_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_util_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+  var _util_log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util/log */ "./src/util/log.js");
+  
+  // 执行入口模块内逻辑
+  let dom = Object(_util_dom__WEBPACK_IMPORTED_MODULE_1__["findDom"])('#app')
+  dom.innerText = Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["add"])(4,3) *　Object(_util_index__WEBPACK_IMPORTED_MODULE_0__["decrease"])(4, 3);
+  Object(_util_log__WEBPACK_IMPORTED_MODULE_2__["default"])('export default log')
+  Object(_util_log__WEBPACK_IMPORTED_MODULE_2__["helloLog"])('export real name')
+ }),
+```
+入口模块内容也比较简单就是加载的入口模块的依赖，然后执行入口模块相关的逻辑，这里模块载入函数被替换成了 webpack 定义的模块加载器。
+
+
+### webpack 对模块的唯一标识，命名冲突的处理
+webpack 将打包后的代码放入了一个立即执行函数中，同时也利用了闭包，将模块缓存器，模块加载器等功能函数放在了闭包里面，从而防止变量被污染，同时对于每个具体的依赖模块，webpack 也将模块的代码内容用一个函数体进行了包装，使得模块之间的变量不会相互污染。
+
+
+
+
 
 
 

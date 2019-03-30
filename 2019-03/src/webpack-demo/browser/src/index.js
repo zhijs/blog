@@ -1,8 +1,11 @@
-import {add, decrease} from './util/index'
-import {findDom} from './util/dom'
-import log, {helloLog} from './util/log'
+// import {add, decrease} from './util/index'
+import {domHello} from './util/dom'
+// import log, {helloLog} from './util/log'
 
-let dom = findDom('#app')
-dom.innerText = add(4,3) *　decrease(4, 3);
-log('export default log')
-helloLog('export real name')
+// let sum = decrease(4, 3) *  add(4,3);
+// let dom = findDom('#app')
+// dom.innerText =　sum
+// findDom.hello()
+// log('export default log')
+// helloLog('export real name')
+domHello()
