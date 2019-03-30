@@ -45,9 +45,9 @@ module.exports = {
   //     chunks: 'all'
   //   }
   // },
-  // plugins: [
+  plugins: [
   //   new VueLoaderPlugin(),
   //   new CleanWebpackPlugin(),
-  //   new HtmlWebpackPlugin({template: './src/index.html'})
-  // ]
+    new HtmlWebpackPlugin({template: './src/index.html'})
+  ]
 }
