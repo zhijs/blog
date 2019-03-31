@@ -367,7 +367,7 @@ new Vue(
   } 
 )
 ```
-上面的例子中，我们引入了 Vuejs 库，并将依赖 node_modules 中的数据打包到一个 vendor.js 文件中，同时分离 manifest 文件，生成 manifest.js。
+上面的例子中，我们引入了 Vuejs 库，并将依赖 node_modules 中的数据打包到一个 vendors.js 文件中，同时分离 manifest 文件，生成 manifest.js。
 
 #### webpack 模块管理文件 manifest
 webpack 生成的 manifest 文件如下所示：  
@@ -459,7 +459,7 @@ webpack 生成的 manifest 文件如下所示：
 ```
 
 #### 第三方库代码集合 vendors
-在上文中，我们知道页面首先加载的是 manifest.js 接下来是 vendor.js, 最后是 app.js,这是因为 app.js 的执行依赖 manifest 和 vendors,  vendors.js 的代码部分也和 app.js 类似：
+在上文中，我们知道页面首先加载的是 manifest.js 接下来是 vendors.js, 最后是 app.js,这是因为 app.js 的执行依赖 manifest 和 vendors,  vendors.js 的代码部分也和 app.js 类似：
 
 ```javascript
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["vendors"],{
@@ -613,29 +613,6 @@ function checkDeferredModules() {
 
 
 对于运行时，是先初始化模块管理器 maniest, 下载第三方库 vendors, 接着加载并执行业务入口文件代码。
-
-
-
-
-
-
-
-
-
-
-s
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
