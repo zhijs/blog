@@ -368,55 +368,6 @@ new Vue(
 ```
 上面的例子中，我们引入了 Vuejs 库，并将依赖 node_modules 中的数据打包到一个 vendor.js 文件中，同时分离 manifest 文件，生成 manifest.js。
 
-#### 入口文件 app.js
-下面是分离后 webpack 打包出来的入口文件 app.js, 为了便于分析，这里同样删除的大部分的逻辑代码。
-```javascript
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([ 
-["app"], 
-{
-
-  "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/App.vue?vue&type=script&lang=js&":
-  (function(module, __webpack_exports__, __webpack_require__) {
-    // code
-  }),
-
-  "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/App.vue?vue&type=template&id=7ba5bd90&":
-  (function(module, __webpack_exports__, __webpack_require__) {
-    // code
-  }),
-
- "./src/App.vue":
-  (function(module, __webpack_exports__, __webpack_require__) {
-    // code 
-  }),
-
- "./src/App.vue?vue&type=script&lang=js&":
-  (function(module, __webpack_exports__, __webpack_require__) {
-    // code
-  }),
-
-  "./src/App.vue?vue&type=template&id=7ba5bd90&":
-  (function(module, __webpack_exports__, __webpack_require__) {
-    // code
-  }),
-
-  "./src/index.js":
-  (function(module, __webpack_exports__, __webpack_require__) {
-    // code
-  })
-
-},
-[["./src/index.js","manifest","vendors"]]
-]
-);
-```
-从上述的代码中，我们大概可以看出，在主入口文件中，主要做了以下件事
-1. 定义全局变量 window['webpackJsonp'] 为一个数组
-2. 这个全局变量是一个二维数组，这个二维数组的第一个元素是一个 app 字符串标识数组，第二个元素是业务代码打包后，以模块标识符为键，函数包装编译或的业务代码为值的对象，第三个元素是一个数组。
-
-总体来看，入口文件就是初始化了一个全局变量 webpackJsonp 数组，这个数组里面有 业务相关的模块集合，包包后的业务文件名称，以及打包前入口文件标识符，运行时模块管理文件 manifest, 第三方库代码集合 vendors。
-
-
 #### webpack 模块管理文件 manifest
 webpack 生成的 manifest 文件如下所示：  
 ```javascript
