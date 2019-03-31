@@ -440,7 +440,7 @@ webpack 生成的 manifest 文件如下所示：
   for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
     
   var parentJsonpFunction = oldJsonpFunction;
-  // 检测异步加载模块
+  // 检测并运行模块
   checkDeferredModules();
   })
 ([]);
@@ -518,15 +518,15 @@ function webpackJsonpCallback(data) {
   // 在 vendors 文件模块执行过程中， executeModules 为空数组
   deferredModules.push.apply(deferredModules, executeModules || []);
 
-  // 执行异步加载模块
+  // 检测并运行模块
   return checkDeferredModules();
 };
 ```
 由于 vendors.js 文件不是入口文件，执行的结果是：
 在 installedChunks 变量中添加 vendors 为已经加载完毕，同时，将 vendors 文件内的模块集合设置到闭包变量 modules 中。
 
-####　业务逻辑入口文件 app.js
-我们知道，业务代码是最后才加载执行的，应为他的执行依赖了第三方库带代码 vendors 和 webpack 模块加载器等基础方法集合的 manifest 文件。接着来分析一下入口文件 app.js 执行过程。
+#### 业务逻辑入口文件 app.js
+我们知道，业务代码是最后才加载执行的，应为它的执行依赖了第三方库带代码 vendors 和 webpack 模块加载器等基础方法集合的 manifest 文件。接着来分析一下入口文件 app.js 执行过程。
 
 入口文件的加载执行方式和 vendors 一样，只不过传入的参数不一样，一下 app.js 被打包编译后的代码：
 
