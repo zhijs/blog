@@ -146,100 +146,100 @@ module.exports = {
 
  ```javascript
   
-  // 缓存器
-  var installedModules = {};
-   
-  // 模块加载器，返回模块 id，对应的 模块导出对象 export
- 	function __webpack_require__(moduleId) {
-    // 模块是否已经被加载，模块 id 即是模块对应的标识符, modules 是上文中提到的入口及其依赖模块对象集合。
- 		if(installedModules[moduleId]) {
- 			return installedModules[moduleId].exports;
-     }
-
-    // 根据 id 生成一个模块缓存
- 		var module = installedModules[moduleId] = {
- 			i: moduleId,
- 			l: false,
- 			exports: {}
-     };
-    
-    // 以缓存模块的 exports 上下文来调用模块的包装函数，并传入 modules 对象， module.exports 对象，模块加载器
-    modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-    // 标识模块已经被加载完毕了
- 		module.l = true;
-    
-    // 返回模块导出的对象
- 		return module.exports;
- 	}
-  // __webpack_require__.m  引用所有的模块集合对象
-  __webpack_require__.m = modules;
-   
-  // __webpack_require__.c  引用所有已经被加载过的模块
- 	__webpack_require__.c = installedModules;
+// 缓存器
+var installedModules = {};
   
-  // 设置对象属性的取值函数的功能函数
- 	__webpack_require__.d = function(exports, name, getter) {
- 		if(!__webpack_require__.o(exports, name)) {
- 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
- 		}
-   };
-   
-  // 为对象设置类型为 Module 和 设置 __esModule 属性为 true 功能函数，用于 ESModule 方式导出的模块处理。
+// 模块加载器，返回模块 id，对应的 模块导出对象 export
+function __webpack_require__(moduleId) {
+  // 模块是否已经被加载，模块 id 即是模块对应的标识符, modules 是上文中提到的入口及其依赖模块对象集合。
+  if(installedModules[moduleId]) {
+    return installedModules[moduleId].exports;
+    }
 
- 	__webpack_require__.r = function(exports) {
- 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
- 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
- 		}
- 		Object.defineProperty(exports, '__esModule', { value: true });
- 	};
- 
- // 创建命名空间对象功能函数， value 为模块标识符
+  // 根据 id 生成一个模块缓存
+  var module = installedModules[moduleId] = {
+    i: moduleId,
+    l: false,
+    exports: {}
+    };
+  
+  // 以缓存模块的 exports 上下文来调用模块的包装函数，并传入 modules 对象， module.exports 对象，模块加载器
+  modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 
- 	__webpack_require__.t = function(value, mode) {
-    // 按位与操作符 mode 最后一位为 1 的情况下，加载对应的模块，得到导出内容
-    if(mode & 1) value = __webpack_require__(value);
+  // 标识模块已经被加载完毕了
+  module.l = true;
+  
+  // 返回模块导出的对象
+  return module.exports;
+}
+// __webpack_require__.m  引用所有的模块集合对象
+__webpack_require__.m = modules;
+  
+// __webpack_require__.c  引用所有已经被加载过的模块
+__webpack_require__.c = installedModules;
 
-    // mode 第四位为 1 的情况， 返回模块 id / 模块内容 
-    if(mode & 8) return value;
+// 设置对象属性的取值函数的功能函数
+__webpack_require__.d = function(exports, name, getter) {
+  if(!__webpack_require__.o(exports, name)) {
+    Object.defineProperty(exports, name, { enumerable: true, get: getter });
+  }
+};
+  
+// 为对象设置类型为 Module 和 设置 __esModule 属性为 true 功能函数，用于 ESModule 方式导出的模块处理。
 
-    // mode 第三位为1 且 value 是一个模块内容且模块有 __esModule 属性，返回 模块  
-    if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+__webpack_require__.r = function(exports) {
+  if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+    Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+  }
+  Object.defineProperty(exports, '__esModule', { value: true });
+};
 
-    // 否则， 创建一个未继承任何对象的空对象作为命名空间对象 
-    var ns = Object.create(null);
-    
-    // 为该命名空间定义类型(Module)和 __esModule 属性
-    __webpack_require__.r(ns);
-    
-    // 将模块对象的导出设置到命名空间对象的 default 属性上
-    Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-    
-    // 如果 mode 的第二位为 1 ，并且 value 不是 模块 id, 用命名空间对象代理对模块的访问
-    if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-    
-    // 返回命名空间对象
- 		return ns;
- 	};
+// 创建命名空间对象功能函数， value 为模块标识符
+
+__webpack_require__.t = function(value, mode) {
+  // 按位与操作符 mode 最后一位为 1 的情况下，加载对应的模块，得到导出内容
+  if(mode & 1) value = __webpack_require__(value);
+
+  // mode 第四位为 1 的情况， 返回模块 id / 模块内容 
+  if(mode & 8) return value;
+
+  // mode 第三位为1 且 value 是一个模块内容且模块有 __esModule 属性，返回 模块  
+  if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+
+  // 否则， 创建一个未继承任何对象的空对象作为命名空间对象 
+  var ns = Object.create(null);
   
- 	 // 获取模块的导出并用函数代理，有默认导出就导出默认的，没有就导出 exports , 兼容 ESModule 和 CommonJs
- 	__webpack_require__.n = function(module) {
- 		var getter = module && module.__esModule ?
- 			function getDefault() { return module['default']; } :
- 			function getModuleExports() { return module; };
- 		__webpack_require__.d(getter, 'a', getter);
- 		return getter;
- 	};
+  // 为该命名空间定义类型(Module)和 __esModule 属性
+  __webpack_require__.r(ns);
   
- 	// 检测对象是否有某个属性
- 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+  // 将模块对象的导出设置到命名空间对象的 default 属性上
+  Object.defineProperty(ns, 'default', { enumerable: true, value: value });
   
- 	// __webpack_public_path__
- 	__webpack_require__.p = "";
+  // 如果 mode 的第二位为 1 ，并且 value 不是 模块 id, 用命名空间对象代理对模块的访问
+  if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
   
-  
- 	// 返回并加载执行入口模块
- 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
+  // 返回命名空间对象
+  return ns;
+};
+
+// 获取模块的导出并用函数代理，有默认导出就导出默认的，没有就导出 exports , 兼容 ESModule 和 CommonJs
+__webpack_require__.n = function(module) {
+  var getter = module && module.__esModule ?
+    function getDefault() { return module['default']; } :
+    function getModuleExports() { return module; };
+  __webpack_require__.d(getter, 'a', getter);
+  return getter;
+};
+
+// 检测对象是否有某个属性
+__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+
+// __webpack_public_path__
+__webpack_require__.p = "";
+
+
+// 返回并加载执行入口模块
+return __webpack_require__(__webpack_require__.s = "./src/index.js");
  ```
 
  以上即是 webpack 立即执行函数的函数体的内容，其主要做了一下几件事： 
@@ -417,82 +417,82 @@ new Vue(
 总体来看，入口文件就是初始化了一个全局变量 webpackJsonp 数组，这个数组里面有 业务相关的模块集合，包包后的业务文件名称，以及打包前入口文件标识符，运行时模块管理文件 manifest, 第三方库代码集合 vendors。
 
 
-#### webpack 生成的模块管理文件 manifest
+#### webpack 模块管理文件 manifest
 webpack 生成的 manifest 文件如下所示：  
 ```javascript
-   (function(modules) { 
-    // webpack 模块管理器
-   	// 模块缓存器
-   	var installedModules = {};
-   	// 模块加载器
-   	function __webpack_require__(moduleId) {
+(function(modules) { 
+  // webpack 模块管理器
+  // 模块缓存器
+  var installedModules = {};
+  // 模块加载器
+  function __webpack_require__(moduleId) {
+  // code
+  }
+  __webpack_require__.m = modules;
+  __webpack_require__.c = installedModules;
+  // 设置对象属性的取值函数的功能函数
+  __webpack_require__.d = function(exports, name, getter) {
     // code
-   	}
-   	__webpack_require__.m = modules;
-   	__webpack_require__.c = installedModules;
-   	// 设置对象属性的取值函数的功能函数
-   	__webpack_require__.d = function(exports, name, getter) {
-      // code
-   	};
-     // 为对象设置类型为 Module 和 设置 __esModule 属性为 true 功能函数
-     // 用于 ESModule 方式导出的模块处理。
-   	__webpack_require__.r = function(exports) {
-      // code
-   	};
-   	// 创建命名空间对象功能函数， value 为模块标识符
-   	__webpack_require__.t = function(value, mode) {
-      // code
-   	};
-    // 获取模块的导出并用函数代理，有默认导出就导出默认的
-    //没有就导出 exports , 兼容 ESModule 和 CommonJs
-   	__webpack_require__.n = function(module) {
-     //  code 
-   	};
-   	// 检测对象是否有某个属性
-   	__webpack_require__.o = function(object, property) {
-      // code
+  };
+  // 为对象设置类型为 Module 和 设置 __esModule 属性为 true 功能函数
+  // 用于 ESModule 方式导出的模块处理。
+  __webpack_require__.r = function(exports) {
+    // code
+  };
+  // 创建命名空间对象功能函数， value 为模块标识符
+  __webpack_require__.t = function(value, mode) {
+    // code
+  };
+  // 获取模块的导出并用函数代理，有默认导出就导出默认的
+  //没有就导出 exports , 兼容 ESModule 和 CommonJs
+  __webpack_require__.n = function(module) {
+    //  code 
+  };
+  // 检测对象是否有某个属性
+  __webpack_require__.o = function(object, property) {
+    // code
+  };
+  __webpack_require__.p = "";
+
+  /*****************************分割线*********************************/
+  // 需要加载的模块集合
+  var deferredModules = [];
+
+  // 记录文件模块加载状态
+  // undefined - 模块未加载
+  // null - 模块是 预加载或预请求
+  // Promise - 模块正在加载 
+  // 0 - 已经加载完毕
+  var installedChunks = {
+    "manifest": 0
+  }; 
+  // 设置需要加载的模块函数 
+  function webpackJsonpCallback(data) {
+    // code
     };
-    __webpack_require__.p = "";
+    
+  // 执行模块加载函数 
+  function checkDeferredModules() {
+    // code
+  }
 
-    /*****************************分割线*********************************/
-    // 需要加载的模块集合
-    var deferredModules = [];
-
-    // 记录文件模块加载状态
-    // undefined - 模块未加载
-    // null - 模块是 预加载或预请求
-    // Promise - 模块正在加载 
-    // 0 - 已经加载完毕
-   	var installedChunks = {
-   		"manifest": 0
-    }; 
-    // 设置需要加载的模块函数 
-    function webpackJsonpCallback(data) {
-   	  // code
-     };
-     
-    // 执行模块加载函数 
-   	function checkDeferredModules() {
-   	  // code
-   	}
+  var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
+  var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
   
-   	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
-    var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+  // 重写 模块数组的 push 方法为模块加载 jsonp 回调函数
+  jsonpArray.push = webpackJsonpCallback;
+  
+  // 获取模块数组副本
+  jsonpArray = jsonpArray.slice();
     
-    // 重写 模块数组的 push 方法为模块加载 jsonp 回调函数
-    jsonpArray.push = webpackJsonpCallback;
+  // 遍历模块数组，并用 jsonpa 回调去加载模块
+  for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
     
-    // 获取模块数组副本
-    jsonpArray = jsonpArray.slice();
-     
-    // 遍历模块数组，并用 jsonpa 回调去加载模块
-   	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-     
-    var parentJsonpFunction = oldJsonpFunction;
-    // 检测异步加载模块
-   	checkDeferredModules();
-   })
-  ([]);
+  var parentJsonpFunction = oldJsonpFunction;
+  // 检测异步加载模块
+  checkDeferredModules();
+  })
+([]);
 ```
 从上述代码中，我们可以看到，其中大部分代码是和前一个例子一样的，包括模块加载器，缓存器等这些都被分离到了 manifest 文件中，同时相较于前一个为分离的例子分割线以下是新增的代码，这里具体逻辑较为复杂，我们先来看下 app.js manifest.js vendors.js 这几个文件加载执行顺序，以下是 index.html 文件。
 
@@ -522,56 +522,137 @@ webpack 生成的 manifest 文件如下所示：
   // ..........
 }]);
 ```
-这里调用了 window["webpackJsonp"] 的 push 方法，我们知道在 manifest.js 中，window["webpackJsonp"] 重写了 push 方法为 jsonp模块加载回调方法。我们来更具 vendors.js 执行来看看这个方法
-```javascript
- // 接受一个 data 数组参数
- function webpackJsonpCallback(data) {
-      //数组第一项 (chunkIds) 为模块 id 数组，对应是例子是 ["vendors"]
-      var chunkIds = data[0];
-      
-      // 数组第二个参数(moreModules) 数包装模块对象集合 {"模块标识符": webpack 函数包装后的模块逻辑代码}
-      var moreModules = data[1];
-      
-      // 需要执行的模块 因为 vendors 不是入口文件模块，所以没有需要执行的模块
-   		var executeModules = data[2];
-  
-      var moduleId, chunkId, i = 0, resolves = [];
-      
-      // 遍历 模块 id 数组
-   		for(;i < chunkIds.length; i++) {
-         chunkId = chunkIds[i];
-         
-        // 如果文件正在加载 (Promise) 则将这个文件名加到 resolves 数组中
-   			if(installedChunks[chunkId]) {
-   				resolves.push(installedChunks[chunkId][0]);
-         }
-        
-        // 设置该文件已经加载完毕
-   			installedChunks[chunkId] = 0;
-       }
-      // 遍历所有的模块对象集合 
-   		for(moduleId in moreModules) {
-   			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-   				modules[moduleId] = moreModules[moduleId];
-   			}
-      }
+这里调用了 window["webpackJsonp"] 的 push 方法，我们知道在 manifest.js 中，window["webpackJsonp"] 重写了 push 方法为 jsonp模块加载回调方法。我们来根据 vendors.js 加载执行来看看这个方法：
 
-   		if(parentJsonpFunction) parentJsonpFunction(data);
-      
-      
-   		while(resolves.length) {
-   			resolves.shift()();
-   		}
+```javascript
+// 接受一个 data 数组参数
+function webpackJsonpCallback(data) {
+  //数组第一项 (chunkIds) 为模块 id 数组，对应是例子是 ["vendors"]
+  var chunkIds = data[0];
   
-   		// 在 vendors 文件模块执行过程中， executeModules 为空数组
-   		deferredModules.push.apply(deferredModules, executeModules || []);
+  // 数组第二个参数(moreModules) 数包装模块对象集合 {"模块标识符": webpack 函数包装后的模块逻辑代码}
+  var moreModules = data[1];
   
-   		// 执行异步加载模块
-   		return checkDeferredModules();
-   	};
+  // 需要执行的模块 因为 vendors 不是入口文件模块，所以没有需要执行的模块
+  var executeModules = data[2];
+
+  var moduleId, chunkId, i = 0, resolves = [];
+  
+  // 遍历 模块 id 数组
+  for(;i < chunkIds.length; i++) {
+      chunkId = chunkIds[i];
+      
+  // 如果文件正在加载 (Promise) 则将这个文件名加到 resolves 数组中
+  if(installedChunks[chunkId]) {
+    resolves.push(installedChunks[chunkId][0]);
+    }
+    
+  // 设置该文件已经加载完毕
+  installedChunks[chunkId] = 0;
+  }
+  // 遍历所有的模块对象集合 
+  for(moduleId in moreModules) {
+    if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+      modules[moduleId] = moreModules[moduleId];
+    }
+  }
+
+  if(parentJsonpFunction) parentJsonpFunction(data);
+  
+  
+  while(resolves.length) {
+    resolves.shift()();
+  }
+
+  // 在 vendors 文件模块执行过程中， executeModules 为空数组
+  deferredModules.push.apply(deferredModules, executeModules || []);
+
+  // 执行异步加载模块
+  return checkDeferredModules();
+};
 ```
 由于 vendors.js 文件不是入口文件，执行的结果是：
 在 installedChunks 变量中添加 vendors 为已经加载完毕，同时，将 vendors 文件内的模块集合设置到闭包变量 modules 中。
+
+####　业务逻辑入口文件 app.js
+我们知道，业务代码是最后才加载执行的，应为他的执行依赖了第三方库带代码 vendors 和 webpack 模块加载器等基础方法集合的 manifest 文件。接着来分析一下入口文件 app.js 执行过程。
+
+入口文件的加载执行方式和 vendors 一样，只不过传入的参数不一样，一下 app.js 被打包编译后的代码：
+
+```javascript
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([ 
+["app"], 
+{
+
+  "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/App.vue?vue&type=script&lang=js&":
+  (function(module, __webpack_exports__, __webpack_require__) {
+    // code
+  }),
+
+  "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/App.vue?vue&type=template&id=7ba5bd90&":
+  (function(module, __webpack_exports__, __webpack_require__) {
+    // code
+  }),
+
+ "./src/App.vue":
+  (function(module, __webpack_exports__, __webpack_require__) {
+    // code 
+  }),
+
+ "./src/App.vue?vue&type=script&lang=js&":
+  (function(module, __webpack_exports__, __webpack_require__) {
+    // code
+  }),
+
+  "./src/App.vue?vue&type=template&id=7ba5bd90&":
+  (function(module, __webpack_exports__, __webpack_require__) {
+    // code
+  }),
+
+  "./src/index.js":
+  (function(module, __webpack_exports__, __webpack_require__) {
+    // code
+  })
+
+},
+[["./src/index.js","manifest","vendors"]]
+]
+);
+```
+执行的操作逻辑和 vendors 一样，只不过传入的参数不一样。入口文件定义了["./src/index.js","manifest","vendors"] 为需要执行的模块名称，所以最后会执行模块加载函数:
+
+```javascript
+function checkDeferredModules() {
+  // deferredModules = [["./src/index.js","manifest","vendors"]]
+  var result;
+  for(var i = 0; i < deferredModules.length; i++) {
+    var deferredModule = deferredModules[i];
+    var fulfilled = true;
+    // "manifest", vendors 这个文件时依赖，必须要下载完毕才能执行 index.js 入口文件模块
+    for(var j = 1; j < deferredModule.length; j++) {
+      var depId = deferredModule[j];
+      if(installedChunks[depId] !== 0) fulfilled = false;
+    }
+    // 依赖都下载完毕
+    if(fulfilled) {
+      // 取出 ./src/index.js，并执行相应的逻辑代码
+      deferredModules.splice(i--, 1);
+      result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
+    }
+  }
+  return result;
+}
+
+```
+可以看到 app.js 执行的过程，主要做了以下下几件事：
+1. 将 webpack 包装的 app.js 模块对象集合设置到闭包模块变量 modules 中
+2. 将 入口模块标识 (./src/index.js), 及其依赖的模块标识存到 deferredModule 变量中，这个变量是一个二维数组，每个元素都是一个数组 A, 这个数组 A 的第一个元素表示要执行的模块表示，数组 A 后面的元素表示要执行模块的依赖，只有这些依赖下载完毕，才能执行这个模块。
+3. 执行 deferredModule 里面的每个入口模块，执行的过程即是调用 webpack 自定义的模块加载器。
+
+
+
+
+
 
 
 
