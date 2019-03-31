@@ -1,3 +1,12 @@
 <template>
-  <div>webpack demo</div>
+  <div>webpack demo {{message}}</div>
 </template>
+<script>
+  export default {
+    data () {
+      return {
+        message: 'vue data'  
+      }  
+    }
+  }
+</script>
