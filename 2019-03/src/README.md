@@ -612,7 +612,9 @@ function checkDeferredModules() {
 ![](./images/bianyi.png)
 
 
-对于运行时，是先初始化模块管理器 maniest, 下载第三方库 vendors, 接着加载并执行业务入口文件代码。
+对于运行时，是先初始化模块管理器 maniest, 下载第三方库 vendors, 接着加载并执行业务入口文件代码。其总体结构大致如下图所示:
+
+![](./images/jiegou.png)
 
 
 
