@@ -663,11 +663,10 @@ function checkDeferredModules() {
   <script type="text/javascript" src="vendors.js" ></script>
   <script type="text/javascript" src="manifest.js"></script>
 ```
-
+下面是 webpack 打包后的模块加载和执行流程：  
 
 ![](./images/jiegou.png)
 
-即是每个 webpack 打包后的代码以上述流程图描述的方式运行。
 
 
 
