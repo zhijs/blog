@@ -1,12 +1,12 @@
 ## 理解 webpack 中 JavaScript 的模块机制
-### 在现今的前端开发中，webpack 已经成为项目中可以算的是必不可少的工具了，我们常常会用 webpack 来构建我们的项目，管理我们项目的依赖，特别是我们项目的中用到的 Javascript 模块代码，今天我们就来分析一下 webpack 是如何管理我们项目中用到的 JavaScript 模块的。本文主要包含以下几部分内容 (webpack 4)：
+### 在现今的前端开发中，webpack 已经成为项目中可以算的是必不可少的工具了，我们常常会用 webpack 来构建我们的项目，管理我们项目的依赖，特别是我们项目的中用到的 Javascript 模块代码，今天我们就来分析一下 webpack 是如何管理我们项目中用到的 JavaScript 模块的。本文主要包含以下几部分内容：
 - webpack 如何打包编译模块
 - webpack 对模块依赖加载
 - webpack 对模块的唯一标识，命名冲突的处理
 - webpack 模块管理之 manifest
 
 ### webpack 打包编译模块
-我们都知道 webpack 会从我们配置的入口文件开始寻找依赖，在只有一个编译出口的情况下，会将该入口文件所依赖的模块都打包提取到一个 bundle.js 文件中，我们首先从一个简单的例子来看看 webpack 是如何处理打包编译的。
+我们都知道 webpack 会从我们配置的入口文件开始寻找依赖，在只有一个编译出口的情况下，会将该入口文件所依赖的模块都打包提取到一个 bundle.js 文件中，我们首先从一个简单的例子来看看 webpack 是如何处理打包编译的 (注：以下的例子都基于 webpack 4+)。
 
  #### 入口文件及其依赖和 webpack 配置
 
@@ -502,7 +502,7 @@ function webpackJsonpCallback(data) {
   // 设置该文件已经加载完毕
   installedChunks[chunkId] = 0;
   }
-  // 遍历所有的模块对象集合 
+  // 遍历所有的模块对象集合, 并存储到闭包变量 modules 中。
   for(moduleId in moreModules) {
     if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
       modules[moduleId] = moreModules[moduleId];
@@ -516,7 +516,7 @@ function webpackJsonpCallback(data) {
     resolves.shift()();
   }
 
-  // 在 vendors 文件模块执行过程中， executeModules 为空数组
+  // 将需要执行的的模块加入到 deferredModules 数组中
   deferredModules.push.apply(deferredModules, executeModules || []);
 
   // 检测并运行模块
@@ -571,27 +571,30 @@ function webpackJsonpCallback(data) {
 ]
 );
 ```
-执行的操作逻辑和 vendors 一样，只不过传入的参数不一样。入口文件定义了["./src/index.js","manifest","vendors"] 为需要执行的模块名称，所以最后会执行模块加载函数:
-
+执行的操作逻辑和 vendors 一样，只不过传入的参数不一样。入口文件定义了["./src/index.js","manifest","vendors"] 为需要执行的模块名称。所以再执行检测运行模块的时候，就会真正的触发业务逻辑调用。
 ```javascript
 function checkDeferredModules() {
   // deferredModules = [["./src/index.js","manifest","vendors"]]
   var result;
   for(var i = 0; i < deferredModules.length; i++) {
+    // 取出每一个需要执行的入口模块数组
     var deferredModule = deferredModules[i];
     var fulfilled = true;
-    // "manifest", vendors 这个文件时依赖，必须要下载完毕才能执行 index.js 入口文件模块
+    // 判断改入口模块的依赖是否已经下载完毕，在这个例子中就是，"manifest", vendors 这两个文件是否下载完毕
     for(var j = 1; j < deferredModule.length; j++) {
       var depId = deferredModule[j];
       if(installedChunks[depId] !== 0) fulfilled = false;
     }
     // 依赖都下载完毕
     if(fulfilled) {
-      // 取出 ./src/index.js，并执行相应的逻辑代码
+      // 删除待执行的入口模块数组，例子中就是 ["./src/index.js","manifest","vendors"]
       deferredModules.splice(i--, 1);
+
+      // 执行入口模块标识的具体代码，例子中就是 ["./src/index.js"]
       result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
     }
   }
+  // 返回模块导出
   return result;
 }
 
@@ -599,7 +602,14 @@ function checkDeferredModules() {
 可以看到 app.js 执行的过程，主要做了以下几件事：
 1. 将 webpack 包装的 app.js 模块对象集合设置到闭包模块变量 modules 中
 2. 将 入口模块标识 (./src/index.js), 及其依赖的模块标识存到 deferredModule 变量中，这个变量是一个二维数组，每个元素都是一个数组 A, 这个数组 A 的第一个元素表示要执行的模块表示，数组 A 后面的元素表示要执行模块的依赖，只有这些依赖下载完毕，才能执行这个模块。
-3. 执行 deferredModule 里面的每个入口模块，执行的过程即是调用 webpack 自定义的模块加载器。
+3. 检测是否有需要执行的模块，如果有且相应的依赖文件已经下载完毕，则执行模块代码
+
+
+从上面的例子中我们可以看出每个文件在执行的过程中，都会执行以下操作
+1. 将自己设为已下载状态
+2. 将自己的模块集合设置到闭包变量 modules 中
+3. 如果有需要执行的模块代码，就将改模块标识及其依赖的文件模块 push 到闭包变量 deferredModules 中。
+4. 检测 deferredModules 中是否有需要执行的模块，有的话，判断其依赖的文件模块是否已经下载完毕，是的话，去除执行，否则退出。
 
 
 #### 总结
@@ -612,9 +622,21 @@ function checkDeferredModules() {
 ![](./images/bianyi.png)
 
 
-对于运行时，是先初始化模块管理器 maniest, 下载第三方库 vendors, 接着加载并执行业务入口文件代码。其总体结构大致如下图所示:
+对于运行时，webpack 做了延迟执行的逻辑，在加载文件模块的时候，将要执行的模块及文件依赖并入 deferredModule 数组中，然后再检测是否依赖是否可用，再决定是否执行。所以即使我们调整了 html 中 script 脚本的引用顺序，程序依然可以正常运行：
+
+```html
+  <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript" src="vendors.js" ></script>
+  <script type="text/javascript" src="manifest.js"></script>
+```
+
+app.js 的执行是将需要执行的模块和依赖 ["./src/index.js","manifest","vendors"] 并入 deferredModule，然后因为调用 checkDeferredModules 会检测到 manifest 和 vendors 并未下载完毕，所以不会执行，而等到 manifest.js 下载并执行的时候，同样会调用 checkDeferredModules，此时发现 manifest 和 vendors 已经下载完毕，便会执行相应入口模块代码。其流程如下图所示：
 
 ![](./images/jiegou.png)
+
+即是每个 webpack 打包后的代码以上述流程图描述的方式运行。
+
+
 
 
 
