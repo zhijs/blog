@@ -437,7 +437,8 @@ webpack 生成的 manifest 文件如下所示：
   // 获取模块数组副本
   jsonpArray = jsonpArray.slice();
     
-  // 遍历模块数组，并用 jsonpa 回调去加载模块
+  // 检测是否有未处理的模块，应为在 manifest 文件下载之前，window["webpackJsonp"] 没被重写，只是一个数组，所以这里需要将前面的数据拿出来执行一遍。
+
   for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
     
   var parentJsonpFunction = oldJsonpFunction;
@@ -527,7 +528,7 @@ function webpackJsonpCallback(data) {
 在 installedChunks 变量中添加 vendors 为已经加载完毕，同时，将 vendors 文件内的模块集合设置到闭包变量 modules 中。
 
 #### 业务逻辑入口文件 app.js
-我们知道，业务代码是最后才加载执行的，应为它的执行依赖了第三方库带代码 vendors 和 webpack 模块加载器等基础方法集合的 manifest 文件。接着来分析一下入口文件 app.js 执行过程。
+我们知道，业务代码是最后才能被执行的，应为它的执行依赖了第三方库带代码 vendors 和 webpack 模块加载器等基础方法集合的 manifest 文件。接着来分析一下入口文件 app.js 执行过程。
 
 入口文件的加载执行方式和 vendors 一样，只不过传入的参数不一样，一下 app.js 被打包编译后的代码：
 
@@ -605,12 +606,46 @@ function checkDeferredModules() {
 3. 检测是否有需要执行的模块，如果有且相应的依赖文件已经下载完毕，则执行模块代码
 
 
-从上面的例子中我们可以看出每个文件在执行的过程中，都会执行以下操作
-1. 将自己设为已下载状态
-2. 将自己的模块集合设置到闭包变量 modules 中
-3. 如果有需要执行的模块代码，就将改模块标识及其依赖的文件模块 push 到闭包变量 deferredModules 中。
-4. 检测 deferredModules 中是否有需要执行的模块，有的话，判断其依赖的文件模块是否已经下载完毕，是的话，去除执行，否则退出。
+从上面的例子中我们可以看出每个文件在执行的过程中，都会执行以下操作:
+1. 文件下载
+2. 调用 (window["webpackJsonp"] = window["webpackJsonp"] || []).push 方法，并传入相应参数
 
+从上文中，我们知道 window["webpackJsonp"].push 方法在 manifest.js 文件的立即执行函数中被重写，在调用 window["webpackJsonp"].push 方法时，如果 manifest.js 文件已经被下载，则相当于执行 webpackJsonpCallback 方法，存储模块，设置文件已下载，检测是否有需要执行的代码。相反，如果 manifest.js 未被下载，则将以下数组暂存到 window["webpackJsonp"] 全局变量数组中：
+
+```javascript
+[
+  ['文件模块名'],
+  {
+    "模块标识符1":  (function(module, __webpack_exports__, __webpack_require__) {
+      // code
+    }),
+    "模块标识符2":  (function(module, __webpack_exports__, __webpack_require__) {
+      // code
+    })
+  },
+  [
+    ["入口文件1","入口文件1依赖","入口文件1依赖"...],
+    ["入口文件2","入口文件2依赖","入口文件2依赖"...]
+    ......
+  ]
+]
+```
+
+等到 manifest.js 下载的时候才去执行具体的逻辑:
+
+```javascript
+ var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
+  var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+  
+  // 重写 模块数组的 push 方法为模块加载 jsonp 回调函数
+  jsonpArray.push = webpackJsonpCallback;
+  
+  // 获取模块数组副本
+  jsonpArray = jsonpArray.slice();
+    
+  // 检测是否有未处理的模块，应为在 manifest 文件下载之前，window["webpackJsonp"] 没被重写，只是一个数组，所以这里需要将前面的数据拿出来执行一遍。
+  for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+```
 
 #### 总结
 通过上文的说明我们知道，webpack 工作过程大致可以分为两个阶段：
@@ -622,15 +657,13 @@ function checkDeferredModules() {
 ![](./images/bianyi.png)
 
 
-对于运行时，webpack 做了延迟执行的逻辑，在加载文件模块的时候，将要执行的模块及文件依赖并入 deferredModule 数组中，然后再检测是否依赖是否可用，再决定是否执行。所以即使我们调整了 html 中 script 脚本的引用顺序，程序依然可以正常运行：
-
+对于运行时，在下载执行每个文件模块的时候，如果 webpack 模块管理器 manifest.js 未被下载和初始化，则暂存相应文件的 文件模块信息，模块对象集合信息，入口文件及其依赖信息。等到 manifest 下载完毕，在循环处理，也就是说，即使 script 脚本改变下载顺序，程序还是可以正常如期运行：
 ```html
   <script type="text/javascript" src="app.js"></script>
   <script type="text/javascript" src="vendors.js" ></script>
   <script type="text/javascript" src="manifest.js"></script>
 ```
 
-app.js 的执行是将需要执行的模块和依赖 ["./src/index.js","manifest","vendors"] 并入 deferredModule，然后因为调用 checkDeferredModules 会检测到 manifest 和 vendors 并未下载完毕，所以不会执行，而等到 manifest.js 下载并执行的时候，同样会调用 checkDeferredModules，此时发现 manifest 和 vendors 已经下载完毕，便会执行相应入口模块代码。其流程如下图所示：
 
 ![](./images/jiegou.png)
 
