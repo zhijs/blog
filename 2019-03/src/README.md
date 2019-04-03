@@ -643,7 +643,7 @@ function checkDeferredModules() {
   // 获取模块数组副本
   jsonpArray = jsonpArray.slice();
     
-  // 检测是否有未处理的模块，应为在 manifest 文件下载之前，window["webpackJsonp"] 没被重写，只是一个数组，所以这里需要将前面的数据拿出来执行一遍。
+  // 检测是否有未处理的模块，因为在 manifest 文件下载之前，window["webpackJsonp"] 没被重写，只是一个数组，所以这里需要将前面的数据拿出来执行一遍。
   for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
 ```
 
