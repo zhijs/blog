@@ -37,14 +37,38 @@
 
 ### 3. JavaScript 解析过程
 
+对于要在浏览器中执行的常规JavaScript代码，源代码被解析为一个称为AST的中间表示，它描述了代码的语法结构。然后，可以将此 AST(AST，abstract syntax tree 抽象语法树，是源代码的抽象语法结构的树状表现形式，这里特指编程语言的源代码) 编译为字节代码或本机代码以供执行, 其示意图如下：  
 
+![](./src/images/without-binAST.png)  
+
+例如，对于一个简单的加法操作，其转换后的 AST 如下图所示：  
+
+![](./src/images/ast.jpeg)  
+
+解析JavaScript不是一项简单的任务；无论使用哪种优化，它仍然需要逐字符读取整个文本文件，同时跟踪额外的上下文进行语法分析。
+
+
+BinaryAST的目标是通过在解析器需要的时间和地点提供额外的信息和上下文，来降低复杂性和浏览器解析器必须完成的总体工作量。
+
+要执行以 BinaryAST 方式传递的 JavaScript，所需要的唯一步骤是： 
+
+![](./src/images/With-BinAST.png)  
+
+BinaryAST的另一个好处是它可以只解析启动所需的关键代码，完全跳过未使用的位。这可以显著提高初始加载时间。  
+
+![](./src/images/desktop-without-BinJS-1.png)   
+
+![](./src/images/desktop-with-BinJS.png)  
 
 
 
 
 ### 参考文章及资源网站
-https://juejin.im/post/5cefeafc51882561fa75ac73
-https://astexplorer.net/
+[AST 在线预览](https://astexplorer.net/)
+https://yoric.github.io/Fosdem-2018/#11
+[我知道你懂 hoisting，可是你了解到多深？](https://blog.techbridge.cc/2018/11/10/javascript-hoisting/)
+[【译】使用"BinaryAST"加快JavaScript脚本的解析速度？](https://juejin.im/post/5cefeafc51882561fa75ac73)
+[JavaScript 二进制的 AST](https://juejin.im/post/599e6f246fb9a024985f0421)
 
 
 
