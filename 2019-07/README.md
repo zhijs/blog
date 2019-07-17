@@ -118,15 +118,25 @@ f()
 
 ### 参考文章及资源网站
 [Faster script loading with BinaryAST?](https://new.blog.cloudflare.com/binary-ast/)  
+
 [AST 在线预览](https://astexplorer.net/)   
-[我知道你懂 hoisting，可是你了解到多深？](https://blog.techbridge.cc/2018/11/10/javascript-hoisting/)  
-[【译】使用"BinaryAST"加快JavaScript脚本的解析速度？](https://juejin.im/post/5cefeafc51882561fa75ac73)  
+
+[我知道你懂 hoisting，可是你了解到多深？](https://blog.techbridge.cc/2018/11/10/javascript-hoisting/)   
+
+[【译】使用"BinaryAST"加快JavaScript脚本的解析速度？](https://juejin.im/post/5cefeafc51882561fa75ac73)   
+
 [JavaScript 二进制的 AST](https://juejin.im/post/599e6f246fb9a024985f0421)  
+
 [Binary AST proposal for ECMAScript](https://github.com/tc39/proposal-binary-ast)  
+
 [JavaScript中的 抽象语法树 AST](https://www.jianshu.com/p/b0f9971e1ec9?from=singlemessage)  
+
 [J前端与编译原理——用JS写一个JS解释器](https://segmentfault.com/a/1190000017241258)  
+
 [JavaScript解释器](https://javascript.ruanyifeng.com/advanced/interpreter.html)  
+
 [JavaScript深入浅出第4课：V8引擎是如何工作的？](https://zhuanlan.zhihu.com/p/73768338)  
+
 
 
 
