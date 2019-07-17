@@ -84,11 +84,16 @@ BinaryAST 的另一个好处是它可以只解析启动所需的关键代码，�
 
 ![](./src/images/desktop-with-BinJS.png)  
 
-上述内容大概讲述了 BinaryAST 是优化 JavaScript 解析速度的方式，接下来我们来看看 BinaryAST 优化的具体方式。
+上述内容大概讲述了 BinaryAST 大方县是优化 JavaScript 解析速度的方式，接下来我们来看看 BinaryAST 具体是有那些方面的性能提升。
 
 
-### 4.JavaScript 声明提升
-JavaScript 依赖于提升所有声明——变量、函数、类。提升是语言的一个属性，它允许你在语法上使用之后，再去声明变量，函数，类等。
+### 优化点1 - 加快网络传输速度
+由上述的内容，我们可以知道，BinaryAST 采用的是 AST 的二进制表示形式，传统的现用的 JavaScript 是采用文本的格式进行网络的传输的
+，而采用 BinaryAST 是以二进制的数据格式进行传输的，其速度毫无疑问会快于文本传输，虽然如今网络的速度是越来越快，但是 BinaryAST 的方式在传输方面还是有一定的优势的。
+
+
+### 优化点2 - 加快作用域范围查找
+其实， BinaryAST 并不仅仅是 AST 的二进制表示，确切地说，应该是 AST 加强版的二进制表示，因为 BinaryAST 在将 JavaScript 转化为二进制的同时会保存一些额外的信息，来提前指导解析器工作，而作用域信息的存储就是其中一个。
 
 来看一个例子：  
 ```javascript
@@ -99,21 +104,30 @@ function f() {
 function g() {
 	return 42;
 }
+f()
 ```
-在这里，当解析器查看函数 f 的主体时，它还不知道函数 g 指的是什么——它可能是一个已经存在的全局函数或者在同一个文件中进一步声明的某个函数——所以它无法最终解析原始函数并开始实际编译。
+在普通的 JavaScript 执行过程中，这段代码在浏览器中会被首先逐个字符的读取代码文件，进行分词，然后进行句法解析生成 AST, JavaScript 引擎会将生成的 AST 输入到 JavaScript 解释器中，然后解释器将根据 AST 生成可执行的子节码并执行。
 
-那么 BinaryAST 是如何优化这个过程的呢？
+这里存在一个作用域查找的问题，当从 AST 转为子节码的时候，会先从 f 函数调用开始，递归的解析 AST 树，并转换为字节码，解析 f 函数的时候，发现里面有个 g 标识符的调用，这里便会涉及到作用域查找问题，解释器会首先从 f 函数作用域内查找，没找到的话再到全局的作用域内查找，如果 AST 内本身有存储作用域信息的话，查找起来就方便快捷多了，而这也正是 BinaryAST 的优化点，BinaryAST 存储了额外的作用信息来指导解析，其图示如下：  
 
+
+![](./src/images/ast-scope.jpg)   
+
+ 
 
 
 ### 参考文章及资源网站
+[Faster script loading with BinaryAST?](https://new.blog.cloudflare.com/binary-ast/)
 [AST 在线预览](https://astexplorer.net/)
-https://yoric.github.io/Fosdem-2018/#11
 [我知道你懂 hoisting，可是你了解到多深？](https://blog.techbridge.cc/2018/11/10/javascript-hoisting/)
 [【译】使用"BinaryAST"加快JavaScript脚本的解析速度？](https://juejin.im/post/5cefeafc51882561fa75ac73)
 [JavaScript 二进制的 AST](https://juejin.im/post/599e6f246fb9a024985f0421)
-[Binary AST proposal for ECMAScript](https://github.com/xitu/gold-miner/blob/master/TODO/binary-ast-newsletter-1.md)
+[Binary AST proposal for ECMAScript](https://github.com/tc39/proposal-binary-ast)
 [JavaScript中的 抽象语法树 AST](https://www.jianshu.com/p/b0f9971e1ec9?from=singlemessage)
+[J前端与编译原理——用JS写一个JS解释器](https://segmentfault.com/a/1190000017241258)
+[JavaScript解释器](https://javascript.ruanyifeng.com/advanced/interpreter.html)
+[JavaScript深入浅出第4课：V8引擎是如何工作的？](https://zhuanlan.zhihu.com/p/73768338)
+
 
 
 
