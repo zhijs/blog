@@ -4,6 +4,8 @@
 
 ### Javascript  
  - [JavaScript模块化详解](https://github.com/zhijs/blog/tree/master/Javascript/Javascript%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AF%A6%E8%A7%A3)
+  - [BinaryAST 简述](https://github.com/zhijs/blog/tree/master/Javascript/BinaryAST简述)  
+  
 
 ### Webpack
 - [理解 Webpack 中 JavaScript 的模块机制](https://github.com/zhijs/blog/tree/master/Webpack/Webpack%20%E4%B8%AD%20JavaScript%20%E7%9A%84%E6%A8%A1%E5%9D%97%E6%9C%BA%E5%88%B6)
