@@ -1,6 +1,6 @@
 ### VUE
 - [Vue服务端渲染详解](https://github.com/zhijs/blog/tree/master/VUE/Vue服务端渲染)
-- [从前端路由到 vue-router](https://github.com/zhijs/blog/blob/master/VUE/%E4%BB%8E%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E5%88%B0%20vue-router/%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1.md)  
+- [从前端路由到 vue-router](https://github.com/zhijs/blog/tree/master/VUE/%E4%BB%8E%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E5%88%B0%20vue-router)  
 
 ### Javascript  
  - [JavaScript模块化详解](https://github.com/zhijs/blog/tree/master/Javascript/Javascript%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AF%A6%E8%A7%A3)
