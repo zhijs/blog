@@ -133,7 +133,7 @@ exports = function(a, b) {
 
 其流程如下图所示：
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/2018-07/src/images/%E8%B7%AF%E5%BE%84%E5%88%86%E6%9E%90.jpg)
+![](./images/路径分析.jpg)
 
 #### 模块编译
 
@@ -461,7 +461,7 @@ req.createNode = function(config, moduleName, url) {
 
 可以看出，这里主要是根据模块的 Url，创建了一个异步的 Script 标签，并将模块 id 名称添加到的标签的 data-requiremodule 上，再将这个 Script 标签添加到了 html 页面中。同时为 Script 标签的 load 事件添加了处理函数，当该模块文件被加载完毕的时候，就会触发 context.onScriptLoad。我们在 onScriptLoad 添加断点，可以看到页面结构如下图所示:
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/2018-07/src/images/requirejs-js-load.png)
+![](./images/requirejs-js-load.png)
 
 由图可以看到，Html 中添加了一个 Script 标签，这也就是异步加载模块的原理。
 
