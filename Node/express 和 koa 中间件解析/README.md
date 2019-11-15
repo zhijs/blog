@@ -110,7 +110,8 @@ Cannot set headers after they are sent to the client.......
 ### 洋葱模型
 koa 中间件模型入下图所示：  
 
-![]('./images/洋葱模型.png')
+![](./images/洋葱模型.png)
+
 
 
 
