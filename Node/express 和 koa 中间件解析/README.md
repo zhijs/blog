@@ -2,7 +2,7 @@
 在 NodeJS 中 express 和 koa 可以说是两个比较著名的服务端框架，express 成型较早于 koa，两者比较大的差异在于 express 主要基于异步回调的处理方式，而且集成了丰富的功能模块(静态文件，路由支持)，相比之下 koa 则轻便了很多，koa 使用了 ES8 的新语法 async/await 代替了回调函数，使得 逻辑更加简单明了，同时  Koa 并没有捆绑任何中间件。
 
 ###  express 和 koa 中间件解析
-用过或者了解过 koa 的人都知道，koa 的中间件采用了一种被称为 “洋葱模型” 的中间件形式，那么什么是洋葱模型，其与 express 中的中间件的模式区别在哪里？有什么样的优缺点？接下来我们来逐个分析。
+用过或者了解过 koa 的人都知道，koa 的中间件采用了一种被称为 “洋葱模型” 的中间件形式，那么什么是洋葱模型，其与 express 中的中间件的模式区别在哪里？有什么样的优缺点？接下来我们来逐个分析(下面的例子只对全局中间件展开讨论)。
 
 ### 什么是中间件
 > 中间件定义-维基百科
@@ -159,6 +159,58 @@ koa 中间件模型入下图所示：
 
 
 ### 从源码的处深入分析中间件流程之 - koa
+下面，我们的通过上述的列子，结合 koa 的源码深入的了解其中间件的处理流程：
+这里我们会贴一些关键代码
+
+app.use 发生了啥(这里去掉了防错检查和日志提示代码)
+```javascript
+module.exports = class Application extends Emitter {
+  constructor(options) {
+    // n 行代码
+    super();
+    this.middleware = [];
+    // n 行代码
+  }
+  // n 行代码
+  use(fn) {
+    if (isGeneratorFunction(fn)) {
+      fn = convert(fn);
+    }
+    this.middleware.push(fn);
+    return this;
+  }
+  // n 行代码
+}
+```
+这里做了两件事
+1. 检查中间件函数，如果是 generator 就转化为基于 Promise 的中间件函数
+2. 将中间件函数 push 到中间件数组中
+
+接下来执行 app.listen:
+```javascript
+ // class Application
+  listen(...args) {
+    const server = http.createServer(this.callback());
+    return server.listen(...args);
+  }
+```
+listen 也很简单明了，直接创建一个 http 服务，然后将 callback 函数的返回值作为处理请求的回调函数：
+```javascript
+// this.callback
+callback() {
+  const fn = compose(this.middleware);
+  // 省略部分代码
+  const handleRequest = (req, res) => {
+    const ctx = this.createContext(req, res);
+    return this.handleRequest(ctx, fn);
+  };
+    return handleRequest;
+  }
+```
+这里 callback 返回了一个回调函数，并且将中间件进行了合并 compose 
+
+
+
 
 
 
