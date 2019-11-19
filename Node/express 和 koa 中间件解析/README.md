@@ -207,7 +207,28 @@ callback() {
     return handleRequest;
   }
 ```
-这里 callback 返回了一个回调函数，并且将中间件进行了合并 compose 
+这里 callback 返回了一个回调函数，并且将中间件进行了合并 compose, 当有请求到来的时候就执行  this.handleRequest(ctx, fn), 并传入合并处理后的中间件函数， 如下是合并中间件的操作:
+```javascript
+function compose (middleware) {
+  // n 行代码
+  return function (context, next) {
+    let index = -1
+    return dispatch(0)
+    function dispatch (i) {
+      if (i <= index) return Promise.reject(new Error('next() called multiple times'))
+      index = i
+      let fn = middleware[i]
+      if (i === middleware.length) fn = next
+      if (!fn) return Promise.resolve()
+      try {
+        return Promise.resolve(fn(context, dispatch.bind(null, i + 1)));
+      } catch (err) {
+        return Promise.reject(err)
+      }
+    }
+  }
+}
+```
 
 
 
