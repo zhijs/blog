@@ -229,14 +229,66 @@ function compose (middleware) {
   }
 }
 ```
+从上面的代码可以看出，当请求到来的时候，会执行第一个中间件的逻辑，然后第一个中间件执行的完成依赖于后面中间件的执行，其过程类似于如下代码：  
+```javascript
+const fn1 = async  () => {
+  console.log('中间件1 start')
+  await fn2()
+  console.log('中间件1 end')
+}
 
+const fn2 = async () => {
+ console.log('中间件2 start')
+ await fn3()
+ console.log('中间件2 end')
+}
 
-
-
-
+const fn3 = async () => {
+ console.log('中间件3 start')
+ console.log('中间件3 end')
+}
+ Promise.resolve(fn1())
+```
+只不过在 compose, 在执行第一个中间件的过程中，会将下一个中间件的包装函数座位 next 参数的值传入，最后用一个 Promise 包裹，形成 Promise 栈式调用。同时也利用了闭包的特性，所有的中间件都引用子同一个 context 对象，这也是为何 koa 当前中间件函数中 ctx 的值是来自上一个中间件函数处理的结果。所以当最后一个中间件执行完毕时，函数的调用栈会依次返回，从而达到响应流的洋葱模型流出形式。
 
 ### 从源码的处深入分析中间件流程之 - express
+同样，我们根据例子来深入到 express 中间件的源码中，分析其中间件的执行流程，首先我们来看看 app.use 做了啥？
 
+```javascript
+app.use = function use(fn) {
+  var offset = 0;
+  var path = '/';
+  var fns = flatten(slice.call(arguments, offset));
+  this.lazyrouter();
+  var router = this._router;
+  fns.forEach(function (fn) {
+    // non-express app
+    if (!fn || !fn.handle || !fn.set) {
+      return router.use(path, fn);
+    }
+
+    debug('.use app under %s', path);
+    fn.mountpath = path;
+    fn.parent = this;
+
+    // restore .app property on req and res
+    router.use(path, function mounted_app(req, res, next) {
+      var orig = req.app;
+      fn.handle(req, res, function (err) {
+        setPrototypeOf(req, orig.request)
+        setPrototypeOf(res, orig.response)
+        next(err);
+      });
+    });
+
+    // mounted an app
+    fn.emit('mount', this);
+  }, this);
+
+  return this;
+};
+
+```
 
 
 
