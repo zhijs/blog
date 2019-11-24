@@ -258,37 +258,47 @@ const fn3 = async () => {
 app.use = function use(fn) {
   var offset = 0;
   var path = '/';
+  // 扁平化为数组
   var fns = flatten(slice.call(arguments, offset));
-  this.lazyrouter();
+
+  this.lazyrouter(); // _router 不存在就初始化一个 Router 对象
   var router = this._router;
   fns.forEach(function (fn) {
-    // non-express app
     if (!fn || !fn.handle || !fn.set) {
       return router.use(path, fn);
     }
-
-    debug('.use app under %s', path);
-    fn.mountpath = path;
-    fn.parent = this;
-
-    // restore .app property on req and res
-    router.use(path, function mounted_app(req, res, next) {
-      var orig = req.app;
-      fn.handle(req, res, function (err) {
-        setPrototypeOf(req, orig.request)
-        setPrototypeOf(res, orig.response)
-        next(err);
-      });
-    });
-
-    // mounted an app
-    fn.emit('mount', this);
   }, this);
 
   return this;
 };
 
 ```
+app.use 主要以下几件事：
+1. 将中间件函数转化为数组对象
+2. 生成一个 Router 实例 _router并初始化(如果不存在的话)
+3. 遍历中间件数组对象, 调用 _router.use(path, fn)
+所以 app.use 实际上是调用了 _router.use()
+
+顺藤摸瓜，继续来看看 _router.use 的方法
+```javascript
+provarto.use = function use(fn) {
+   callbacks = flatten(slice.call(arguments, offset));
+  for (var i = 0; i < callbacks.length; i++) {
+    var fn = callbacks[i];
+    var layer = new Layer(path, {
+      sensitive: this.caseSensitive,
+      strict: false,
+      end: false
+    }, fn);
+
+    layer.route = undefined;
+
+    this.stack.push(layer);
+  }
+  return this;
+};
+```
+
 
 
 
