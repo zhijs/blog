@@ -5,7 +5,7 @@
 ### Javascript  
  - [JavaScript模块化详解](https://github.com/zhijs/blog/tree/master/Javascript/Javascript%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AF%A6%E8%A7%A3)
   - [BinaryAST 简述](https://github.com/zhijs/blog/tree/master/Javascript/BinaryAST简述)  
-  - [async、defer 以及动态 apend 的 js 脚本下载和执行](https://github.com/zhijs/blog/tree/master/Javascript/Async defer and dynamic Script) 
+  - [async、defer 以及动态 apend 的 js 脚本下载和执行](https://github.com/zhijs/blog/tree/master/Javascript/Async%20defer%20and%20dynamic%20Script) 
   
 
 ### Webpack
