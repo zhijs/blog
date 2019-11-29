@@ -255,6 +255,7 @@ const fn3 = async () => {
 同样，我们根据例子来深入到 express 中间件的源码中，分析其中间件的执行流程，首先我们来看看 app.use 做了啥？
 
 ```javascript
+//express/lib/application.js
 app.use = function use(fn) {
   var offset = 0;
   var path = '/';
@@ -281,8 +282,12 @@ app.use 主要以下几件事：
 
 顺藤摸瓜，继续来看看 _router.use 的方法
 ```javascript
-provarto.use = function use(fn) {
-   callbacks = flatten(slice.call(arguments, offset));
+// express/lib/router/index.js
+proto.use = function use(fn) {
+  var offset = 0;
+  var path = '/';
+  // 省略部分代码-参数处理逻辑
+  callbacks = flatten(slice.call(arguments, offset));
   for (var i = 0; i < callbacks.length; i++) {
     var fn = callbacks[i];
     var layer = new Layer(path, {
@@ -290,14 +295,16 @@ provarto.use = function use(fn) {
       strict: false,
       end: false
     }, fn);
-
     layer.route = undefined;
-
     this.stack.push(layer);
   }
   return this;
 };
 ```
+可以看到这个为每个中间件创建了一个 Layer (层)实例，并将所有的层 push 到 _router 的 task 数组中。
+这个 Layer 就是实际处理请求的地方。
+
+
 
 
 
