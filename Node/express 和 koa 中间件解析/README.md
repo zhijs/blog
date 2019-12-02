@@ -372,19 +372,7 @@ proto.handle = function handle(req, res, out) {
   var parentParams = req.params;
   var parentUrl = req.baseUrl || '';
   var done = restore(out, req, 'baseUrl', 'next', 'params');
-
-  // setup next layer
   req.next = next;
-
-  // for options requests, respond with a default if nothing else responds
-  if (req.method === 'OPTIONS') {
-    done = wrap(done, function(old, err) {
-      if (err || options.length === 0) return old(err);
-      sendOptionsResponse(res, options, old);
-    });
-  }
-
-  // setup basic req values
   req.baseUrl = parentUrl;
   req.originalUrl = req.originalUrl || req.url;
 
@@ -394,37 +382,11 @@ proto.handle = function handle(req, res, out) {
     var layerError = err === 'route'
       ? null
       : err;
-
-    // remove added slash
-    if (slashAdded) {
-      req.url = req.url.substr(1);
-      slashAdded = false;
-    }
-
-    // restore altered req.url
-    if (removed.length !== 0) {
-      req.baseUrl = parentUrl;
-      req.url = protohost + removed + req.url.substr(protohost.length);
-      removed = '';
-    }
-
-    // signal to exit router
-    if (layerError === 'router') {
-      setImmediate(done, null)
-      return
-    }
-
-    // no more matching layers
+    // 省略 n 行代码
+    // 没有更多中间件
     if (idx >= stack.length) {
       setImmediate(done, layerError);
       return;
-    }
-
-    // get pathname of request
-    var path = getPathname(req);
-
-    if (path == null) {
-      return done(layerError);
     }
 
     // find next matching layer
