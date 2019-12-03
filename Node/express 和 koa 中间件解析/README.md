@@ -398,73 +398,25 @@ proto.handle = function handle(req, res, out) {
       layer = stack[idx++];
       match = matchLayer(layer, path);
       route = layer.route;
-
-      if (typeof match !== 'boolean') {
-        // hold on to layerError
-        layerError = layerError || match;
-      }
-
-      if (match !== true) {
-        continue;
-      }
-
-      if (!route) {
-        // process non-route handlers normally
-        continue;
-      }
-
-      if (layerError) {
-        // routes do not match with a pending error
-        match = false;
-        continue;
-      }
-
-      var method = req.method;
-      var has_method = route._handles_method(method);
-
-      // build up automatic options response
-      if (!has_method && method === 'OPTIONS') {
-        appendMethods(options, route._options());
-      }
-
-      // don't even bother matching route
-      if (!has_method && method !== 'HEAD') {
-        match = false;
-        continue;
-      }
+      // 省略部分代码
     }
-
-    // no match
     if (match !== true) {
       return done(layerError);
     }
-
-    // store route for dispatch on change
-    if (route) {
-      req.route = route;
-    }
-
-    // Capture one-time layer values
-    req.params = self.mergeParams
-      ? mergeParams(layer.params, parentParams)
-      : layer.params;
-    var layerPath = layer.path;
+    
 
     // this should be done for the layer
     self.process_params(layer, paramcalled, req, res, function (err) {
       if (err) {
         return next(layerError || err);
       }
-
-      if (route) {
-        return layer.handle_request(req, res, next);
-      }
-
       trim_prefix(layer, layerError, layerPath, path);
     });
   }
 
   function trim_prefix(layer, layerError, layerPath, path) {
+    debugger
+    console.log(1111)
     if (layerPath.length !== 0) {
       // Validate path breaks on a path separator
       var c = path[layerPath.length]
