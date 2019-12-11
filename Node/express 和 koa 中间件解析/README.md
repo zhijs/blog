@@ -364,9 +364,6 @@ proto.handle = function handle(req, res, out) {
   var idx = 0;
   var protohost = getProtohost(req.url) || ''
   var removed = '';
-  var slashAdded = false;
-  var paramcalled = {};
-  var options = [];
   var stack = self.stack;
 
   var parentParams = req.params;
@@ -379,9 +376,6 @@ proto.handle = function handle(req, res, out) {
   next();
 
   function next(err) {
-    var layerError = err === 'route'
-      ? null
-      : err;
     // 省略 n 行代码
     // 没有更多中间件
     if (idx >= stack.length) {
@@ -393,18 +387,15 @@ proto.handle = function handle(req, res, out) {
     var layer;
     var match;
     var route;
-
+    
+    // 遍历 layer, 找出合适的处理层
     while (match !== true && idx < stack.length) {
       layer = stack[idx++];
       match = matchLayer(layer, path);
       route = layer.route;
       // 省略部分代码
     }
-    if (match !== true) {
-      return done(layerError);
-    }
     
-
     // this should be done for the layer
     self.process_params(layer, paramcalled, req, res, function (err) {
       if (err) {
@@ -415,52 +406,27 @@ proto.handle = function handle(req, res, out) {
   }
 
   function trim_prefix(layer, layerError, layerPath, path) {
-    debugger
-    console.log(1111)
-    if (layerPath.length !== 0) {
-      // Validate path breaks on a path separator
-      var c = path[layerPath.length]
-      if (c && c !== '/' && c !== '.') return next(layerError)
-
-      // Trim off the part of the url that matches the route
-      // middleware (.use stuff) needs to have the path stripped
-      debug('trim prefix (%s) from url %s', layerPath, req.url);
-      removed = layerPath;
-      req.url = protohost + req.url.substr(protohost.length + removed.length);
-
-      // Ensure leading slash
-      if (!protohost && req.url[0] !== '/') {
-        req.url = '/' + req.url;
-        slashAdded = true;
-      }
-
-      // Setup base URL (no trailing slash)
-      req.baseUrl = parentUrl + (removed[removed.length - 1] === '/'
-        ? removed.substring(0, removed.length - 1)
-        : removed);
-    }
-
-    debug('%s %s : %s', layer.name, layerPath, req.originalUrl);
-
+    // 省略部分代码
     if (layerError) {
       layer.handle_error(layerError, req, res, next);
     } else {
+      // 执行请求处理，即是调用自己编写的中间件函数
       layer.handle_request(req, res, next);
     }
   }
 };
 
 ```
+由上述的代码可以看出，express 中间件处理的过程是：当有请求到来时，会根据路径来遍历中间件列表，依次找出合适的中间件进行处理，同时再执行中间件处理逻辑时，传入触发执行下一个中间件的 next 函数，只有调用 next 方法时，才会继续取出下一个匹配的中间件执行。
+
+到这里我们知道，koa 和 express 的 next 有着本质上的区别，在 koa 中，中间件的 next 代表的是下一个中间件方法，而在 express 中，next 则更像是一个启动匹配下一个合适中间件的‘开关’。
 
 
 
+### 总结
+综上所述，对于 koa 和 express 中间件，其主要以下的不同点：
+- 1.中间件串联调用方式不同
+koa 基于函数栈调用方式，express 基于循环匹配查找并执行调方法
 
-
-
-
-
-
-
-
-### 参考文章
-https://segmentfault.com/a/1190000013981513
+- 2.响应规则不同
+koa 可以在每个中间件执行响应数据写入，而只有最后一个写入的才会最终返回给客户端，express 只能有一个中间件进行响应，多个中间件响应后会报错(所以中间件响应后，必须要调用 return 结束处理)
