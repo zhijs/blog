@@ -123,7 +123,7 @@ Cannot set headers after they are sent to the client.......
 ### koa 洋葱模型
 koa 中间件模型入下图所示：  
 
-![](./images/洋葱模型.png) 
+![](https://github.com/zhijs/blog/blob/master/Node/express%20%E5%92%8C%20koa%20%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E6%9E%90/images/%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B.png) 
 
 如上图所以，在 koa 的中间件模型中，当一个请求到来的时候，请求流会按照中间件注册的顺序，首先进入第一个注册的中间件，当第一个中间件处理完请求流的时候，其有两个选择，1 是直接响应结束请求，2 是调用 next 方法， 该函数暂停并将控制传递给定义的下一个中间件。当在下游没有更多的中间件执行后，堆栈将展开并且每个中间件恢复执行其上游行为。
 
@@ -146,7 +146,7 @@ koa 中间件模型入下图所示：
  express 中间件管道模型如下图所示
 
  
-![](./images/express-middleware-model.png)  
+![](https://github.com/zhijs/blog/blob/master/Node/express%20%E5%92%8C%20koa%20%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E6%9E%90/images/express-middleware-model.png)  
 
 
  从上图可以看出，express 中间件的模型有点类似于水流管道，某个中间件在调用 next 的时候，会将执行权交给下一个中间件(如果有的话)，和 koa 不同的是：
