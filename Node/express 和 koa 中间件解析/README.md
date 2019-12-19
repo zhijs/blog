@@ -121,7 +121,7 @@ Cannot set headers after they are sent to the client.......
 
 
 ### koa 洋葱模型
-koa 中间件模型入下图所示：  
+首先是著名的洋葱模型，koa 中间件洋葱模型如下图所示：  
 
 ![](https://github.com/zhijs/blog/blob/master/Node/express%20%E5%92%8C%20koa%20%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E6%9E%90/images/%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B.png) 
 
