@@ -16,8 +16,76 @@
 - 结束请求/响应循环。
 - 调用堆栈中的下一个中间件。
 
+### 为什么需要中间件
+我们先从一个简单的场景，假设我们的接口服务需要记录服务处理请求的时间，在没有中间件的情况下，可能是这样处理的。
 
+```javascript
+// interface1.js
+module.exports = function (req, res) {
+  let start  = new Date()
+  //处理请求逻辑
+  handleRequest1()
+  let end = new Date()
+  log.info(`handle request ${req.url}: ${end - start}`)  
+}
 
+// index.js
+const interface1 = require('interface1.js')
+app.post('/interfaces1', interface1)
+```
+看起来很完美, 这个时候，假设又有一个接口 interface2 也要使用日志记录，这个时候可能是直接按原来的方式再写一遍：  
+
+```javascript
+// interface2.js
+module.exports = function (req, res) {
+  let start  = new Date()
+  //处理请求逻辑
+  handleRequest2()
+  let end = new Date()
+  log.info(`handle request ${req.url}: ${end - start}`)  
+}
+
+const interface1 = require('interface1.js')
+const interface2 = require('interface2.js')
+app.post('/interfaces1', interface1)
+app.post('/interfaces2', interface2)
+```
+看起来也没啥问题，但是假如后面有更多的接口需要接入日志打印，那么我们便要复制 n 便相同的代码到接口处理逻辑中，更可怕的是，假设想增加一个请求方法日志的信息，那么需要每个接口都要修改一遍，随着接口的增多，项目的变大，这种方式的日志记录维护将会变得越来越困难， 那么我们能不能将日志记录的逻辑从接口逻辑中抽离出来，单独维护，答案是可以的，那就是将日志记录当做中间件:
+
+```javascript
+// logger.js
+module.exports = function(req, res, next) {
+  let start  = new Date()
+  next()
+  let end = new Date()
+  log.info(`handle request ${req.url}: ${end - start}`)  
+}
+
+// interface1.js
+module.exports = function (req, res) {
+  //处理请求逻辑
+  handleRequest1()
+}
+
+// interface2.js
+module.exports = function (req, res) {
+  //处理请求逻辑
+  handleRequest2()
+}
+
+// index.js
+const logger = require('logger.js')
+const interface1 = require('interface1.js')
+const interface2 = require('interface2.js')
+app.post('/interfaces\d+', logger)
+app.post('/interfaces1', interface1)
+app.post('/interfaces2', interface2)
+```
+
+这样就将日志记录抽离为一个中间件，无论如何改写日志记录都不会影响到具体请求逻辑处理的部分代码，也不用，每个地方都修改一次，为何起来很方便。
+
+所以，中间件的主要的作用是，解耦业务逻辑，独立模块(例如鉴权，日志等)。
+- 
 ### 从一个例子来窥探 express 和 koa 中间件处理流程
 express 代码
 ```javascript
