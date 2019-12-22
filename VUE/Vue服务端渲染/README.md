@@ -437,7 +437,7 @@ app.$mount('#app')
 ![](./images/asyncData.png)
 ![](./images/windowState.png)
 
-由图上，可以看到，在客户端返回的 html 字符串中，state 数据被设置到了 window**INITIAL_STATE**上，这是 vue-server-render 里面自动的操作，所以我们便可以根据这个来设置客户带的 state,使两者的 store 数据一致。
+由图上，可以看到，在客户端返回的 html 字符串中，state 数据被设置到了 window.**__INITIAL_STATE**上，这是 vue-server-render 里面自动的操作，所以我们便可以根据这个来设置客户带的 state,使两者的 store 数据一致。
 
 ### 6.总结
 
