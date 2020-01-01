@@ -17,3 +17,4 @@ new MyComponent().$mount('#app')
 ```
 
 其实例 mount 的流程图如下所示：
+
