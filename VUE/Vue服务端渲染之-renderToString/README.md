@@ -17,3 +17,15 @@ new MyComponent().$mount('#app')
 ```
 
 其实例 mount 的流程图如下所示：
+
+
+
+
+
+
+
+
+
+### tips
+组件生成周期函数，例如 created、 beforeCreate 等，即时是用 async await 的阻塞函数运行也不会阻塞组件 render ，以及其他生命周期函数的执行
+因为本质上，
