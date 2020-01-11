@@ -115,7 +115,7 @@ exports.student = student
 
 ![student 数据表](https://user-gold-cdn.xitu.io/2020/1/11/16f9494ea84d7098?w=595&h=203&f=png&s=7807)
 
-上图中 createAt 和 updateAt 是 Sequlize 默认添加的字段，我们可以在配置 model 的时候可以选择去掉。
+上图中 createAt 和 updateAt 是 Sequlize 默认添加的字段，我们可以在配置 model 的时候选择去掉。
 
 #### 4. 数据增删改查
 有了数据表后，我们可以用 model 对数据表进行增删改查的操作了
@@ -208,11 +208,11 @@ router.post('/student/update/:id', async(ctx, next) => {
 
 其他删改查类似。
 
-上述只讲述了单表的操作，但是在工作中，我们常常需要多变联合操作，下面我们来看看，Sequelize 如何进行多表联合操作。
+上述只讲述了单表的操作，但是在工作中，我们常常需要多表联合操作，下面我们来看看，Sequelize 如何进行多表联合操作。
 
 ### koa + Sequelize + MySql 关联表的增删改查
 
-假设每个学生需要记录自己所学的课程信息，学生和课程之间的关心为 1:N, 一个学生可能选了很多课，也可能一门课也没有，所以最好的办法是将课程作为一个单独的表，然后和学生关联起来。
+假设每个学生需要记录自己所学的课程信息，学生和课程之间的关系为 1:N, 一个学生可能选了很多课，也可能一门课也没有，所以最好的办法是将课程作为一个单独的表，然后和学生关联起来。
 
 首先让我们来理解一个概念： 
 
@@ -334,7 +334,7 @@ curl -X POST \
 
 ![关联表插入查询](https://user-gold-cdn.xitu.io/2020/1/11/16f9494f194e5fd2?w=617&h=148&f=png&s=5039)
 
-注意上述的代码，插入数据的时候，subject 数据的属性键名必须是复数,值必须是数组，因为关联的时候是使用 student.hasMany(subject) 关联的，Sequelize 内部使用 inflection-js 将 subject 转化为复数最为关联表数据传入的属性名称。
+注意上述的代码，插入数据的时候，subject 数据的属性键名必须是复数,值必须是数组，因为关联的时候是使用 student.hasMany(subject) 关联的，Sequelize 内部使用 [inflection-js](https://github.com/dreamerslab/node.inflection#readme) 将 'subject' 转化为复数,作为关联表数据操作时的属性名称。
 
 例如上述创建部分代码如果改成：
 
@@ -365,7 +365,7 @@ curl -X POST \
 ```
 然后你会发现，subject 表中 studentId 对应为 12 个数据项都被设置为了 NULL, 其实这个是 MySql 关联表删除主表时，Sequelize 设置的从表的默认表现。
 
-在 MySql 中，在父表上进行update/delete以更新或删除在子表中有一条或多条对应匹配行的候选键时，父表的行为取决于：在定义子表的外键时指定的on update/on delete子句，其有四种表现形式： 
+在 MySql 中，在父表上进行 update/delete 以更新或删除在子表中有一条或多条对应匹配行的候选键时，父表的行为取决于：在定义子表的外键时指定的on update/on delete 子句，其有四种表现形式： 
 
 
 |关键字| 含义 |
@@ -408,7 +408,7 @@ router.delete('/student/delete', async(ctx, next) => {
   }
 })
 ```
-另外还需要更改关联时的配置：
+另外还需要更改关联表时的配置：
 
 ```javascript
 /*
@@ -418,7 +418,7 @@ router.delete('/student/delete', async(ctx, next) => {
 // 关联 student subject 表时，要设置 外键为 allowNull 为 false
 student.hasMany(subject, {foreignKey : {name: 'studentId', allowNull: false}})
 ```
-删除后就需要重新创建 subjects 数据表：
+删除后需要重新创建 subjects 数据表才能生效：
 
 ```bash
 drop table subjects
@@ -434,7 +434,8 @@ drop table subjects
 curl -X DELETE http://localhost:9003/student/delete?id=37
 ```
 
-删除后 subjects 从表数据结果为：  
+删除后 subjects 从表数据结果为：    
+
 ![删除后](https://user-gold-cdn.xitu.io/2020/1/11/16f9494f5b06a336?w=614&h=139&f=png&s=4940)   
 
 可见从表里面的数据也被删除了。
@@ -442,7 +443,7 @@ curl -X DELETE http://localhost:9003/student/delete?id=37
 需要注意的时，只有从表的完全只依附于主表的时候，才能执行这样的关联删除操作。
 
 
-而对于更新的操作，如何需要更新从表的数据话，可以直接对从表进行操作:
+而对于更新的操作，如果需要更新从表的数据某指定数据的话，可以直接对从表进行操作:
 
 ```javascript
  ret = await subject.update(subjectObj, {
