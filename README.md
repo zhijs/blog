@@ -12,8 +12,8 @@
 - [理解 Webpack 中 JavaScript 的模块机制](https://github.com/zhijs/blog/tree/master/Webpack/Webpack%20%E4%B8%AD%20JavaScript%20%E7%9A%84%E6%A8%A1%E5%9D%97%E6%9C%BA%E5%88%B6)
 
 ### NodeJS
-- [express 和 koa 中间件解析](https://github.com/zhijs/blog/blob/master/Node/express%20%E5%92%8C%20koa%20%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E6%9E%90/README.md)
--[对象关系映射 Sequelize 入门]
+- [express 和 koa 中间件解析](https://github.com/zhijs/blog/blob/master/Node/express%20%E5%92%8C%20koa%20%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E6%9E%90/README.md)  
+-[对象关系映射 Sequelize 入门]  
 (https://github.com/zhijs/blog/blob/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/README.md)  
 
 
