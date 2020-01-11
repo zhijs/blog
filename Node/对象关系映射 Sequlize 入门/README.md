@@ -113,7 +113,7 @@ exports.student = student
 ```
 在执行上述的操作后，test 数据库中就会生成一个 student 数据表，如果下图所示：
 
-![student 数据表](./images/student-table.png)
+![student 数据表](https://github.com/zhijs/blog/raw/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/images/student-table.png)
 
 上图中 createAt 和 updateAt 是 Sequlize 默认添加的字段，我们可以在配置 model 的时候可以选择去掉。
 
@@ -199,12 +199,12 @@ router.post('/student/update/:id', async(ctx, next) => {
 ```
 其返回如下：  
 
-![数据插入](./images/insert-student.png)  
+![数据插入](./images/insert-student.https://github.com/zhijs/blog/raw/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/images/insert-student.png)  
 
 
 查询数据表 student 结果如下：
 
-![数据插入](./images/select-insert-state.png)
+![数据插入](https://github.com/zhijs/blog/raw/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/images/select-insert-state.png)
 
 其他删改查类似。
 
@@ -332,7 +332,7 @@ curl -X POST \
 ```
 查看 subject 数据库如下：  
 
-![关联表插入查询](./images/relation-subject.png)
+![关联表插入查询](https://github.com/zhijs/blog/raw/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/images/relation-subject.png)
 
 注意上述的代码，插入数据的时候，subject 数据的属性键名必须是复数,值必须是数组，因为关联的时候是使用 student.hasMany(subject) 关联的，Sequlize 内部使用 inflection-js 将 subject 转化为复数最为关联表数据传入的属性名称。
 
@@ -356,7 +356,7 @@ curl -X POST \
 
 首先为了方便测试，我们在 subject 表中多插入几条数据:
 
-![subject 表](./images/subject-more.png)  
+![subject 表](https://github.com/zhijs/blog/raw/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/images/subject-more.png)  
 
 接着，我们在主表中删除 studentId 为 12 的数据
 
@@ -425,7 +425,7 @@ drop table subjects
 ```
 下面是从表删除前的数据图：  
 
-![删除前](./images/delete-before.png)  
+![删除前](https://github.com/zhijs/blog/raw/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/images/delete-before.png)  
 
 
 执行 curl 删除主表 id 为 37 的数据：
@@ -435,7 +435,7 @@ curl -X DELETE http://localhost:9003/student/delete?id=37
 ```
 
 删除后 subjects 从表数据结果为：  
-![删除后](./images/escape-after-delete.png)   
+![删除后](https://github.com/zhijs/blog/raw/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/images/escape-after-delete.png)   
 
 可见从表里面的数据也被删除了。
 
