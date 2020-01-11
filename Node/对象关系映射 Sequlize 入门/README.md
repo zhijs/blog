@@ -5,7 +5,8 @@
 
 - Sequelize 介绍
 - koa + Sequlize + MySql 表的增删改查
-- koa + Sequlize + MySql 关联表的增删改查
+- koa + Sequlize + MySql 
+- 总结
 
 
 ### Sequelize 介绍
@@ -438,28 +439,20 @@ curl -X DELETE http://localhost:9003/student/delete?id=37
 
 可见从表里面的数据也被删除了。
 
+需要注意的时，只有从表的完全依附于主表的时候，才能执行这样的删除操作。
+
+
+而对于更新的操作，如何需要更新从表的数据话，可以直接对从表进行操作。
 
 
 
+#### 总结
+本文对于 Sequlize 做了简单的介绍，以及结合例子还实现简单的 CRUD 操作,当然，在实际的工作中，其场景远远比这个例子复杂。 Sequlize 就是一个中间层，将我们通过面向对象的代码转化为一条条的 Sql 语句。通过 Squlize, 我们能更好更直观的对数据库进行操作，但是也会带了一部分的学习成本。
 
 
+附录：  
+[Sequlize 支持的数据类型（取决于使用的数据库）](https://sequelize.org/v4/class/lib/model.js~Model.html#static-method-init)
 
-
-
-
-
-
-
-
-
-
-
-
-### 详细文档地址
-https://sequelize.org/v4/class/lib/sequelize.js~Sequelize.html#instance-constructor-constructor
-
-数据类型定义：
-https://sequelize.org/v4/class/lib/model.js~Model.html#static-method-init
 
 
 
