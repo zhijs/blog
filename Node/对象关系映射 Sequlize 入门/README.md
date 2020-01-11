@@ -445,7 +445,7 @@ curl -X DELETE http://localhost:9003/student/delete?id=37
 而对于更新的操作，如何需要更新从表的数据话，可以直接对从表进行操作:
 
 ```javascript
- ret = await subject.update(subject, {
+ ret = await subject.update(subjectObj, {
   where: {
     id 
   }
