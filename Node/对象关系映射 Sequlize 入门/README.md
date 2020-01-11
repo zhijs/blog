@@ -439,10 +439,18 @@ curl -X DELETE http://localhost:9003/student/delete?id=37
 
 可见从表里面的数据也被删除了。
 
-需要注意的时，只有从表的完全依附于主表的时候，才能执行这样的删除操作。
+需要注意的时，只有从表的完全只依附于主表的时候，才能执行这样的关联删除操作。
 
 
-而对于更新的操作，如何需要更新从表的数据话，可以直接对从表进行操作。
+而对于更新的操作，如何需要更新从表的数据话，可以直接对从表进行操作:
+
+```javascript
+ ret = await subject.update(subject, {
+  where: {
+    id 
+  }
+})
+```
 
 
 
@@ -452,6 +460,7 @@ curl -X DELETE http://localhost:9003/student/delete?id=37
 
 附录：  
 [Sequlize 支持的数据类型（取决于使用的数据库）](https://sequelize.org/v4/class/lib/model.js~Model.html#static-method-init)
+[demo 完整代码](https://github.com/zhijs/example/tree/master/koa-sequlize-mysql-demo)
 
 
 
