@@ -10,13 +10,30 @@
 ### Vue 前端页面渲染过程
 对 Vue 熟悉的人都知道，Vue 可以通过以下简单的方式，实现 Vue 实例在前端页面的渲染：
 ```javascript
-var MyComponent = Vue.extend({
-  template: '<div>Hello!</div>'
+// app.vue
+<template>
+  <div>{{mssage}}</div>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+         massge: 'hellow world' 
+      }
+    }
+  }
+</script>
+
+// main.js
+import App from 'App.vue'
+new Vue({
+  el: '#app',
+  render: () 
 })
-new MyComponent().$mount('#app')
 ```
 
-其实例 mount 的流程图如下所示：
+其实例构建到 mount 的流程图如下所示：
+
 
 
 
