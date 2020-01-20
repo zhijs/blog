@@ -32,7 +32,29 @@ new Vue({
 })
 ```
 
-其实例构建到 mount 的流程图如下所示：
+其实例构建到 mount 的流程图如下所示：  
+![Vue 实例挂载图](./images/mount.png)  
+
+基于上述的流程图中，我们可以知道：
+
+#### 1. Vue 数据响应过程
+- Vue 数据响应是通过 Object.defineProperty (3.0 版本改成 proxy),劫持数据的 getter 和 setter，在初始化 Vue 实例的时候，会将需要观测的数据遍历进行 Object.defineProperty 并通过闭包的形式，给每个数据生成一个 Dep 对象，该对象会在该数据被取值的时候，将对应的 Vue 实例添加为自己的订阅者。
+
+
+- Vue 在初次渲染的时候，会给每个 Vue 实例创建一个 Watcher, 并将该 Watcher 的 callback 和 getter 设置为更新渲染该 Vue 实例的 updateComponent， updateComponent 定义如下：
+```javascript
+   updateComponent = function () {
+      vm._update(vm._render(), hydrating);
+   };
+```
+然后将该 Watcher 保存起来，接着会调用 render 函数，render 函数里面会用到 data 里面的数据，所以会触发数据的 getter, 在 getter 函数里面将 Watcher 添加为该数据的订阅者，在该数据被更改的时候，便可以遍历该数据的 Dep 里面存的订阅者，依次将 Watcher 拿出来，执行 Watcher 的 callback, 从而触发重新渲染。
+
+
+#### 2. 浏览器中，VNode 到真实 Dom 的过程(初次渲染)
+在将 VNode 渲染为真实 Dom 的过程中，首先会从祖先 VNode 开始，依次创建 VNode,直到
+
+
+
 
 
 
