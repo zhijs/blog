@@ -1,5 +1,5 @@
 ### 前言
-在前面的文章[Vue服务端渲染](../Vue服务端渲染/README.md) 我么讲述了 Vue 服务端渲染的原理极其过程，其中涉及到的一个很关键的过程是服务端从组件到 HTML 字符串的创建过程，我们知道服务端是没有 dom 元素对象的，那么 Vue 示例是如何转换为 HTML 字符串的呢？今天我们就一起来学习一下其中的原理知识。
+在前面的文章[Vue服务端渲染](../Vue服务端渲染/README.md) 我么讲述了 Vue 服务端渲染的原理极其过程，其中涉及到的一个很关键的过程是服务端从组件到 HTML 字符串的创建过程，我们知道服务端是没有 Dom 元素对象的，那么 Vue 示例是如何转换为 HTML 字符串的呢？今天我们就一起来学习一下其中的原理知识。
 
 本文主要包含以下几方面的内容
 - 1.前端渲染中，一个 Vue 实例 mounted 过程原理
@@ -7,7 +7,7 @@
 - 3.Vue 服务端渲染和前端渲染的差异比较
 
 
-### Vue 前端页面渲染过程
+### Vue 页面在浏览器中渲染过程
 对 Vue 熟悉的人都知道，Vue 可以通过以下简单的方式，实现 Vue 实例在前端页面的渲染：
 ```javascript
 // app.vue
@@ -25,10 +25,11 @@
 </script>
 
 // main.js
+import Vue from 'vue'
 import App from 'App.vue'
 new Vue({
   el: '#app',
-  render: () 
+  render: (h) => h(App) 
 })
 ```
 
@@ -51,7 +52,89 @@ new Vue({
 
 
 #### 2. 浏览器中，VNode 到真实 Dom 的过程(初次渲染)
-在将 VNode 渲染为真实 Dom 的过程中，首先会从祖先 VNode 开始，依次创建 VNode,直到
+在将 VNode 渲染为真实 Dom 的过程中，首先会从祖先 VNode 开始，依次创建 VNode,直到 VNode 的类型是 Dom 类型的时候，开始调用 Dom 方法生成真实的 Dom 片段，添加到父 VNode 中，最终将根 VNode 的 Dom 添加为真实的 Dom, 完成渲染。
+
+
+### Vue 服务端页面渲染过程
+我们知道，Vue 支持服务端渲染，那么服务端渲染和前端渲染有啥不一样的呢？首先我们可以明确的几点是：
+
+- 服务端渲染的时候不需要对数据做观察检测变化。
+- 服务端渲染的 VNode 到 Dom 片段的方法，调用的一定不是浏览器的自带的 Dom 操作方法。
+
+那么，服务端渲染流程具体是怎样的？其和前端渲染有什么不一样的地方呢？接下来就让我们一起来看看：
+
+
+我们先来编写服务端渲染的代码：
+
+
+#### 修改主入口文件
+我们修改主入口文件，使其导出一个 Vue 示例，给服务端渲染的时候使用
+```javascript
+// main.js
+import Vue from 'vue'
+import App from './App.vue'
+export const app =  new Vue({
+  el: '#app',
+  render: (h) => h(App) 
+})
+```
+
+
+#### 增加 Webpack 配置，使入口极其依赖导出为 NodeJs 使用的 CommonJs 规范
+
+```javascript
+// webpack.server.js
+var path = require('path')
+var webpack = require('webpack')
+var merge = require('webpack-merge')
+var baseWebpackConfig = require('./webpack.config')
+var webpackConfig = merge(baseWebpackConfig, {
+    target: 'node',
+    entry: {
+        app: './main.js'
+    },
+    devtool: false,
+    output: {
+        path: path.resolve(__dirname, './dist'),
+        filename: 'build-server.js',
+        libraryTarget: 'commonjs2'
+    },
+    externals: Object.keys(require('./package.json').dependencies),
+})
+module.exports = webpackConfig
+```
+注意，服务端渲染的时候，依赖在服务端都是同步加载的，所以 package.json 里面的 dependencies 都要设为 externals, NodeJs 服务在运行的时候会同步加载依赖。
+
+#### 启动 NodeJs 服务，处理请求，生成 html 字符串并相应请求
+
+```javascript
+const express = require('express');
+const server = express();
+const fs = require('fs');
+const path = require('path');
+const app = require('./dist/build-server.js').app
+
+const renderer = require('vue-server-renderer').createRenderer({
+  template: fs.readFileSync('./index.html', 'utf-8')
+});
+server.get('*', (req, res) => { 
+   renderer.renderToString(app, function (err, html) {
+     if (err) {
+       if (err.code === 404) {
+         res.status(404).end('Page not found')
+       } else {
+         res.status(500).end('Internal Server Error')
+       }
+     } else {
+       res.end(html)
+     }
+   });         
+}); 
+server.listen(8080);
+```
+我们构建好 bundle-server 之后，开启 NodeJs 服务，浏览器访问 http://localhost:8080/, 查看相应内容如下所示：
+
+![](./images/server.png)  
 
 
 
