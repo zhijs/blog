@@ -1078,9 +1078,14 @@ function findAnchor (children) {
 ```
 从上面可以看出， router-link 是一个函数式组件，其主要是将 router-link 组件上的数据透传了下去，然后劫持了鼠标左键的点击事件，同时阻止了点击的默认行为，防止导航栏自动变化，在点击的时候，调用 router.push 或者 router.replace。
 
-至此，vue-router 已经完成更新 router 对象和导航地址栏内容，还差最后一步，就是将目标组件渲染替换掉router-view，其实， 当我们更改 vue 的 router 对象时， vue 会重新触发 render, 也就是在这个过程，将目标组件渲染替换 router-view，至于这个过程，可以自行参考 router-view 的实现
+至此，vue-router 已经完成更新 router 对象和导航地址栏内容，还差最后一步，就是将目标组件渲染替换掉router-view，其实， 当我们更改 vue 的 router 对象时， vue 会重新触发 render, 也就是在这个过程，将目标组件渲染替换 router-view。
 
-[router-view](https://github.com/vuejs/vue-router/blob/dev/src/components/view.js)
+其渲染流程如下图所示(异步路由 + css 提取的情况下)：  
+
+![路由变化触发渲染](./images/render.png)  
+
+[router-view 源码](https://github.com/vuejs/vue-router/blob/dev/src/components/view.js)
+
 
 ### vue-router 完整的导航解析流程
 1. 导航被触发。
