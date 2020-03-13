@@ -20,7 +20,11 @@ node --inspect-brk ./node_modules/webpack/bin/webpack.js
 
 
 #### 1. 读取配置文件，默认为当前目录下的 webpack.config.js
+
+
 #### 2. 初始化配置参数(默认参数补全), 传入配置参数，生成 compiler 对象
+
+
 
 
 

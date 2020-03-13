@@ -98,7 +98,7 @@ nuxt 在服务端渲染的情况下，会返回当前路由需要用的 js chunk
 2. css 全部糅合在一个文件中，且在每个路由中都用同一个 css, 容易造成样式污染。
 
 
-### 折中解决方案
+### 5. 折中解决方案
 综合上述根据路由分割样式和将所有样式打包到一个文件内情况，我们需要制定一个合理的样式加载方式，或者在 nuxt 原有的加载方式上进行优化。
 
 其须满足以下的几点要求：
@@ -113,7 +113,7 @@ nuxt 在服务端渲染的情况下，会返回当前路由需要用的 js chunk
 - 3 对于重复引用的问题，如果被重复引用的样式文件大于某个确定的值，并且被两个以上的路由引用，则提取为公共的样式文件
 
 
-### 折中方案实现
+### 6.折中方案实现
 - 1.分离公共使用的 css (尽量减少重复打包)
 
 ```javascript
@@ -136,45 +136,146 @@ nuxt 在服务端渲染的情况下，会返回当前路由需要用的 js chunk
 ```
 需要注意的是，这样独立出来的样式文件，会通过 js 脚本动态插入 style 的方式作用与页面
 
-- 2.在 vue 根实例 beforeUpdate 之前触发添加样式逻辑(添加样式逻辑需要判断当前页面路由是否发生变化， 如果没有变化则不执行，同时也需要查看当前样式是否已经加载完毕)
+- 2.在当前路由加载前的时候加载当前路由需要的样式，在当前路由加载完成后，删除上一个路由的样式文件
 
-- 3. 
+由上述的需要，可以很容易的想到，在 vue-router 路由钩子进行处理，在路由钩子里面根据当前的路由和即将要到达的路由，匹配特定的样式文件来操作。
 
-时机：
-路由参数更新的时候，如何监听这个变化
+但是我们知道，因为在写路由钩子的时候，样式文件还没生成，同时样式文件的名称一般都是带一长串的 hash 的，所以我们需要在代码编译的时候，得到路由 chunk 和 css 文件名的映射关系，所以这里决定使用 webpack 插件来做，通过注入变量的方式，来拿到路由 chunk 和 css 文件名的关系。
 
-需要做什么？
-1. 生成一份路由(path)和 css 资源的映射表
+
+插件代码如下:
 ```javascript
-  {
-    'path1': ['csshash1', 'csshash2'],
-    'path1': ['csshash2', 'csshash3']
+
+const  Template = require('webpack').Template;
+const pluginName = 'chunk-name-map-css-file'
+const extraCssType = 'css/extract-css-chunks'
+const NOT_CSS_HASN = '31d6cfe0d16ae931b73c'
+/**
+ * TODO
+ * 使用 extract-css-chunk 的时候
+ * 某个路由 chunk 在没有使用 css 的情况下，也会生成 css chunkHash, 其值为 31d6cfe0d16ae931b73c
+ * */ 
+
+class ChunkNameMapCssPlugin {
+  apply(compiler) {
+   const loadedCss = {}
+   let sourceCode = []
+   compiler.hooks.thisCompilation.tap(pluginName, compilation => {
+      const { mainTemplate } = compilation;
+      mainTemplate.hooks.localVars.tap(pluginName, (source, chunk) => {
+       compilation.chunks.forEach((chunk) => {
+          if (/pages_.*?/.test(chunk.name) &&
+             chunk.contentHash &&
+             chunk.contentHash[extraCssType] &&
+             !loadedCss[chunk.name] &&
+             chunk.contentHash[extraCssType] !== NOT_CSS_HASN
+           ) {
+            sourceCode.push(`${chunk.name}: '${chunk.contentHash[extraCssType]}.css'`)
+            loadedCss[chunk.name] = 1
+          }
+       })
+       if (sourceCode.length && compilation.options.name === 'client') {
+         return Template.asString([source, '//', '// set global function varibale for css manager', `window.get_route_map_css_file = function (chunkName){ 
+ var routerMap = {${sourceCode.join(',')}};
+ return {all: routerMap, cssChunk: ${mainTemplate.requireFn}.p + routerMap[chunkName]};}`]);
+       }
+        return source;
+      });
+   })
   }
-```
-
-2. 生成一个路由进入记录表对象
-```javascript
-{
-   'path1': 1 // 1 表示加载过 0  表示未加载过
-   'path2': 0
 }
+module.exports = ChunkNameMapCssPlugin
 ```
-
-3. 进入新路由
-根据 path 加载所有样式
+其作用的是，在编译的时候，扩展输出，在 runtime chunk 中插入 router chunk 和 css 文件名的映射关系，作为 window 的全局变量存在。
 
 
+接下来是，在路由钩子里，做 css 样式文件的管理
+```javascript
+// plugins/router-event.js
+export default ({ app }) => {
+  let timer = null
+  if (typeof window.getRouteMapCssFile === 'undefined') return
+  const getRouteMapCssFile = window.getRouteMapCssFile
+  // 路由解析钩子- 加载需要的样式(如果样式文件不存在的话)
+  app.router.beforeResolve((to, from, next) => {
+    if (timer) clearTimeout(timer)
+    if (!to.name || !from.name) {
+      return next()
+    }
+    const chunName = pathToChunkName(to.name, to.path)
+    let { cssChunk, all } = getRouteMapCssFile(chunName)
+    if (!all[chunName] || to.name === from.name) return next()
+    setCurrentCssFile(cssChunk, next)
+  })
+  // afterEach - 全局后置钩子， 此时异步组件已经加载完毕，这里用 setTimeout 确保页面已经渲染完毕
+  app.router.afterEach((to, from) => {
+    if (to.name !== from.name && from.name) {
+      const chunName = pathToChunkName(from.name, from.path)
+      let { cssChunk, all } = getRouteMapCssFile(chunName)
+      if (!all[chunName]) return
+      timer = setTimeout(() => {
+        removeCssFile(cssChunk)
+      }, 1000)
+    }
+  })
+}
+// pathName 转化为 chunkName
+function pathToChunkName (pathName, path) {
+  const pathArr = path.split('/').slice(1)
+  let paths = pathName.split('-')
+  for (let i = 0, len = pathArr.length; i < len; i++) { // 处理动态路由
+    if (/\d+/.test(pathArr[i])) {
+      paths[i] = `_${paths[i]}`
+    }
+  }
+  if (paths[paths.length - 1] === '_id') {
+    paths.push('index')
+  }
+  paths.unshift('pages')
+  return paths.join('_')
+}
+ 
+ 
+function setCurrentCssFile (path, next) {
+  const head = document.querySelector('head')
+  const link = document.querySelectorAll('link')
+  let hasStyle = false
+  for (let i = 0, len = link.length; i < len; i++) {
+    if (link[i].getAttribute('href') === path && link[i].getAttribute('rel') === 'stylesheet') {
+      hasStyle = true
+      break
+    }
+  }
+  if (!hasStyle) {
+    let newLink = document.createElement('link')
+    newLink.onload = next
+    newLink.onerror = next
+    newLink.setAttribute('rel', 'stylesheet')
+    newLink.setAttribute('href', path)
+    head.appendChild(newLink)
+    return
+  }
+  next()
+}
+ 
+function removeCssFile (path) {
+  const head = document.querySelector('head')
+  const link = document.querySelectorAll('link')
+  for (let i = 0, len = link.length; i < len; i++) {
+    if (link[i].getAttribute('href') === path && link[i].getAttribute('rel') === 'stylesheet') {
+      head.removeChild(link[i])
+      break
+    }
+  }
+}
 
-目前的思路是： 利用 webpack 插件，注入 在 vue 实例根节点绑定 vue-router 路由守卫，进行多余的样式节点移除的代码逻辑，
+```
+### 7. 适用场景
+需要注意的是，上述适用于单页面的的场景，且是路由在当前页面打开(通过 router.push、router.replace), 如果站点主要是通过 location.href、window.open 或者
 
-- 修改 runtime js
-增加删除的 css 功能函数(接受指定的 chunkId )
+在新窗口打开页面的形式切换路由的话，则采取上述的方式没有太大的优势，因为通过这种方式打开的情况下，站点页面会整站刷新。
 
-- 修改 app.js 的 module 13
-在加载新路由 chunk 之后执行删除操作 ? 路由回退之后如何还原？
-
-
-
+css 样式动态载入和删除的逻辑，在网络请求上，不会造成大量的耗时网络请求，因为本地缓存原因，第二次的加载会直接从缓存加载。
 
 
 
