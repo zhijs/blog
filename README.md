@@ -1,7 +1,7 @@
 ### VUE
 - [Vue服务端渲染详解](https://github.com/zhijs/blog/tree/master/VUE/Vue服务端渲染)
 - [从前端路由到 vue-router](https://github.com/zhijs/blog/tree/master/VUE/%E4%BB%8E%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E5%88%B0%20vue-router)
-- [Nuxt 样式管理方](https://github.com/zhijs/blog/tree/master/VUE/Nuxt%20%E6%A0%B7%E5%BC%8F%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E9%97%AE%E9%A2%98)  
+- [Nuxt 样式管理方案](https://github.com/zhijs/blog/tree/master/VUE/Nuxt%20%E6%A0%B7%E5%BC%8F%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E9%97%AE%E9%A2%98)  
 
 
 ### Javascript  
