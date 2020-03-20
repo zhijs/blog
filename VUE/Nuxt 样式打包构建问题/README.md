@@ -146,7 +146,8 @@ nuxt 在服务端渲染的情况下，会返回当前路由需要用的 js chunk
 插件代码如下:
 ```javascript
 
-const  Template = require('webpack').Template;
+
+const Template = require('webpack').Template
 const pluginName = 'chunk-name-map-css-file'
 const extraCssType = 'css/extract-css-chunks'
 const NOT_CSS_HASN = '31d6cfe0d16ae931b73c'
@@ -154,40 +155,42 @@ const NOT_CSS_HASN = '31d6cfe0d16ae931b73c'
  * TODO
  * 使用 extract-css-chunk 的时候
  * 某个路由 chunk 在没有使用 css 的情况下，也会生成 css chunkHash, 其值为 31d6cfe0d16ae931b73c
- * */ 
+ * 判断在这个 hash 的情况下，认为该路由 chunk 没有样式文件
+ * */
 
-class ChunkNameMapCssPlugin {
-  apply(compiler) {
-   const loadedCss = {}
-   let sourceCode = []
-   compiler.hooks.thisCompilation.tap(pluginName, compilation => {
-      const { mainTemplate } = compilation;
+class RouterChunkToCssPlugin {
+  apply (compiler) {
+    const loadedCss = {}
+    let sourceCode = []
+    compiler.hooks.thisCompilation.tap(pluginName, compilation => {
+      const { mainTemplate } = compilation
       mainTemplate.hooks.localVars.tap(pluginName, (source, chunk) => {
-       compilation.chunks.forEach((chunk) => {
-          if (/pages_.*?/.test(chunk.name) &&
+        compilation.chunks.forEach((chunk) => {
+          if (/pages[_\/].*?/.test(chunk.name) &&
              chunk.contentHash &&
              chunk.contentHash[extraCssType] &&
              !loadedCss[chunk.name] &&
              chunk.contentHash[extraCssType] !== NOT_CSS_HASN
-           ) {
-            sourceCode.push(`${chunk.name}: '${chunk.contentHash[extraCssType]}.css'`)
+          ) {
+            let name = chunk.name.replace(/\//g, '_') // pages/videos/_id/index -> pages_videos__id_index, 便于在路由钩子匹配
+            sourceCode.push(`"${name}": '${chunk.contentHash[extraCssType]}.css'`)
             loadedCss[chunk.name] = 1
           }
-       })
-       if (sourceCode.length && compilation.options.name === 'client') {
-         return Template.asString([source, '//', '// set global function varibale for css manager', `window.get_route_map_css_file = function (chunkName){ 
- var routerMap = {${sourceCode.join(',')}};
- return {all: routerMap, cssChunk: ${mainTemplate.requireFn}.p + routerMap[chunkName]};}`]);
-       }
-        return source;
-      });
-   })
+        })
+        if (sourceCode.length && compilation.options.name === 'client') {
+          return Template.asString([source, '//', '// set global function variable for css manager', `!function(global){global.getRouteMapCssFile = function (chunkName){ 
+  var routerMap = {${sourceCode.join(',')}};
+  return {all: routerMap, cssChunk: ${mainTemplate.requireFn}.p + routerMap[chunkName]};}}(window)`])
+        }
+        return source
+      })
+    })
   }
 }
-module.exports = ChunkNameMapCssPlugin
+module.exports = RouterChunkToCssPlugin
+
 ```
 其作用的是，在编译的时候，扩展输出，在 runtime chunk 中插入 router chunk 和 css 文件名的映射关系，作为 window 的全局变量存在。
-
 
 接下来是，在路由钩子里，做 css 样式文件的管理
 ```javascript
@@ -234,8 +237,7 @@ function pathToChunkName (pathName, path) {
   paths.unshift('pages')
   return paths.join('_')
 }
- 
- 
+
 function setCurrentCssFile (path, next) {
   const head = document.querySelector('head')
   const link = document.querySelectorAll('link')
@@ -253,11 +255,11 @@ function setCurrentCssFile (path, next) {
     newLink.setAttribute('rel', 'stylesheet')
     newLink.setAttribute('href', path)
     head.appendChild(newLink)
-    return
+  } else {
+    next()
   }
-  next()
 }
- 
+
 function removeCssFile (path) {
   const head = document.querySelector('head')
   const link = document.querySelectorAll('link')
