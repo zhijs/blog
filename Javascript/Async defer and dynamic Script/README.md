@@ -24,8 +24,8 @@ nuxt head 里面动态加入的 script, 会在浏览器渲染的时候动态 app
 ### 知识回顾
 script 属性
 - defer
-立即下载，延迟执行(页面解析完毕)，规范是 defer 脚本按照顺寻执行，先于DOMContentLoaded事件执行， 实际是 不一定会按照顺序执行，也不一定会在 先于DOMContentLoaded事件执行。
-下载，执行都不阻塞 dom 解析
+立即下载，延迟执行(页面解析完毕)，规范是 defer 脚本按照顺序执行，先于DOMContentLoaded事件执行， 实际是 不一定会按照顺序执行，也不一定会 先于DOMContentLoaded事件执行。
+下载，执行都不阻塞 dom 解析(因为执行是在 dom 解析后)
 
 - async
 异步下载 js (下载过程不阻塞 dom 构建)， 下载完就立即执行
