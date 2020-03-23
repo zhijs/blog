@@ -1,4 +1,4 @@
-### bind 实现
+### bind、call、apply 实现
 
 ```javascript
 Function.prototype.myBind = function (ctx, ...args1) {
@@ -7,6 +7,12 @@ Function.prototype.myBind = function (ctx, ...args1) {
     let arg = args2.length ? args2 : (args1.length ? args1 : [])
     fn.call(ctx, ...arg) 
   }
+}
+
+Function.prototype.call = function (ctx, ...args) {
+  ctx.fn = this
+  ctx.fn(...args)
+  delete ctx.fn
 }
 ```
 
@@ -113,10 +119,61 @@ function sendRequest(urls, maxNum, cb) {
 }
 ```
 
-### 函数深拷贝
+### 对象深拷贝
 
 ```javascript
-function deepClone(target, src) {
-  
+/*
+**/
+function deepClone(src, map = new WeakMap()) {
+  // map 用来解决循环引用问题
+  let obj = {}
+  if(src instanceof Object && map.has(src)){
+    return map.get(src)  
+  } else if (src instanceof Object && !map.has(src)) {
+    map.set(src)
+  }
+  if (Object.prototype.toString.call(src) === '[object Array]') {
+    obj = []
+    for (let i = 0, len = src.length; i < len; i++) {
+      obj[i] = deepClone(src[i], map)
+    }
+  }
+  else if (Object.prototype.toString.call(src) === '[object Date]') {
+    obj = new Date(src.getTime())
+  }
+  else if (Object.prototype.toString.call(src) === '[object RegExp]') {
+    obj = new RegExp(src.source, src.flags)
+  }
+  else if (Object.prototype.toString.call(src) === '[object Object]') {
+    for (const key in src) {
+      obj[key] = deepClone(src[key], map)  
+    }  
+  } else {
+     obj = src 
+  }
+  return obj
 }
+```
+
+### 函数柯里化
+实现 add(1)(2)(3)(4) = 10
+- 思路  
+利用闭包存储参数，同时返回函数，重写改函数的 toString 使其返回相加的结果
+
+
+```javascript
+function add() {
+  let args = Array.prototype.slice.call(arguments)
+  var fn = function (){
+    let newArgs = args.concat(Array.prototype.slice.call(arguments))
+    return add.apply(this, newArgs)
+  }
+  fn.toString = function () {
+    return args.reduce((acumuator, current) => {
+      return acumuator + current
+    })
+  }
+  return fn
+}
+
 ```
