@@ -17,8 +17,8 @@
 - [express 和 koa 中间件解析](https://github.com/zhijs/blog/blob/master/Node/express%20%E5%92%8C%20koa%20%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E6%9E%90/README.md)  
 - [对象关系映射 Sequelize 入门](https://github.com/zhijs/blog/blob/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/README.md)  
 
-
 ### 其他
 - [WebRTC入门](https://github.com/zhijs/blog/tree/master/%E5%85%B6%E4%BB%96/webRTC%E5%85%A5%E9%97%A8)  
+- [NW.Js 是如何整合 Nodejs 和 Chromium 的](https://livebook.manning.com/book/cross-platform-desktop-applications/chapter-6/23)
 
 持续更新中...
