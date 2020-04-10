@@ -33,571 +33,461 @@ Nuxt 在构建的时候，有两个入口文件，serve-entry 和 client-entry�
 其客户端入口配置如下：
 ```javascript
 {
-	"name": "client",
-	"mode": "production",
-	"devtool": false,
-	"optimization": {
-		"minimize": true,
-		"minimizer": [{
-			"pluginDescriptor": {
-				"name": "OptimizeCssAssetsWebpackPlugin"
-			},
-			"options": {
-				"assetProcessors": [{
-					"phase": "compilation.optimize-chunk-assets",
-					"regExp": {}
-				}],
-				"assetNameRegExp": {},
-				"cssProcessorOptions": {},
-				"cssProcessorPluginOptions": {}
-			},
-			"phaseAssetProcessors": {
-				"compilation.optimize-chunk-assets": [{
-					"phase": "compilation.optimize-chunk-assets",
-					"regExp": {}
-				}],
-				"compilation.optimize-assets": [],
-				"emit": []
-			},
-			"deleteAssetsMap": {}
-		}],
-		"splitChunks": {
-			"chunks": "all",
-			"cacheGroups": {
-				"commons": {
-					"test": /node_modules[\\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\\/]/,
-					"chunks": "all",
-					"priority": 10,
-					"name": true
+	name: 'client',
+	mode: production,
+	devtool: false,
+	optimization: {
+		minimize: true,
+		splitChunks: {
+			chunks: all,
+			cacheGroups: {
+				commons: {
+					test: /node_modules[\\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\\/]/,
+					chunks: all,
+					priority: 10,
+					name: true
 				}
 			},
-			"automaticNameDelimiter": "."
+			automaticNameDelimiter: '.'
 		},
-		"runtimeChunk": "single"
+		runtimeChunk: single
 	},
-	"output": {
-		"path": "E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\dist\\client",
-		"filename": "[contenthash].js",
-		"futureEmitAssets": true,
-		"chunkFilename": "[contenthash].js",
-		"publicPath": "/_nuxt/"
+	output: {
+		path: 'E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\dist\\client',
+		filename:'[contenthash].js',
+		futureEmitAssets: true,
+		chunkFilename:'[contenthash].js',
+		publicPath: '/_nuxt/'
 	},
-	"performance": {
-		"maxEntrypointSize": 1024000,
-		"hints": "warning"
-	},
-	"module": {
-		"rules": [{
-			"test": {},
-			"loader": "vue-loader",
-			"options": {
-				"transformAssetUrls": {
-					"video": "src",
-					"source": "src",
-					"object": "src",
-					"embed": "src"
+	module: {
+		rules: [{
+			test: /\.vue$/i
+			loader: vue-loader,
+			options: {
+				transformAssetUrls: {
+					video: src,
+					source: src,
+					object: src,
+					embed: src
 				},
-				"productionMode": true
+				productionMode: true
 			}
-		}, {
-			"test": {},
-			"oneOf": [{
-				"resourceQuery": {},
-				"use": [{
-					"loader": "pug-plain-loader",
-					"options": {}
-				}]
+		}, 
+		{
+			test: /\.css$/i,
+			oneOf: [{
+				resourceQuery: /module/,
+				use: [{
+					loader: 'vue-style-loader',
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: 'css-loader',
+					options: {
+						modules: {
+							localIdentName: '[local]_[hash:base64:5]'
+						},
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}
 			}, {
-				"use": ["raw-loader", {
-					"loader": "pug-plain-loader",
-					"options": {}
+				use: [{
+					loader: 'vue-style-loader',
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: 'css-loader',
+					options: {
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: 'postcss-loader',
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
 				}]
 			}]
 		}, {
-			"test": {},
-			"use": [{
-				"loader": "E:\\blog\\example\\nuxt-css-handle-demo\\node_modules\\babel-loader\\lib\\index.js",
-				"options": {
-					"configFile": false,
-					"babelrc": false,
-					"cacheDirectory": false,
-					"envName": "client",
-					"presets": [
-						["E:\\blog\\example\\nuxt-css-handle-demo\\node_modules\\@nuxt\\babel-preset-app\\src\\index.js", {}]
-					]
+			test: /\.less$/i
+			oneOf: [{
+				resourceQuery: /module/
+				use: [{
+					loader: 'vue-style-loader',
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						modules: {
+							localIdentName: [local]_[hash:base64:5]
+						},
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: less-loader,
+					options: {
+						sourceMap: false
+					}
+				}]
+			}, {
+				use: [{
+					loader: vue-style-loader,
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: less-loader,
+					options: {
+						sourceMap: false
+					}
+				}]
+			}]
+		}, {
+			test: {},
+			oneOf: [{
+				resourceQuery: {},
+				use: [{
+					loader: vue-style-loader,
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						modules: {
+							localIdentName: [local]_[hash:base64:5]
+						},
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: sass-loader,
+					options: {
+						sassOptions: {
+							indentedSyntax: true
+						},
+						sourceMap: false
+					}
+				}]
+			}, {
+				use: [{
+					loader: vue-style-loader,
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: sass-loader,
+					options: {
+						sassOptions: {
+							indentedSyntax: true
+						},
+						sourceMap: false
+					}
+				}]
+			}]
+		}, {
+			test: {},
+			oneOf: [{
+				resourceQuery: {},
+				use: [{
+					loader: vue-style-loader,
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						modules: {
+							localIdentName: [local]_[hash:base64:5]
+						},
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: sass-loader,
+					options: {
+						sourceMap: false
+					}
+				}]
+			}, {
+				use: [{
+					loader: vue-style-loader,
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: sass-loader,
+					options: {
+						sourceMap: false
+					}
+				}]
+			}]
+		}, {
+			test: {},
+			oneOf: [{
+				resourceQuery: {},
+				use: [{
+					loader: vue-style-loader,
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						modules: {
+							localIdentName: [local]_[hash:base64:5]
+						},
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: stylus-loader,
+					options: {
+						sourceMap: false
+					}
+				}]
+			}, {
+				use: [{
+					loader: vue-style-loader,
+					options: {
+						sourceMap: false
+					}
+				}, {
+					loader: css-loader,
+					options: {
+						sourceMap: false,
+						importLoaders: 2,
+						onlyLocals: false
+					}
+				}, {
+					loader: postcss-loader,
+					options: {
+						sourceMap: false,
+						plugins: [null, null, null, null],
+						order: presetEnvAndCssnanoLast
+					}
+				}, {
+					loader: stylus-loader,
+					options: {
+						sourceMap: false
+					}
+				}]
+			}]
+		}, {
+			test: {},
+			use: [{
+				loader: url-loader,
+				options: {
+					limit: 1000,
+					name: img/[contenthash:7].[ext]
 				}
 			}]
 		}, {
-			"test": {},
-			"oneOf": [{
-				"resourceQuery": {},
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"modules": {
-							"localIdentName": "[local]_[hash:base64:5]"
-						},
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}]
-			}, {
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}]
-			}]
-		}, {
-			"test": {},
-			"oneOf": [{
-				"resourceQuery": {},
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"modules": {
-							"localIdentName": "[local]_[hash:base64:5]"
-						},
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}]
-			}, {
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}]
-			}]
-		}, {
-			"test": {},
-			"oneOf": [{
-				"resourceQuery": {},
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"modules": {
-							"localIdentName": "[local]_[hash:base64:5]"
-						},
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "less-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}]
-			}, {
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "less-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}]
-			}]
-		}, {
-			"test": {},
-			"oneOf": [{
-				"resourceQuery": {},
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"modules": {
-							"localIdentName": "[local]_[hash:base64:5]"
-						},
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "sass-loader",
-					"options": {
-						"sassOptions": {
-							"indentedSyntax": true
-						},
-						"sourceMap": false
-					}
-				}]
-			}, {
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "sass-loader",
-					"options": {
-						"sassOptions": {
-							"indentedSyntax": true
-						},
-						"sourceMap": false
-					}
-				}]
-			}]
-		}, {
-			"test": {},
-			"oneOf": [{
-				"resourceQuery": {},
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"modules": {
-							"localIdentName": "[local]_[hash:base64:5]"
-						},
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "sass-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}]
-			}, {
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "sass-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}]
-			}]
-		}, {
-			"test": {},
-			"oneOf": [{
-				"resourceQuery": {},
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"modules": {
-							"localIdentName": "[local]_[hash:base64:5]"
-						},
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "stylus-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}]
-			}, {
-				"use": [{
-					"loader": "vue-style-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}, {
-					"loader": "css-loader",
-					"options": {
-						"sourceMap": false,
-						"importLoaders": 2,
-						"onlyLocals": false
-					}
-				}, {
-					"loader": "postcss-loader",
-					"options": {
-						"sourceMap": false,
-						"plugins": [null, null, null, null],
-						"order": "presetEnvAndCssnanoLast"
-					}
-				}, {
-					"loader": "stylus-loader",
-					"options": {
-						"sourceMap": false
-					}
-				}]
-			}]
-		}, {
-			"test": {},
-			"use": [{
-				"loader": "url-loader",
-				"options": {
-					"limit": 1000,
-					"name": "img/[contenthash:7].[ext]"
+			test: {},
+			use: [{
+				loader: url-loader,
+				options: {
+					limit: 1000,
+					name: fonts/[contenthash:7].[ext]
 				}
 			}]
 		}, {
-			"test": {},
-			"use": [{
-				"loader": "url-loader",
-				"options": {
-					"limit": 1000,
-					"name": "fonts/[contenthash:7].[ext]"
-				}
-			}]
-		}, {
-			"test": {},
-			"use": [{
-				"loader": "file-loader",
-				"options": {
-					"name": "videos/[contenthash:7].[ext]"
+			test: {},
+			use: [{
+				loader: file-loader,
+				options: {
+					name: videos/[contenthash:7].[ext]
 				}
 			}]
 		}]
 	},
-	"plugins": [{}, {}, {
-		"profile": false,
-		"modulesCount": 500,
-		"showEntries": false,
-		"showModules": true,
-		"showActiveModules": true,
-		"options": {
-			"name": "client",
-			"color": "green",
-			"reporters": ["basic", "fancy", "profile", "stats"],
-			"reporter": {},
-			"basic": false,
-			"fancy": true,
-			"profile": false,
-			"stats": {
-				"excludeAssets": [{}, {}, {}]
+	plugins: [{}, {}, {
+		profile: false,
+		modulesCount: 500,
+		showEntries: false,
+		showModules: true,
+		showActiveModules: true,
+		options: {
+			name: client,
+			color: green,
+			reporters: [basic, fancy, profile, stats],
+			reporter: {},
+			basic: false,
+			fancy: true,
+			profile: false,
+			stats: {
+				excludeAssets: [{}, {}, {}]
 			}
 		},
-		"reporters": [{}, {
-			"options": {
-				"chunks": false,
-				"children": false,
-				"modules": false,
-				"colors": true,
-				"warnings": true,
-				"errors": true,
-				"excludeAssets": [{}, {}, {}]
+		reporters: [{}, {
+			options: {
+				chunks: false,
+				children: false,
+				modules: false,
+				colors: true,
+				warnings: true,
+				errors: true,
+				excludeAssets: [{}, {}, {}]
 			}
 		}, {}]
 	}, {
-		"options": {
-			"template": "E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\views\\app.template.html",
-			"filename": "../server/index.ssr.html",
-			"hash": false,
-			"inject": false,
-			"compile": true,
-			"favicon": false,
-			"minify": {
-				"collapseBooleanAttributes": true,
-				"decodeEntities": true,
-				"minifyCSS": true,
-				"minifyJS": true,
-				"processConditionalComments": true,
-				"removeEmptyAttributes": true,
-				"removeRedundantAttributes": true,
-				"trimCustomFragments": true,
-				"useShortDoctype": true
+		options: {
+			template: E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\views\\app.template.html,
+			filename: ../server/index.ssr.html,
+			hash: false,
+			inject: false,
+			compile: true,
+			favicon: false,
+			minify: {
+				collapseBooleanAttributes: true,
+				decodeEntities: true,
+				minifyCSS: true,
+				minifyJS: true,
+				processConditionalComments: true,
+				removeEmptyAttributes: true,
+				removeRedundantAttributes: true,
+				trimCustomFragments: true,
+				useShortDoctype: true
 			},
-			"cache": true,
-			"showErrors": true,
-			"chunks": "all",
-			"excludeChunks": [],
-			"chunksSortMode": "auto",
-			"meta": {},
-			"title": "Webpack App",
-			"xhtml": false
+			cache: true,
+			showErrors: true,
+			chunks: all,
+			excludeChunks: [],
+			chunksSortMode: auto,
+			meta: {},
+			title: Webpack App,
+			xhtml: false
 		}
 	}, {
-		"options": {
-			"template": "E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\views\\app.template.html",
-			"filename": "../server/index.spa.html",
-			"hash": false,
-			"inject": true,
-			"compile": true,
-			"favicon": false,
-			"minify": {
-				"collapseBooleanAttributes": true,
-				"decodeEntities": true,
-				"minifyCSS": true,
-				"minifyJS": true,
-				"processConditionalComments": true,
-				"removeEmptyAttributes": true,
-				"removeRedundantAttributes": true,
-				"trimCustomFragments": true,
-				"useShortDoctype": true
+		options: {
+			template: E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\views\\app.template.html,
+			filename: ../server/index.spa.html,
+			hash: false,
+			inject: true,
+			compile: true,
+			favicon: false,
+			minify: {
+				collapseBooleanAttributes: true,
+				decodeEntities: true,
+				minifyCSS: true,
+				minifyJS: true,
+				processConditionalComments: true,
+				removeEmptyAttributes: true,
+				removeRedundantAttributes: true,
+				trimCustomFragments: true,
+				useShortDoctype: true
 			},
-			"cache": true,
-			"showErrors": true,
-			"chunks": "all",
-			"excludeChunks": [],
-			"chunksSortMode": "dependency",
-			"meta": {},
-			"title": "Webpack App",
-			"xhtml": false
+			cache: true,
+			showErrors: true,
+			chunks: all,
+			excludeChunks: [],
+			chunksSortMode: dependency,
+			meta: {},
+			title: Webpack App,
+			xhtml: false
 		}
 	}, {
-		"options": {
-			"filename": "../server/client.manifest.json"
+		options: {
+			filename: ../server/client.manifest.json
 		}
 	}, {
-		"definitions": {
-			"process.env.NODE_ENV": "\"production\"",
-			"process.mode": "\"production\"",
-			"process.static": false,
-			"process.env.VUE_ENV": "\"client\"",
-			"process.browser": true,
-			"process.client": true,
-			"process.server": false,
-			"process.modern": false
+		definitions: {
+			process.env.NODE_ENV: \production\,
+			process.mode: \production\,
+			process.static: false,
+			process.env.VUE_ENV: \client\,
+			process.browser: true,
+			process.client: true,
+			process.server: false,
+			process.modern: false
 		}
 	}, {}],
-	"entry": {
-		"app": ["E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\client.js"]
+	entry: {
+		app: [E:\\blog\\example\\nuxt-css-handle-demo\\.nuxt\\client.js]
 	}
 }
 ```
