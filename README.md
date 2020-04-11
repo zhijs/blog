@@ -18,6 +18,8 @@
 - [对象关系映射 Sequelize 入门](https://github.com/zhijs/blog/blob/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/README.md)  
 - [关于 NodeJS 和 libuv 的一些常见错误认知-外链](https://medium.com/the-node-js-collection/what-you-should-know-to-really-understand-the-node-js-event-loop-and-its-metrics-c4907b19da4c)  
 
+### 计算机网络
+- [HTTP 协议导图](./思维导图/images/计算机网络.jpg)
 ### 其他
 - [WebRTC入门](https://github.com/zhijs/blog/tree/master/%E5%85%B6%E4%BB%96/webRTC%E5%85%A5%E9%97%A8)  
 - [NW.JS 是如何整合 Nodejs 和 Chromium 的](https://livebook.manning.com/book/cross-platform-desktop-applications/chapter-6/23)
