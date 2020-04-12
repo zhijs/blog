@@ -27,8 +27,7 @@
       &#22312;&#21021;&#27425;&#28210;&#26579;&#30340;&#26102;&#20505;&#65292;&#28210;&#26579; Watcher &#34987;&#25918;&#20837;&#21040; Dep &#25968;&#32452;&#20013;
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node CREATED="1586496306533" ID="ID_452679921" MODIFIED="1586496356082" TEXT="set &#x7684;&#x65f6;&#x5019;&#x53d6;&#x51fa; Dep &#x91cc;&#x9762;&#x7684; Watcher, &#x6267;&#x884c; watcher.update()"/>
 </node>
@@ -69,8 +68,7 @@
       &#21040;&#19979;&#19968;&#20010;&#20107;&#20214;&#24490;&#29615;&#25165;&#25191;&#34892;<font color="#ff0000">&#21435;&#37325;&#38431;&#21015;</font>&#20013;&#30340; watcher.update
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node CREATED="1586496727157" ID="ID_1579222694" MODIFIED="1586497105441" TEXT="&#x4e0b;&#x4e00;&#x5faa;&#x73af; tick &#x4f18;&#x5148;&#x7ea7;">
 <node CREATED="1586496768484" ID="ID_319460528" MODIFIED="1586496827295" TEXT="Promise.then">
@@ -88,5 +86,7 @@
 </node>
 </node>
 </node>
+<node CREATED="1586619977676" ID="ID_1361739576" MODIFIED="1586619986457" POSITION="right" TEXT="Watcher"/>
+<node CREATED="1586620008973" ID="ID_395306931" MODIFIED="1586620016195" POSITION="left" TEXT="Computed"/>
 </node>
 </map>

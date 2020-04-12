@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<map name="知识图谱" document_type="Blumind" editor_version="1.3.16.0">
+  <!--Create by Blumind, you can download it free from http://www.blumind.org/download-->
+  <info />
+  <layout>MIND_MAP</layout>
+  <attributes>
+    <item name="editor_show_sidebar">True</item>
+  </attributes>
+  <style>
+    <back_color>White</back_color>
+    <fore_color>Black</fore_color>
+    <line_color>LightSlateGray</line_color>
+    <border_color>SlateGray</border_color>
+    <node_back_color>LightGray</node_back_color>
+    <node_fore_color>Black</node_fore_color>
+    <select_color>RoyalBlue</select_color>
+    <hover_color>MediumSlateBlue</hover_color>
+    <link_line_color>Green</link_line_color>
+  </style>
+  <nodes>
+    <node text="前端开发工程师">
+      <style>
+        <back_color>Cyan</back_color>
+        <fore_color>Black</fore_color>
+        <border_color>Black</border_color>
+        <padding>12</padding>
+      </style>
+      <nodes>
+        <node text="NodeJS">
+          <nodes>
+            <node text="中间件" />
+            <node text="核心模块">
+              <nodes>
+                <node text="buffer" />
+                <node text="stream" />
+              </nodes>
+            </node>
+            <node text="多进程通信" />
+            <node text="事件循环" />
+            <node text="libuv原理" />
+          </nodes>
+        </node>
+        <node text="基础知识">
+          <nodes>
+            <node text="JavaScript">
+              <nodes>
+                <node text="JavaScript 高级程序设计" />
+                <node text="模块化">
+                  <nodes>
+                    <node text="Conmonjs" />
+                    <node text="ES Module" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="HTML" />
+            <node text="CSS">
+              <nodes>
+                <node text="BFC">
+                  <nodes>
+                    <node id="4535bd9f-3420-49c5-b406-4f11521a8c90" text="CSS 权威指南" />
+                  </nodes>
+                </node>
+                <node text="盒模型">
+                  <links>
+                    <link target="4535bd9f-3420-49c5-b406-4f11521a8c90" cp1_length="26" cp1_angle="193" cp2_length="26" cp2_angle="13" width="3" line_style="2" start_cap="0" end_cap="20" text="" hyperlink="" />
+                  </links>
+                </node>
+              </nodes>
+            </node>
+            <node text="TypeScript">
+              <nodes>
+                <node text="TypeScript HandBook&lt;中文版&gt;" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="MVVM 框架">
+          <nodes>
+            <node text="VueJS">
+              <nodes>
+                <node text="数据响应式原理" />
+                <node text="diff 算法" />
+                <node text="服务端渲染">
+                  <nodes>
+                    <node text="Nuxt 原理" />
+                    <node text="Nuxt 优势" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="React" />
+          </nodes>
+        </node>
+        <node text="前端安全">
+          <nodes>
+            <node text="同源策略">
+              <nodes>
+                <node text="JSONP 原理" />
+                <node text="CORS" />
+              </nodes>
+            </node>
+            <node text="XSS" />
+            <node text="CSRF" />
+          </nodes>
+        </node>
+        <node text="前端工程化">
+          <nodes>
+            <node text="Webpack">
+              <nodes>
+                <node text="loader 是什么" />
+                <node text="plugin 是什么" />
+                <node text="Webpack 常用事件" />
+                <node text="打包优化" />
+              </nodes>
+            </node>
+            <node text="rollup" />
+            <node text="treeshaking 原理" />
+            <node text="自动化测试">
+              <nodes>
+                <node text="单元测试" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="持续集成">
+          <nodes>
+            <node text="Gitlab-Ci 持续集成部署" />
+          </nodes>
+        </node>
+        <node text="计算机网络">
+          <nodes>
+            <node text="Http">
+              <nodes>
+                <node text="Http1" />
+                <node text="Http2" />
+              </nodes>
+            </node>
+            <node text="HTTPS">
+              <nodes>
+                <node text="Https 握手过程" />
+              </nodes>
+            </node>
+            <node text="DNS 查找过程" />
+            <node text="TCP">
+              <nodes>
+                <node text="TCP 连接三次握手" />
+                <node text="TCP 断开四次挥手" />
+              </nodes>
+            </node>
+            <node text="UDP" />
+          </nodes>
+        </node>
+        <node text="浏览器原理">
+          <nodes>
+            <node text="事件循环">
+              <nodes>
+                <node text="宏任务" />
+                <node text="微任务" />
+              </nodes>
+            </node>
+            <node text="多进程模型" />
+            <node text="输入 URL 到页面展现过程" />
+          </nodes>
+        </node>
+        <node text="算法">
+          <nodes>
+            <node text="数据结构">
+              <nodes>
+                <node text="栈" />
+                <node text="队列" />
+                <node text="链表" />
+                <node text="二叉树" />
+              </nodes>
+            </node>
+            <node text="常见排序算法" />
+            <node text="常见查找算法" />
+          </nodes>
+        </node>
+        <node text="移动端跨端">
+          <nodes>
+            <node text="H5 页面">
+              <nodes>
+                <node text="兼容问题" />
+                <node text="JSBridge" />
+              </nodes>
+            </node>
+            <node text="React-native">
+              <nodes>
+                <node text="JS 描述，原生渲染" />
+              </nodes>
+            </node>
+            <node text="Flutter">
+              <nodes>
+                <node text="skia 渲染" />
+                <node text="dart 强类型语言" />
+              </nodes>
+            </node>
+            <node text="Hybird App" />
+          </nodes>
+        </node>
+        <node text="PC 客户端应用">
+          <nodes>
+            <node text="Electron">
+              <nodes>
+                <node text="优势是啥？" />
+                <node text="原理架构" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="VUE 周边">
+          <nodes>
+            <node text="VueX">
+              <nodes>
+                <node text="数据响应原理" />
+              </nodes>
+            </node>
+            <node text="Vue-Router">
+              <nodes>
+                <node text="路由控制原理" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="设计模式">
+          <nodes>
+            <node text="发布订阅模式">
+              <nodes>
+                <node text="事件" />
+              </nodes>
+            </node>
+            <node text="装饰者模式" />
+          </nodes>
+        </node>
+        <node text="前端性能优化">
+          <nodes>
+            <node text="请求数优化">
+              <nodes>
+                <node text="文件合并">
+                  <nodes>
+                    <node text="雪碧图" />
+                  </nodes>
+                </node>
+                <node text="适当增加域名">
+                  <nodes>
+                    <node text="浏览器对同一域名并发限制" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="合理利用缓存" />
+            <node text="关键路径优化">
+              <nodes>
+                <node text="首屏 SSR" />
+                <node text="图片懒加载">
+                  <nodes>
+                    <node text="IntersetionObserver" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="iconFont 替代图片" />
+            <node text="减少频繁操作 DOM" />
+            <node text="雅虎前端优化的35条军规" />
+          </nodes>
+        </node>
+        <node text="WebAssembly" />
+        <node text="小程序">
+          <nodes>
+            <node text="Taro" />
+            <node text="小程序基本原理" />
+          </nodes>
+        </node>
+        <node text="正则表达式" />
+      </nodes>
+    </node>
+  </nodes>
+</map>

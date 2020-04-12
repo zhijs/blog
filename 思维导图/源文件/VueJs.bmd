@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<map name="VueJs" document_type="Blumind" editor_version="1.3.16.0">
+  <!--Create by Blumind, you can download it free from http://www.blumind.org/download-->
+  <info />
+  <layout>MIND_MAP</layout>
+  <attributes>
+    <item name="editor_show_sidebar">True</item>
+  </attributes>
+  <style>
+    <back_color>White</back_color>
+    <fore_color>Black</fore_color>
+    <line_color>LightSlateGray</line_color>
+    <border_color>SlateGray</border_color>
+    <node_back_color>LightGray</node_back_color>
+    <node_fore_color>Black</node_fore_color>
+    <select_color>RoyalBlue</select_color>
+    <hover_color>MediumSlateBlue</hover_color>
+    <link_line_color>Green</link_line_color>
+  </style>
+  <nodes>
+    <node text="VueJs">
+      <style>
+        <back_color>Lime</back_color>
+        <fore_color>Black</fore_color>
+        <border_color>Black</border_color>
+        <padding>12</padding>
+      </style>
+      <nodes>
+        <node text="2.x 版本">
+          <nodes>
+            <node text="响应式原理">
+              <nodes>
+                <node text="普通对象" />
+                <node text="数组对象">
+                  <nodes>
+                    <node text="劫持 7 个方法">
+                      <nodes>
+                        <node text="push" />
+                        <node text="pop" />
+                        <node text="shift" />
+                        <node text="unshift" />
+                        <node text="splice" />
+                        <node text="sort" />
+                        <node text="reverse" />
+                      </nodes>
+                    </node>
+                    <node text="即是下列操作不会不是响应式的&#xD;&#xA;--------------------------------&#xD;&#xA;data.arr[0] = newValue&#xD;&#xA;---------------------------------&#xD;&#xA;data.arr.length = n" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="virtual dom">
+              <nodes>
+                <node text="相比原生 dom 操作优势" />
+              </nodes>
+            </node>
+            <node text="diff 算法">
+              <nodes>
+                <node text="前提">
+                  <nodes>
+                    <node text="同层比较">
+                      <nodes>
+                        <node text="web UI中跨级移动操作非常少&#xD;&#xA;可以忽略不计" />
+                      </nodes>
+                    </node>
+                    <node text="相同类型的两个组件产生的 DOM 结构是类似的" />
+                    <node text="对于同一层级的一组子节点，分配唯一 id 区分 (key)" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="异步更新队列">
+              <nodes>
+                <node text="data 更新的时候都会&#xD;&#xA;将 watcher 放到异步队列中" />
+                <node text="到下一个事件循环才&#xD;&#xA;执行去重队列中的 watcher.update" />
+                <node text="下一循环 tick 优先级">
+                  <nodes>
+                    <node text="1. Promise.then" />
+                    <node text="2. MutationObserver" />
+                    <node text="3. setImmediate" />
+                    <node text="4. setTimeout(fn, 0)" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="key 的作用">
+              <nodes>
+                <node text="index 作为 Key 和  id 作为 key 的区别 " />
+              </nodes>
+            </node>
+            <node text="wacher 和 computed">
+              <nodes>
+                <node text="区别" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="3.0 版本" />
+      </nodes>
+    </node>
+  </nodes>
+</map>

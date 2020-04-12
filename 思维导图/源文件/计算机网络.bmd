@@ -1,0 +1,615 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<map name="计算机网络" document_type="Blumind" editor_version="1.3.16.0">
+  <!--Create by Blumind, you can download it free from http://www.blumind.org/download-->
+  <info />
+  <layout>MIND_MAP</layout>
+  <attributes>
+    <item name="editor_show_sidebar">True</item>
+  </attributes>
+  <style>
+    <back_color>White</back_color>
+    <fore_color>Black</fore_color>
+    <line_color>LightSlateGray</line_color>
+    <border_color>SlateGray</border_color>
+    <node_back_color>LightGray</node_back_color>
+    <node_fore_color>Black</node_fore_color>
+    <select_color>RoyalBlue</select_color>
+    <hover_color>MediumSlateBlue</hover_color>
+    <link_line_color>Green</link_line_color>
+  </style>
+  <nodes>
+    <node text="计算机网络">
+      <style>
+        <back_color>Cyan</back_color>
+        <fore_color>Black</fore_color>
+        <border_color>Black</border_color>
+        <padding>12</padding>
+      </style>
+      <nodes>
+        <node text="分层结构">
+          <nodes>
+            <node text="应用层 (HTTP、SMTP、IMAP)">
+              <nodes>
+                <node text="发送: 从应用层到物理层是逐渐添加字段的过程" />
+                <node text="接受: 从物理层到应用层是逐渐解包的过程" />
+              </nodes>
+            </node>
+            <node text="传输层 (TCP)" />
+            <node text="网络层 (IP)" />
+            <node text="数据链路层" />
+            <node text="物理层" />
+          </nodes>
+        </node>
+        <node text="TCP 连接建立三次握手">
+          <nodes>
+            <node text="连接双确认对方能收发" />
+          </nodes>
+        </node>
+        <node text="TCP 四次挥手">
+          <nodes>
+            <node text="连接双方分别确认无数据发送后断开" />
+          </nodes>
+        </node>
+        <node text="TPC 慢启动">
+          <nodes>
+            <node text="每成功发送一个分组，发送端就有了发送两个分组的权限，然后是四个分组&#xD;&#xA;如果连接有大量数据要发送，是不能一次发送所有分组，必须&#xD;&#xA;发送一个分组，等待确认，然后可以发送两个分组" />
+          </nodes>
+        </node>
+        <node text="提高 HTTP 连接性能">
+          <nodes>
+            <node text="并行连接">
+              <nodes>
+                <node text="缺点：宽带拥堵，服务器压力大" />
+                <node text="缺点：浏览器限制并发数，一般为 4 个" />
+                <node text="同一时刻建立多个 TCP 连接" />
+              </nodes>
+            </node>
+            <node text="持久化连接(HTTP 1.1)">
+              <nodes>
+                <node text="优点：降低连接建立的开销" />
+                <node text="缺点：不好管理，容易造成大量空闲连接" />
+                <node text="扩展头部 Connection:Keep-Alive ">
+                  <nodes>
+                    <node text="需要客户端和服务端协商支持" />
+                    <node text="代理服务器不能转发 Connection 首部&#xD;&#xA;因为会造成客户端和服务端连接挂起的问题" />
+                    <node text="客户端断开连接，发送 Connection: Close" />
+                  </nodes>
+                </node>
+                <node text="复用 TCP 连接，响应完成后可继续发送第二个请求">
+                  <style>
+                    <back_color>Lime</back_color>
+                  </style>
+                </node>
+              </nodes>
+            </node>
+            <node text="管道化持久连接">
+              <nodes>
+                <node text="基于持久化连接" />
+                <node text="在持久化连接基础之上，可并行发送请求" />
+                <node text="限制">
+                  <nodes>
+                    <node text="必须按照请求顺序响应，如果第一个响应太慢的话，会造成后面的响应阻塞&#xD;&#xA;因为 HTTP 报文中没有序列标签，这即是 Head of Line blocking">
+                      <style>
+                        <back_color>Red</back_color>
+                      </style>
+                    </node>
+                    <node text="不能用于发送会产生副作用的请求，如 POST,因为无法安全重试" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="WebSocket">
+          <nodes>
+            <node text="建立连接使用 HTTP" />
+            <node text="HTTP 连接头部多了 Upgrade: websocket&#xD;&#xA;Connection: Upgrade，表示希望用 websocket 协议" />
+            <node text="持久化连接，真全双工" />
+            <node text="解决 HTTP 连接只能被动获取数据的问题&#xD;&#xA;解决 HTTP 伪长连接的问题，服务端和客户端要交换大量 Header 信息 " />
+            <node text="问题：可能进入假死状态">
+              <nodes>
+                <node text="因为网络原因，没有触发 onclose 事件">
+                  <nodes>
+                    <node text="使用心跳机制检测并重连" />
+                    <node text="每隔一定事件给对方发送消息，如果&#xD;&#xA;指定时间内没收到回复，就主动断开连接&#xD;&#xA;断开连接的同时尝试重新连接" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="HTTPS">
+          <nodes>
+            <node text="HTTPS 在 TCP 之上 HTTP 之下建立了一层 SSL " />
+            <node text="HTTPS 也需要三次握手建立 TCP 连接&#xD;&#xA;然后进行 HTTPS 握手" />
+            <node text="非对称加密实现 HTTPS 握手&#xD;&#xA;传输对称加密密钥和加密算法">
+              <nodes>
+                <node text="1. 客户端发起请求，告知服务器支持的加密算法，摘要算法，&#xD;&#xA;同时发送一个随机数给服务端">
+                  <style>
+                    <back_color>LightGray</back_color>
+                  </style>
+                </node>
+                <node text="2. 服务端首次回应，确定加密协议版本，加密算法，&#xD;&#xA;摘要算法，也生成一个随机数，连同证书发给客户端" />
+                <node text="3. 浏览器对证书校验(所有者，有效期)" />
+                <node text="4. 检验是否是合法机构颁布" />
+                <node text="5. 取出颁发者的公钥 (非证书里面的公钥), 对证书摘要解密" />
+                <node text=" 6. 浏览器用相同的 hash 算法计算证书的 hash 值，&#xD;&#xA;并和解密出来的要 hash 值对比" />
+                <node text="7. 读取证书公钥" />
+                <node text=" 8.生成随机数，对其进行摘要处理，使用公钥对随机&#xD;&#xA;数和摘要进行加密，发送给服务端，并发送一个消息通知" />
+                <node text="9. 服务端拿到数据，用私钥解密，并对随机&#xD;&#xA;数进行摘要验证，使用上述三个随机数作为对称加密的密钥" />
+              </nodes>
+            </node>
+            <node text="非对称加密中，私钥和公钥是相对的，私钥加密公钥解密&#xD;&#xA;公钥加密，私钥解密" />
+          </nodes>
+        </node>
+        <node text="HTTP">
+          <nodes>
+            <node text="0.9 版本">
+              <nodes>
+                <node text="只支持 GET 请求" />
+                <node text="不支持请求头">
+                  <nodes>
+                    <node text="所以只支持纯文本" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="1.0 版本">
+              <nodes>
+                <node text="支持请求响应头" />
+                <node text="支持 GET、HEAD、POST" />
+                <node text="缓存控制">
+                  <nodes>
+                    <node text="Expires">
+                      <nodes>
+                        <node text="服务端返回的具体格林尼治时间" />
+                      </nodes>
+                    </node>
+                    <node text="Pragma">
+                      <nodes>
+                        <node text="no-cache">
+                          <nodes>
+                            <node text="意味着浏览器不会缓存资源" />
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                    <node text="Pragma 优先级大于 Expires ">
+                      <style>
+                        <back_color>Red</back_color>
+                      </style>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="1.1 版本">
+              <nodes>
+                <node text="缓存控制">
+                  <nodes>
+                    <node text="Cache-Control">
+                      <nodes>
+                        <node text="可缓存性">
+                          <nodes>
+                            <node text="public">
+                              <nodes>
+                                <node text=" 响应可被任意缓存" />
+                              </nodes>
+                            </node>
+                            <node text="private">
+                              <nodes>
+                                <node text="响应只能被客户端缓存&#xD;&#xA;不能被中间节点（代理、CDN等）缓存" />
+                              </nodes>
+                            </node>
+                            <node text="no-cache">
+                              <nodes>
+                                <node text="中间节点必须向原始服&#xD;&#xA;务器去验证缓存有效性">
+                                  <nodes>
+                                    <node text="等同于 max-age = 0&#xD;&#xA;浏览器不是不缓存，只是每次使用&#xD;&#xA;需要向服务器确认是否可用">
+                                      <style>
+                                        <back_color>#FF8080</back_color>
+                                      </style>
+                                    </node>
+                                  </nodes>
+                                </node>
+                              </nodes>
+                            </node>
+                            <node text="only-if-cached">
+                              <nodes>
+                                <node text="中间节点直接使用已存在&#xD;&#xA;的缓存来确认有效性">
+                                  <style>
+                                    <back_color>#FF8080</back_color>
+                                  </style>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="过期控制">
+                          <nodes>
+                            <node text="max-age=&lt;seconds&gt;">
+                              <nodes>
+                                <node text="指定相对于请求时间&#xD;&#xA;的过期时间，以秒为单位&#xD;&#xA;时间过了后需要向服务器确认">
+                                  <style>
+                                    <back_color>#FF8080</back_color>
+                                  </style>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="再验证">
+                          <nodes>
+                            <node text="must-revalidation">
+                              <nodes>
+                                <node text="缓存过期后必须向服&#xD;&#xA;务器确认缓存是否有效">
+                                  <style>
+                                    <back_color>#FF8080</back_color>
+                                  </style>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="其他">
+                          <nodes>
+                            <node text="no-store">
+                              <nodes>
+                                <node text="忽略缓存的存在，直接&#xD;&#xA;向服务器请求最新的资源。" />
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                    <node text="优先级  Pragma &gt; Cache-Control &gt; Expires" />
+                    <node text="确认缓存是否可用">
+                      <nodes>
+                        <node text="ETag (响应字段)">
+                          <style>
+                            <back_color>#FFC080</back_color>
+                          </style>
+                          <nodes>
+                            <node text="值是由某种算法计算出来&#xD;&#xA;的资源唯一标志符(如 md5)" />
+                          </nodes>
+                        </node>
+                        <node text="If-Not-Match: 资源唯一值">
+                          <style>
+                            <back_color>#FFC080</back_color>
+                          </style>
+                          <nodes>
+                            <node text="已更新: 返回新资源 (200)" />
+                            <node text="未更新: 返回 304" />
+                            <node text="注意和  If-Match 的区别">
+                              <style>
+                                <back_color>Red</back_color>
+                              </style>
+                              <nodes>
+                                <node text="请求头&#xD;&#xA;If-Match:  资源唯一值">
+                                  <nodes>
+                                    <node text="服务器&#xD;&#xA;和 ETag 校验相同： 执行请求&#xD;&#xA;校验失败：返回 412 先决条件失败 " />
+                                  </nodes>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="Last-Modified (响应字段)">
+                          <style>
+                            <back_color>#FF8000</back_color>
+                          </style>
+                          <nodes>
+                            <node text="此资源的最后修改时间" />
+                          </nodes>
+                        </node>
+                        <node text="If-Modified-Since： &lt;http-date&gt;(请求头)">
+                          <style>
+                            <back_color>#FF8000</back_color>
+                          </style>
+                          <nodes>
+                            <node text="服务器对比">
+                              <nodes>
+                                <node text="已更新：新资源(200)" />
+                                <node text="未更新： 304" />
+                              </nodes>
+                            </node>
+                            <node text="注意和 If-Unmodified-Since 区别">
+                              <style>
+                                <back_color>Red</back_color>
+                              </style>
+                              <nodes>
+                                <node text="请求头&#xD;&#xA; If-Unmodified-Since：&lt;http-date&gt;">
+                                  <nodes>
+                                    <node text="服务器&#xD;&#xA;资源未更改： 执行请求&#xD;&#xA;资源更改： 返回 412" />
+                                  </nodes>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="优先级 ETag &gt; Last-Modified  " />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="默认使用长连接 keep-alive" />
+                <node text="字节范围请求">
+                  <nodes>
+                    <node text="请求头&#xD;&#xA;Range: bytes=0-10">
+                      <nodes>
+                        <node text="表示请求资源 0 - 10 字节的位置数据">
+                          <nodes>
+                            <node text="适用于分段下载" />
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="chunked编码传输">
+                  <nodes>
+                    <node text="响应头&#xD;&#xA;Transfer-Encoding: chunked">
+                      <nodes>
+                        <node text="表示响应体中 将用 Chunked 编码传输内容。&#xD;&#xA;对于大文件传输，服务器可以不用一次申请&#xD;&#xA;一大块内存，而是采用动态申请小内存的方式" />
+                        <node text="以一个长度为0的块作为结尾" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="请求和响应支持 Host 头部&#xD;&#xA;host: &lt;目标域名&gt;">
+                  <nodes>
+                    <node text="用来实现虚拟主机技术">
+                      <nodes>
+                        <node text="比如一台机器部署了 A、B 站点，ip 地址都相同&#xD;&#xA;此时可以通过请求的 host 来区分请求要访问的站点" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="新增 PUT 方法">
+                  <nodes>
+                    <node text="请求服务器写入文档" />
+                  </nodes>
+                </node>
+                <node text="新增 OPTIONS 方法">
+                  <nodes>
+                    <node text="获取服务器支持的方法" />
+                    <node text="跨域预检请求" />
+                  </nodes>
+                </node>
+                <node text="新增 DELETE 方法">
+                  <nodes>
+                    <node text="请求删除指定资源" />
+                  </nodes>
+                </node>
+                <node text="新增 TRACE 方法">
+                  <nodes>
+                    <node text="查看请求的路由过程" />
+                  </nodes>
+                </node>
+                <node text="新增 CONNECT">
+                  <nodes>
+                    <node text="服务器作为跳板，让服务器代替用户去访问目标资源" />
+                  </nodes>
+                </node>
+                <node text="存在较大的缺陷">
+                  <style>
+                    <back_color>#C00000</back_color>
+                  </style>
+                  <nodes>
+                    <node text="head of line blocking&#xD;&#xA;队列头阻塞问题">
+                      <style>
+                        <back_color>#C00000</back_color>
+                      </style>
+                      <nodes>
+                        <node text="虽然可以在一个 TCP 连接上复用，减少握手开销，&#xD;&#xA;如果在一个 TCP 连接上发起多个请求，那么&#xD;&#xA;第一个请求没有收到回复之前，后面请求的响应将会被阻塞">
+                          <style>
+                            <back_color>#C00000</back_color>
+                          </style>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="2.0 版本">
+              <nodes>
+                <node text="基于 SPDY 协议，SPDY是Speedy的昵音，意为“更快”。&#xD;&#xA;它是Google开发的基于TCP协议的应用层协议">
+                  <nodes>
+                    <node text="协议层级">
+                      <nodes>
+                        <node text="HTTP&#xD;&#xA;-----&#xD;&#xA;SPDY&#xD;&#xA;-----&#xD;&#xA;SSL&#xD;&#xA;-----&#xD;&#xA;TCP" />
+                        <node text="也就是 HTTP2 必须基于 HTTPS" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="二进制分帧">
+                  <nodes>
+                    <node text="HTTP 1.x 是明文协议">
+                      <nodes>
+                        <node text="start line (起始行 GET /test HTTP1.1)&#xD;&#xA;---------------------------------------&#xD;&#xA;Header(请求头/响应头)&#xD;&#xA;-----------------------------------------&#xD;&#xA;请求体/响应体" />
+                      </nodes>
+                    </node>
+                    <node text="HTTP2 二进制frame">
+                      <nodes>
+                        <node text="length(定义了整个frame的开始到结束)&#xD;&#xA;----------------------------------------&#xD;&#xA;type (frame 类型，共 10 种)&#xD;&#xA;----------------------------------------&#xD;&#xA;flags (二进制位重要参数)&#xD;&#xA;----------------------------------------&#xD;&#xA;stream id (用于流控制)&#xD;&#xA;--------------------------------------------&#xD;&#xA;payload (请求正文)" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="多路复用即连接共享">
+                  <nodes>
+                    <node text="HTTP2 解决了 head of line blocking&#xD;&#xA;的问题 ">
+                      <nodes>
+                        <node text="利用 stream id 做连接控制" />
+                        <node text="一个 request 对应一个 stream 并分配唯一 id" />
+                        <node text="接收方根据 stream id 将 fream 归类到 request 中" />
+                        <node text="stream 有优先级，优先级高的先被 sever 处理" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="header 压缩(HTTP1.1 不支持首部压缩)">
+                  <nodes>
+                    <node text="encoder 压缩首部" />
+                    <node text="通讯双方各自cache一份header fields表&#xD;&#xA;减少重复传输" />
+                  </nodes>
+                </node>
+                <node text="服务端推送" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="HTTP 状态码">
+          <nodes>
+            <node text="2XX">
+              <nodes>
+                <node text="成功状态码">
+                  <nodes>
+                    <node text="200">
+                      <nodes>
+                        <node text="ok" />
+                      </nodes>
+                    </node>
+                    <node text="206">
+                      <nodes>
+                        <node text="成功执行了一个部分或者 Range (范围)请求" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="3XX">
+              <nodes>
+                <node text="重定向状态码">
+                  <nodes>
+                    <node text="301">
+                      <nodes>
+                        <node text="永久重定向" />
+                      </nodes>
+                    </node>
+                    <node text="302">
+                      <nodes>
+                        <node text="临时重定向" />
+                      </nodes>
+                    </node>
+                    <node text="304">
+                      <nodes>
+                        <node text="未修改(使用缓存)" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="4XX">
+              <nodes>
+                <node text="客户端错误">
+                  <nodes>
+                    <node text="400">
+                      <nodes>
+                        <node text=" Bad Request ( 服务器未能理解请求或是请求参数有误)" />
+                      </nodes>
+                    </node>
+                    <node text="401">
+                      <nodes>
+                        <node text="Unauthorized (未授权)" />
+                      </nodes>
+                    </node>
+                    <node text="403">
+                      <nodes>
+                        <node text="Forbidden (禁止访问)" />
+                      </nodes>
+                    </node>
+                    <node text="404">
+                      <nodes>
+                        <node text="Not Found (资源未找到)" />
+                      </nodes>
+                    </node>
+                    <node text="405">
+                      <nodes>
+                        <node text="Method Not Allowed (请求中指定的方法不被允许)" />
+                      </nodes>
+                    </node>
+                    <node text="413">
+                      <nodes>
+                        <node text="所请求的实体的太大，服务器不会接受请求。" />
+                      </nodes>
+                    </node>
+                    <node text="414">
+                      <nodes>
+                        <node text="由于url太长，服务器不会接受请求" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="5XX">
+              <nodes>
+                <node text="服务端错误">
+                  <nodes>
+                    <node text="500 ">
+                      <nodes>
+                        <node text="nternal Server Error (请求未完成。服务器遇到不可预知的情况)" />
+                      </nodes>
+                    </node>
+                    <node text="501">
+                      <nodes>
+                        <node text="Not Implemented (请求未完成。服务器不支持所请求的功能)" />
+                      </nodes>
+                    </node>
+                    <node text="502">
+                      <nodes>
+                        <node text="Bad Gateway (请求未完成。服务器从上游服务器收到一个无效的响应)" />
+                      </nodes>
+                    </node>
+                    <node text="503">
+                      <nodes>
+                        <node text="Service Unavailable (请求未完成。服务器临时过载或当机)" />
+                      </nodes>
+                    </node>
+                    <node text="504">
+                      <nodes>
+                        <node text="Gateway Timeout (网关超时)" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="通信模式">
+          <nodes>
+            <node text="单工">
+              <nodes>
+                <node text="数据传输只能单向传输">
+                  <nodes>
+                    <node text="A 可以发送到 B,&#xD;&#xA;B 不能发给 A" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="全双工">
+              <nodes>
+                <node text="数据通信双方能同时发送和接受消息">
+                  <nodes>
+                    <node text="A B 双发能互发&#xD;&#xA;同一时刻 A、B 都可以进行发送和接受" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="半双工">
+              <nodes>
+                <node text="和全双类似，但是同一时刻，通信一方只能收或者发" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+      </nodes>
+    </node>
+  </nodes>
+</map>
