@@ -30,7 +30,17 @@
           <nodes>
             <node text="响应式原理">
               <nodes>
-                <node text="普通对象" />
+                <node text="普通对象">
+                  <nodes>
+                    <node text="Object.definePropert">
+                      <nodes>
+                        <node text="每个 data 属性都&#xD;&#xA;通过闭包引用一个 Dep" />
+                        <node text="Dep 里面存放依赖该属性的 Watcher在依赖收集的时候&#xD;&#xA;渲染 Watcher 会被被放入到 Dep 数组中" />
+                        <node text="set 的时候取出 Dep 里面的 Watcher&#xD;&#xA;将 Watcher 放入等待队列中等待执行" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
                 <node text="数组对象">
                   <nodes>
                     <node text="劫持 7 个方法">
@@ -44,14 +54,34 @@
                         <node text="reverse" />
                       </nodes>
                     </node>
-                    <node text="即是下列操作不会不是响应式的&#xD;&#xA;--------------------------------&#xD;&#xA;data.arr[0] = newValue&#xD;&#xA;---------------------------------&#xD;&#xA;data.arr.length = n" />
+                    <node text="即是下列操作不是响应式的&#xD;&#xA;--------------------------------&#xD;&#xA;data.arr[0] = newValue&#xD;&#xA;---------------------------------&#xD;&#xA;data.arr.length = n" />
                   </nodes>
                 </node>
               </nodes>
             </node>
             <node text="virtual dom">
               <nodes>
-                <node text="相比原生 dom 操作优势" />
+                <node text="相比原生 dom 操作优势">
+                  <nodes>
+                    <node text="没有任何框架可以比纯手动的优化 DOM 操作更快&#xD;&#xA;因为框架的 DOM 操作层需要应对任何&#xD;&#xA;上层 API 可能产生的操作，它的实现必须是普适的" />
+                    <node text="性能  vs 可维护性的取舍">
+                      <nodes>
+                        <node text="1. 掩盖底层的 DOM 操作，让你用更声明式的&#xD;&#xA;方式来描述你的目的，从而让你的代码更容易维护" />
+                        <node text="2. 可以跨平台支持，比如 ReactNative" />
+                        <node text="3. 提升开发效率" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="JS模拟的DOM结构，将 DOM 变化的对比放在 JS 层来做">
+                  <nodes>
+                    <node text="纯 js 层面的计算，比 DOM 操作来说&#xD;&#xA;便宜了太多">
+                      <nodes>
+                        <node text="保证了不管你的数据变化多少&#xD;&#xA;每次重绘的性能都可以接受" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
               </nodes>
             </node>
             <node text="diff 算法">
@@ -93,6 +123,23 @@
                 <node text="区别" />
               </nodes>
             </node>
+            <node text="v-model 原理">
+              <nodes>
+                <node text="v-bind:value=&quot;value&quot;" />
+                <node text="type=&quot;text&quot;&#xD;&#xA;type=&quot;textare&quot;">
+                  <nodes>
+                    <node text="监听 input 事件并更新值&#xD;&#xA;-------------------------------------------&#xD;&#xA;@input=&quot;value = $event.target.value&quot;" />
+                  </nodes>
+                </node>
+                <node text="type=&quot;checkbox&quot;&#xD;&#xA;type=&quot;radio&quot;">
+                  <nodes>
+                    <node text="监听 change 事件并更新值&#xD;&#xA;-------------------------------------------&#xD;&#xA;@change=&quot;value = $event.target.value&quot;" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="Dep" />
+            <node text="Watcher" />
           </nodes>
         </node>
         <node text="3.0 版本" />
