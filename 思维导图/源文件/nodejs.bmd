@@ -98,7 +98,7 @@
                 </node>
                 <node text="非阻塞">
                   <nodes>
-                    <node text="线程继续执行">
+                    <node text="线程继续执行&#xD;&#xA;系统调用会立马返回，没数据的情况返回 Error">
                       <nodes>
                         <node text="轮询确认数据是否就绪">
                           <nodes>

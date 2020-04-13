@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<map name="新文档" document_type="Blumind" editor_version="1.3.16.0">
+<map name="移动端" document_type="Blumind" editor_version="1.3.16.0">
   <!--Create by Blumind, you can download it free from http://www.blumind.org/download-->
   <info />
   <layout>MIND_MAP</layout>
@@ -29,7 +29,46 @@
         <node text="jsBridge" />
         <node text="多设备适配">
           <nodes>
-            <node text="rem" />
+            <node text="rem">
+              <nodes>
+                <node text="root em&#xD;&#xA;相对于根元素 html  的 font-size">
+                  <nodes>
+                    <node text="用 px&#xD;&#xA;eg: html {font-size: 100 px }">
+                      <nodes>
+                        <node text="设计稿(iphone: 像素 320 * 568)&#xD;&#xA;某个 div 需要满屏宽，则 div { width: 3.2rem}&#xD;&#xA;-------------------------------------------------------&#xD;&#xA;如果在 iphone6 (375 * 667 ) 中则无法满屏展示">
+                          <nodes>
+                            <node text="解决大小屏限制相对宽带不一致问题&#xD;&#xA;----------------------------------------------------&#xD;&#xA;1. 采用 vw, 即是设置 100vw = npx (设计稿高度)&#xD;&#xA;所以需要让 1 px 的视觉稿 = (100 / n) vw&#xD;&#xA;---------------------------------------------------&#xD;&#xA;即我们设置 html {font-size: (100 / n) vw}&#xD;&#xA;然后 div {width: n rem;}, 则在任意设备宽度都是满屏">
+                              <nodes>
+                                <node text="即是可以通过 vw + rem 的形式实现&#xD;&#xA;在不同设备上展示相对于设备而言，宽度一样的视觉" />
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="em">
+              <nodes>
+                <node text="相对于当前元素字体尺寸">
+                  <nodes>
+                    <node text="例如当前元素 font-size: 16px&#xD;&#xA;则 1em =  16px" />
+                  </nodes>
+                </node>
+                <node text="容易误解的地方">
+                  <nodes>
+                    <node text="假设 html: {font-size: 16px}&#xD;&#xA;----------------&#xD;&#xA;h1 {&#xD;&#xA;  font-size: 2em; &#xD;&#xA;  margin-bottom: 1em; &#xD;&#xA;}">
+                      <nodes>
+                        <node text="此时 h1 的 margin-top 为 32px&#xD;&#xA;因为 em 是相对于当前元素的 font-size&#xD;&#xA;而 h1 的 font-size 被设为 2em = 32px" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="em / rem 增加  CSS  的可维护性" />
+              </nodes>
+            </node>
           </nodes>
         </node>
         <node text="Flutter" />
