@@ -28,8 +28,35 @@
       <nodes>
         <node text="数据结构">
           <nodes>
-            <node text="数组" />
-            <node text="链表" />
+            <node text="数组">
+              <nodes>
+                <node text="优点">
+                  <nodes>
+                    <node text="构建一个数组非常简单" />
+                    <node text="可以在 O(1) 的时间里根据数组的下标&#xD;&#xA;(index) 查找某个元素" />
+                  </nodes>
+                </node>
+                <node text="缺点">
+                  <nodes>
+                    <node text="构建时必须分配一段连续的空间" />
+                    <node text="查询某个元素是否存在时需要&#xD;&#xA;遍历整个数组，耗费 O(n) 的时间" />
+                    <node text="删除某个元素的时候，同样需要耗费 O(n) 的时间" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="链表">
+              <nodes>
+                <node text="单链表" />
+                <node text="双链表" />
+                <node text="优点">
+                  <nodes>
+                    <node text="灵活地分配内存空间" />
+                    <node text="能在 O(1)  的时间内删除或者添加元素&#xD;&#xA;前提是" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
           </nodes>
         </node>
       </nodes>

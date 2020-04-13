@@ -66,6 +66,8 @@
                 </node>
               </nodes>
             </node>
+            <node text="cluster" />
+            <node text="stream" />
           </nodes>
         </node>
         <node text="事件循环" />
@@ -118,7 +120,6 @@
         </node>
         <node text="libuv" />
         <node text="pm2" />
-        <node text="cluster" />
       </nodes>
     </node>
   </nodes>
