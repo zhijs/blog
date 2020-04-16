@@ -115,7 +115,13 @@
             </node>
             <node text="key 的作用">
               <nodes>
-                <node text="index 作为 Key 和  id 作为 key 的区别 " />
+                <node text="index 作为 Key 和  id 作为 key 的区别 ">
+                  <nodes>
+                    <node text="以实际场景出发，index 作为 key, 或者 key 为 undefined 时候&#xD;&#xA;假设在列表第一个插入一个元素，则会导致所有的列表&#xD;&#xA;都重新更新，无法复用" />
+                  </nodes>
+                </node>
+                <node text="没有 key 的情况下默认为 undefined" />
+                <node text="复用元素，减少不必要的更新" />
               </nodes>
             </node>
             <node text="wacher 和 computed">
