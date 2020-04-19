@@ -72,6 +72,7 @@
           </nodes>
         </node>
         <node text="Flutter" />
+        <node text="小程序" />
       </nodes>
     </node>
   </nodes>
