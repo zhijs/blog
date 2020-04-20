@@ -16,6 +16,7 @@
 ### NodeJS
 - [express 和 koa 中间件解析](https://github.com/zhijs/blog/blob/master/Node/express%20%E5%92%8C%20koa%20%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E6%9E%90/README.md)  
 - [对象关系映射 Sequelize 入门](https://github.com/zhijs/blog/blob/master/Node/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%20Sequlize%20%E5%85%A5%E9%97%A8/README.md)  
+- [nodejs 知识导图](./思维导图/images/nodejs.jpg)  
 - [关于 NodeJS 和 libuv 的一些常见错误认知-外链](https://medium.com/the-node-js-collection/what-you-should-know-to-really-understand-the-node-js-event-loop-and-its-metrics-c4907b19da4c)  
 
 ### 计算机网络
