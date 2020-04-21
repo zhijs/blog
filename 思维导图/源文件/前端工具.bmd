@@ -18,7 +18,7 @@
     <link_line_color>Green</link_line_color>
   </style>
   <nodes>
-    <node text="前端工具">
+    <node text="前端工程化">
       <style>
         <back_color>Silver</back_color>
         <fore_color>Black</fore_color>
