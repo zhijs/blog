@@ -26,7 +26,22 @@
         <padding>12</padding>
       </style>
       <nodes>
-        <node text="Webpack" />
+        <node text="Webpack">
+          <nodes>
+            <node text="现代 JavaScript 应用程序的&#xD;&#xA;静态模块打包器(module bundler)">
+              <nodes>
+                <node text="常用配置">
+                  <nodes>
+                    <node text="entry" />
+                  </nodes>
+                </node>
+                <node text="loader" />
+                <node text="plugin" />
+                <node text="打包构建优化" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
       </nodes>
     </node>
   </nodes>
