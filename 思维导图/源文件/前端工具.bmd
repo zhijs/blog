@@ -32,12 +32,126 @@
               <nodes>
                 <node text="常用配置">
                   <nodes>
-                    <node text="entry" />
+                    <node text="entry">
+                      <nodes>
+                        <node text="多入口">
+                          <nodes>
+                            <node text="对象方式&#xD;&#xA;----------------&#xD;&#xA;entry: {&#xD;&#xA;key1: value1,&#xD;&#xA;key2: value2&#xD;&#xA;}">
+                              <nodes>
+                                <node text="打包的时候会将每个入口分别打包出&#xD;&#xA;一个 bundle, 同时如果不做额外处理&#xD;&#xA;的话，即使多个入口引用相同的模块&#xD;&#xA;都会被重复打包进 bundle 里" />
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="单入口">
+                          <nodes>
+                            <node text="对象方式(只有一个 key-value)&#xD;&#xA;-------------------------------&#xD;&#xA;entry:{ key: value }" />
+                            <node text="字符串形式">
+                              <nodes>
+                                <node text="entry: './a.js'&#xD;&#xA;-------------------------------&#xD;&#xA;等价于 entry: {main: './a.js'}" />
+                              </nodes>
+                            </node>
+                            <node text="数组形式">
+                              <nodes>
+                                <node text="entry: ['./a.js', './b.js']&#xD;&#xA;-----------------------------------&#xD;&#xA;等价于 entry: {main: ['./a.js', './b.js']}">
+                                  <nodes>
+                                    <node text="webpack  会将 a.js 和 b.js &#xD;&#xA;打包到一起" />
+                                  </nodes>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="entry 的其他配置方式都是对&#xD;&#xA;象方式的简化形式" />
+                      </nodes>
+                    </node>
+                    <node text="output">
+                      <nodes>
+                        <node text="path">
+                          <nodes>
+                            <node text="string(一般是绝对路径)&#xD;&#xA;----------------------------&#xD;&#xA;指定资源的输出路径， 默认&#xD;&#xA;为 path.join(process.cwd(), 'dist')" />
+                          </nodes>
+                        </node>
+                        <node text="filename">
+                          <nodes>
+                            <node text="string (bundle 文件名)">
+                              <nodes>
+                                <node text="单入口">
+                                  <nodes>
+                                    <node text="可以直接指定一个名称 eg:&#xD;&#xA;output: { filename: 'bundle.js'}&#xD;&#xA;对于多入口，不能这样指定，会报错&#xD;&#xA;Multiple chunks emit assets to the same filename" />
+                                  </nodes>
+                                </node>
+                                <node text="单入口 or  多入口">
+                                  <nodes>
+                                    <node text="ouput: {  filename: [ holder].[holder].string.js }">
+                                      <nodes>
+                                        <node text="holder 为变量模板占位符&#xD;&#xA;其常用的有&#xD;&#xA;">
+                                          <nodes>
+                                            <node text="id" />
+                                            <node text="name">
+                                              <nodes>
+                                                <node text="对应于 input 配置里 input: {key: value}&#xD;&#xA;里的 key" />
+                                              </nodes>
+                                            </node>
+                                            <node text="hash">
+                                              <nodes>
+                                                <node text="代表的是 compilation 的 hash 值">
+                                                  <nodes>
+                                                    <node text="compilation&#xD;&#xA;--------------------------------------------&#xD;&#xA;compilation对象代表某个版本的资源对应的编译进程&#xD;&#xA;当使用Webpack的development中间件时，每次检测到&#xD;&#xA;项目文件有改动就会创建一个compilation，进而&#xD;&#xA;能够针对改动生产全新的编译文件" />
+                                                    <node text="compilation对象包含当前模块资源&#xD;&#xA;待编译文件、有改动的文件和监听依赖的所有信息。" />
+                                                    <node text="compiler&#xD;&#xA;----------------------------------------&#xD;&#xA;compiler对象代表的是配置完备的Webpack环境&#xD;&#xA; compiler对象只在Webpack启动时构建一次&#xD;&#xA;由Webpack组合所有的配置项构建生成。" />
+                                                  </nodes>
+                                                </node>
+                                              </nodes>
+                                            </node>
+                                            <node text="chunkhash" />
+                                            <node text="contenthash" />
+                                            <node text="query" />
+                                          </nodes>
+                                        </node>
+                                      </nodes>
+                                    </node>
+                                  </nodes>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="chunkFilename" />
+                      </nodes>
+                    </node>
                   </nodes>
                 </node>
                 <node text="loader" />
-                <node text="plugin" />
+                <node text="plugin">
+                  <nodes>
+                    <node text="常用 plugin">
+                      <nodes>
+                        <node text="clean-webpack-plugin">
+                          <nodes>
+                            <node text="用于每次构建前清理 /dist 文件夹" />
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
                 <node text="打包构建优化" />
+                <node text="chunk">
+                  <nodes>
+                    <node text="webpack 进行打包时，在入口文件中&#xD;&#xA;根据引用关系，生成的 chunk 文件&#xD;&#xA;一般包含多个 module 的内容" />
+                  </nodes>
+                </node>
+                <node text="module">
+                  <nodes>
+                    <node text="业务中用到 的 js 文件模块" />
+                  </nodes>
+                </node>
+                <node text="bundle">
+                  <nodes>
+                    <node text="chunk 经过 webpack 处理后(例如压缩，treeshaking)&#xD;&#xA;后真正输出的文件模块" />
+                  </nodes>
+                </node>
               </nodes>
             </node>
           </nodes>
