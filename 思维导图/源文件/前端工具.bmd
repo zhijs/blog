@@ -87,24 +87,26 @@
                                       <nodes>
                                         <node text="holder 为变量模板占位符&#xD;&#xA;其常用的有&#xD;&#xA;">
                                           <nodes>
-                                            <node text="id" />
+                                            <node text="id">
+                                              <nodes>
+                                                <node text="The module identifier&#xD;&#xA;模块标识符">
+                                                  <nodes>
+                                                    <node text="webpack 默认为给各个模块分配一个 id 以作标识&#xD;&#xA;用来处理模块之间的依赖关系" />
+                                                  </nodes>
+                                                </node>
+                                              </nodes>
+                                            </node>
                                             <node text="name">
                                               <nodes>
                                                 <node text="对应于 input 配置里 input: {key: value}&#xD;&#xA;里的 key" />
                                               </nodes>
                                             </node>
-                                            <node text="hash">
+                                            <node text="hash" />
+                                            <node text="chunkhash">
                                               <nodes>
-                                                <node text="代表的是 compilation 的 hash 值">
-                                                  <nodes>
-                                                    <node text="compilation&#xD;&#xA;--------------------------------------------&#xD;&#xA;compilation对象代表某个版本的资源对应的编译进程&#xD;&#xA;当使用Webpack的development中间件时，每次检测到&#xD;&#xA;项目文件有改动就会创建一个compilation，进而&#xD;&#xA;能够针对改动生产全新的编译文件" />
-                                                    <node text="compilation对象包含当前模块资源&#xD;&#xA;待编译文件、有改动的文件和监听依赖的所有信息。" />
-                                                    <node text="compiler&#xD;&#xA;----------------------------------------&#xD;&#xA;compiler对象代表的是配置完备的Webpack环境&#xD;&#xA; compiler对象只在Webpack启动时构建一次&#xD;&#xA;由Webpack组合所有的配置项构建生成。" />
-                                                  </nodes>
-                                                </node>
+                                                <node text="代表的是每个 chunk 内容的 hash 值" />
                                               </nodes>
                                             </node>
-                                            <node text="chunkhash" />
                                             <node text="contenthash" />
                                             <node text="query" />
                                           </nodes>
@@ -150,6 +152,17 @@
                 <node text="bundle">
                   <nodes>
                     <node text="chunk 经过 webpack 处理后(例如压缩，treeshaking)&#xD;&#xA;后真正输出的文件模块" />
+                  </nodes>
+                </node>
+                <node text="complier">
+                  <nodes>
+                    <node text="compiler对象代表的是配置完备的Webpack环境&#xD;&#xA; compiler对象只在Webpack启动时构建一次&#xD;&#xA;由Webpack组合所有的配置项构建生成。" />
+                  </nodes>
+                </node>
+                <node text="compilation">
+                  <nodes>
+                    <node text="compilation对象代表某个版本的资源对应的编译进程&#xD;&#xA;当使用Webpack的development中间件时，每次检测到&#xD;&#xA;项目文件有改动就会创建一个compilation，进而&#xD;&#xA;能够针对改动生产全新的编译文件" />
+                    <node text="compilation对象包含当前模块资源&#xD;&#xA;待编译文件、有改动的文件和监听依赖的所有信息。" />
                   </nodes>
                 </node>
               </nodes>
