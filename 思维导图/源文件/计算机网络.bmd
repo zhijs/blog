@@ -40,21 +40,6 @@
             <node text="物理层" />
           </nodes>
         </node>
-        <node text="TCP 连接建立三次握手">
-          <nodes>
-            <node text="连接双确认对方能收发" />
-          </nodes>
-        </node>
-        <node text="TCP 四次挥手">
-          <nodes>
-            <node text="连接双方分别确认无数据发送后断开" />
-          </nodes>
-        </node>
-        <node text="TPC 慢启动">
-          <nodes>
-            <node text="每成功发送一个分组，发送端就有了发送两个分组的权限，然后是四个分组&#xD;&#xA;如果连接有大量数据要发送，是不能一次发送所有分组，必须&#xD;&#xA;发送一个分组，等待确认，然后可以发送两个分组" />
-          </nodes>
-        </node>
         <node text="提高 HTTP 连接性能">
           <nodes>
             <node text="并行连接">
@@ -98,6 +83,34 @@
                 </node>
               </nodes>
             </node>
+          </nodes>
+        </node>
+        <node text="TCP Transmission Control Protocol&#xD;&#xA;传输控制协议">
+          <nodes>
+            <node text="是一种面向连接的、可靠的&#xD;&#xA;基于字节流的传输层通信协议。&#xD;&#xA;也就是说，在收发数据前，必须和对方建立可靠的连接">
+              <nodes>
+                <node text="TCP 连接建立三次握手">
+                  <nodes>
+                    <node text="连接双确认对方能收发" />
+                  </nodes>
+                </node>
+                <node text="TCP 四次挥手">
+                  <nodes>
+                    <node text="连接双方分别确认无数据发送后断开" />
+                  </nodes>
+                </node>
+                <node text="TPC 慢启动">
+                  <nodes>
+                    <node text="每成功发送一个分组，发送端就有了发送两个分组的权限，然后是四个分组&#xD;&#xA;如果连接有大量数据要发送，是不能一次发送所有分组，必须&#xD;&#xA;发送一个分组，等待确认，然后可以发送两个分组" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="UDP User Data Protocol&#xD;&#xA;用户数据报协议">
+          <nodes>
+            <node text="无连接，不可靠传输层协议&#xD;&#xA;没有流量控制，没有窗口机制" />
           </nodes>
         </node>
         <node text="WebSocket">
@@ -607,11 +620,6 @@
                 <node text="和全双类似，但是同一时刻，通信一方只能收或者发" />
               </nodes>
             </node>
-          </nodes>
-        </node>
-        <node text="TCP ransmission Control Protocol&#xD;&#xA;传输控制协议">
-          <nodes>
-            <node text="是一种面向连接的、可靠的、基于字节流的传输层通信协议。" />
           </nodes>
         </node>
       </nodes>
