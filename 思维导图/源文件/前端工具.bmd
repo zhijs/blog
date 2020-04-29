@@ -214,6 +214,12 @@
                                   </nodes>
                                 </node>
                                 <node text="global&#xD;&#xA;----------------------&#xD;&#xA;和 this, window 类似" />
+                                <node text="amd&#xD;&#xA;----------------------&#xD;&#xA;编写的库将通过 &#xD;&#xA;amd 规范导出。">
+                                  <nodes>
+                                    <node text="bundle.js&#xD;&#xA;------------------------------------------------&#xD;&#xA;define('mylib', [], function() {&#xD;&#xA;  return you_lib_code_wrapper&#xD;&#xA;});" />
+                                  </nodes>
+                                </node>
+                                <node text="umd&#xD;&#xA;--------------------&#xD;&#xA;编写的库将通过 &#xD;&#xA;umd 规范导出。" />
                               </nodes>
                             </node>
                           </nodes>

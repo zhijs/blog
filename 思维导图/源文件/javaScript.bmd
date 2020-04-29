@@ -104,6 +104,11 @@
                     <node text="在 commonJS 规范上增加了一个&#xD;&#xA;module.exports 导出" />
                   </nodes>
                 </node>
+                <node text="umd">
+                  <nodes>
+                    <node text="UMD (Universal Module Definition)&#xD;&#xA;就是一种javascript通用模块定义规范&#xD;&#xA;让你的模块能在javascript所有运行环境中发挥作用。" />
+                  </nodes>
+                </node>
               </nodes>
             </node>
           </nodes>
