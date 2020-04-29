@@ -152,7 +152,70 @@
                         <node text="chunkFilename">
                           <nodes>
                             <node text="非入口 chunk 的文件名&#xD;&#xA;一般是懒加载的 chunk" />
-                            <node text="默认是 [id].js, 如果 filename 有定义的话&#xD;&#xA;[id] 会被 filename 定义的实际的  [name] 替换掉" />
+                            <node text="命名规则是怎么样的？">
+                              <style>
+                                <back_color>Red</back_color>
+                              </style>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="publicPath">
+                          <nodes>
+                            <node text="string  or function&#xD;&#xA;---------------------&#xD;&#xA;默认值 ''">
+                              <nodes>
+                                <node text="一般需要将静态资源存储在 cdn 的时候，将该值设置&#xD;&#xA;为 http://cdn.domian.com(cdn 地址)" />
+                              </nodes>
+                            </node>
+                            <node text="打包生成的index.html文件里面引用资源的前缀&#xD;&#xA;即是利用 html-webpack-plugin 将资源嵌入 html 时&#xD;&#xA;会将该值作为前缀拼接到资源路径中，也会适当的加入分割符 '/'">
+                              <nodes>
+                                <node text="例如：publicPath: '/dist/' === (publicPath: '/dist')&#xD;&#xA;----------------------------------------------&#xD;&#xA;则 index.html 引入资源的路径为：&#xD;&#xA;/dist/[hash].js" />
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="libraryTarget&#xD;&#xA;---------------&#xD;&#xA;需要配合 library &#xD;&#xA;一起使用 ">
+                          <nodes>
+                            <node text="string&#xD;&#xA;------------------------&#xD;&#xA;模块导出方式&#xD;&#xA;配置以何种方式导出库">
+                              <nodes>
+                                <node text="val (默认值)&#xD;&#xA;------------------------------&#xD;&#xA;编写库将通过 var 被赋值给&#xD;&#xA;通过 library 指定名称的变量">
+                                  <nodes>
+                                    <node>
+                                      <widgets>
+                                        <widget type="PICTURE" align="Left" hyperlink=""><![CDATA[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]]></widget>
+                                      </widgets>
+                                      <nodes>
+                                        <node text="you_lib_code_wrapper&#xD;&#xA;---------------------------&#xD;&#xA;webpack 打包后的立即执行函数&#xD;&#xA;其执行结果的返回值就是 entry 对应&#xD;&#xA;的导出">
+                                          <style>
+                                            <back_color>Red</back_color>
+                                          </style>
+                                        </node>
+                                      </nodes>
+                                    </node>
+                                  </nodes>
+                                </node>
+                                <node text="commonjs&#xD;&#xA;-------------------------&#xD;&#xA;编写的库将通过 &#xD;&#xA;CommonJS 规范导出。">
+                                  <nodes>
+                                    <node text="bundle.js&#xD;&#xA;------------------------------------------------&#xD;&#xA;exports['mylib'] = you_lib_code_wrapper" />
+                                  </nodes>
+                                </node>
+                                <node text="commonjs&#xD;&#xA;----------------------&#xD;&#xA;编写的库将通过 &#xD;&#xA;CommonJS2 规范导出。">
+                                  <nodes>
+                                    <node text="bundle.js&#xD;&#xA;------------------------------------------------&#xD;&#xA;module.exports = you_lib_code_wrapper&#xD;&#xA;此时 output.library 将没有意义" />
+                                  </nodes>
+                                </node>
+                                <node text="this&#xD;&#xA;-----------------------------&#xD;&#xA;写的库将通过 this 被赋值给&#xD;&#xA;通过 library 指定的名称">
+                                  <nodes>
+                                    <node text="bundle.js&#xD;&#xA;------------------------------------------------&#xD;&#xA;this['mylib'] = you_lib_code_wrapper" />
+                                  </nodes>
+                                </node>
+                                <node text="window&#xD;&#xA;-----------------------------&#xD;&#xA;写的库将通过 window 被赋值给&#xD;&#xA;通过 library 指定的名称">
+                                  <nodes>
+                                    <node text="bundle.js&#xD;&#xA;------------------------------------------------&#xD;&#xA;window['mylib'] = you_lib_code_wrapper" />
+                                  </nodes>
+                                </node>
+                                <node text="global&#xD;&#xA;----------------------&#xD;&#xA;和 this, window 类似" />
+                              </nodes>
+                            </node>
                           </nodes>
                         </node>
                       </nodes>

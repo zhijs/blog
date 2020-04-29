@@ -89,6 +89,25 @@
             </node>
           </nodes>
         </node>
+        <node text="模块化">
+          <nodes>
+            <node text="规范">
+              <nodes>
+                <node text="CommonJS ">
+                  <nodes>
+                    <node text="导出 lib.js, 只能用 exports 导出&#xD;&#xA;----------------------------------&#xD;&#xA;exports.lib = function () {}" />
+                    <node text="导入&#xD;&#xA;------------------------------&#xD;&#xA;const libFn = require('lib.js').lib" />
+                  </nodes>
+                </node>
+                <node text="CommonJS ">
+                  <nodes>
+                    <node text="在 commonJS 规范上增加了一个&#xD;&#xA;module.exports 导出" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
       </nodes>
     </node>
   </nodes>

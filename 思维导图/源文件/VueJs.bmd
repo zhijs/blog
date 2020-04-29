@@ -149,6 +149,7 @@
           </nodes>
         </node>
         <node text="3.0 版本" />
+        <node text="pros" />
       </nodes>
     </node>
   </nodes>
