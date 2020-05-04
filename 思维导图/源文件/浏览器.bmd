@@ -61,7 +61,49 @@
             </node>
           </nodes>
         </node>
-        <node text="浏览器缓存控制" />
+        <node text="浏览器缓存控制">
+          <nodes>
+            <node text="强缓存&#xD;&#xA;-------------&#xD;&#xA;响应头">
+              <nodes>
+                <node text="直接从浏览器加载">
+                  <nodes>
+                    <node text="Cache-Control">
+                      <nodes>
+                        <node text="Cache-Control: max-age=315360000&#xD;&#xA;-------------------------------------------&#xD;&#xA;距离这次响应的 n 秒后过期" />
+                      </nodes>
+                    </node>
+                    <node text="Expires">
+                      <nodes>
+                        <node text="Expires: Wed, 11 May 2018 07:20:00 GMT&#xD;&#xA;------------------------------------------------&#xD;&#xA;指定日期过期" />
+                        <node text="受限于本地时间，更改本地时间可能会造成缓存失效" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="协商缓存">
+              <nodes>
+                <node text="没有命中强缓存，浏览器一定会发送一个请求到服务器&#xD;&#xA;通过last-modified和etag验证资源是否命中协商缓存&#xD;&#xA;如果命中，服务器会将这个请求返回，但是不会返回&#xD;&#xA;这个资源的数据，依然是从缓存中读取资源">
+                  <nodes>
+                    <node text="根据文件修改时间">
+                      <nodes>
+                        <node text="Last-Modified&#xD;&#xA;---------------------------------&#xD;&#xA;响应头：文件最后修改时间" />
+                        <node text="If-Modified-Since&#xD;&#xA;---------------------------------------------&#xD;&#xA;请求头: 上次服务端返回的 Last-Modified" />
+                      </nodes>
+                    </node>
+                    <node text="根据文件指纹 (哈希值)">
+                      <nodes>
+                        <node text="ETag&#xD;&#xA;--------------------------------------&#xD;&#xA;响应头： 文件内容 hash 值" />
+                        <node text="If-None-Match&#xD;&#xA;--------------------------------------&#xD;&#xA;请求头: 上一次请求返回的文件指纹" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
       </nodes>
     </node>
   </nodes>
