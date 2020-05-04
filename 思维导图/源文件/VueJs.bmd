@@ -288,14 +288,49 @@
                 </node>
               </nodes>
             </node>
+            <node text="Composition API">
+              <nodes>
+                <node text="组合 API">
+                  <nodes>
+                    <node text="逻辑组合和复用">
+                      <nodes>
+                        <node text="vue2 中复用方式">
+                          <nodes>
+                            <node text="mixin">
+                              <nodes>
+                                <node text="命名冲突&#xD;&#xA;------------------------------------&#xD;&#xA;vue 提供自定义的合并策略规则，默&#xD;&#xA;认本地覆盖 mixin (钩子除外)" />
+                                <node text="隐含的依赖关系&#xD;&#xA;----------------------------------&#xD;&#xA;混合器可能期待接受组件的一个&#xD;&#xA;数据，当喜欢重构 mixin 混合器时&#xD;&#xA;可能导致其他组件使用 mixin 的异常" />
+                              </nodes>
+                            </node>
+                            <node text="HOC&#xD;&#xA;--------------------------------&#xD;&#xA;高阶组件">
+                              <nodes>
+                                <node text="额外的性能开销" />
+                                <node text="渲染组件&#xD;&#xA;----------------------&#xD;&#xA;接受 props 并渲染" />
+                                <node text="容器组件&#xD;&#xA;-----------------------------------------&#xD;&#xA;处理数据，并给渲染组件传递 props" />
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                        <node text="vue3&#xD;&#xA;------------------------------------------------------&#xD;&#xA;将组件的功能（如状态、方法、计算属性等）定义&#xD;&#xA;为对象属性，而不是将其定义为从新的设置&#xD;&#xA;函数中返回的JavaScript变量。" />
+                      </nodes>
+                    </node>
+                    <node text="类型推导">
+                      <nodes>
+                        <node text="Vue3.0 最核心的点之一就是使用 TS 重构&#xD;&#xA;而基于函数 的 API 则天然对类型推导很友好。" />
+                      </nodes>
+                    </node>
+                    <node text="打包尺寸">
+                      <nodes>
+                        <node text="每个函数都可作为 named ES export 被单独引入，对 tree-shaking 很友好" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
             <node text="Tree shaking support">
               <nodes>
                 <node text="可以将无用模块“剪辑”，仅打包需要的" />
-              </nodes>
-            </node>
-            <node text="Composition API">
-              <nodes>
-                <node text="组合 API" />
               </nodes>
             </node>
             <node text="Fragment, Teleport, Suspense">
@@ -322,6 +357,16 @@
         </node>
         <node text="pros" />
         <node text="组件通信方式" />
+        <node text="keep-alive">
+          <nodes>
+            <node text="函数式组件">
+              <nodes>
+                <node text="它就是去缓存已经创建过的 vnode" />
+                <node text="&lt;keep-alive&gt; 只处理第一个子元素，所以一般和它&#xD;&#xA;搭配使用的有 component 动态组件或者是 router-view" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
       </nodes>
     </node>
   </nodes>
