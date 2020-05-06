@@ -352,7 +352,6 @@
                 <node text="暴露了自定义渲染API" />
               </nodes>
             </node>
-            <node text="Proxy响应式" />
           </nodes>
         </node>
         <node text="pros" />

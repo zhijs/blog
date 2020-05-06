@@ -421,6 +421,11 @@
                     </node>
                   </nodes>
                 </node>
+                <node text="采用 Child.prototype = new Parent()&#xD;&#xA;继承的缺点">
+                  <nodes>
+                    <node text="会生成多余的变量，new Parent()&#xD;&#xA;这个操作会初始化一些属性" />
+                  </nodes>
+                </node>
               </nodes>
             </node>
           </nodes>
