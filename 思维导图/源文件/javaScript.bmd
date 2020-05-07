@@ -243,6 +243,8 @@
                 </node>
               </nodes>
             </node>
+            <node text="const" />
+            <node text="let " />
           </nodes>
         </node>
         <node text="原型链">
@@ -448,6 +450,7 @@
             </node>
           </nodes>
         </node>
+        <node text="typeof 原理" />
       </nodes>
     </node>
   </nodes>
