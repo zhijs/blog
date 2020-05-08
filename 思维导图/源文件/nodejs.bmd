@@ -128,7 +128,7 @@
                       <nodes>
                         <node text="net 模块在 listen 的过程中会判断是否是主进程" />
                         <node text="主进程的话直接监听端口" />
-                        <node text="子进程的话，向主进程注册 conettion  事件" />
+                        <node text="子进程的话，向主进程注册 conection  事件" />
                         <node text="master 进程在收到网络请求后&#xD;&#xA;使用 Round Robin 算法，查找到一个工作进程&#xD;&#xA;并将 TCP 连接的句柄发给这个工作进程">
                           <nodes>
                             <node text=" Round Robin 算法&#xD;&#xA;轮询调度算法(Round-Robin Scheduling)&#xD;&#xA;----------------------------------------------------------&#xD;&#xA;原理是每一次把来自用户的请求&#xD;&#xA;轮流分配给内部中的服务器，从1&#xD;&#xA;开始，直到N(内部服务器个数)，然后重新开始循环。" />

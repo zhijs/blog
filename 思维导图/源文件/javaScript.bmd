@@ -243,8 +243,32 @@
                 </node>
               </nodes>
             </node>
-            <node text="const" />
-            <node text="let " />
+            <node text="const">
+              <nodes>
+                <node text="只有声明和初始化&#xD;&#xA;没有赋值操作，所以不可变" />
+                <node text="只保证了指向的内存地址不可变">
+                  <nodes>
+                    <node text="const obj = {}&#xD;&#xA;obj.name = 'xx' // ok&#xD;&#xA;obj = 'xx' // Error" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="let ">
+              <nodes>
+                <node text="存在变量提升，只是没有初始化分配内存&#xD;&#xA;代码执行到那行再初始化">
+                  <nodes>
+                    <node text="一个变量有三个操作">
+                      <nodes>
+                        <node text="声明(提到作用域顶部)" />
+                        <node text="初始化(赋默认值)" />
+                        <node text="赋值(继续赋值)" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="因为没有初始化分配内存，所以会报错，这是暂时性死区" />
+              </nodes>
+            </node>
           </nodes>
         </node>
         <node text="原型链">

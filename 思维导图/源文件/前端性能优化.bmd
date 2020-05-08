@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<map name="新文档" document_type="Blumind" editor_version="1.3.16.0">
+<map name="前端性能优化" document_type="Blumind" editor_version="1.3.16.0">
   <!--Create by Blumind, you can download it free from http://www.blumind.org/download-->
   <info />
   <layout>MIND_MAP</layout>
@@ -25,6 +25,176 @@
         <border_color>Black</border_color>
         <padding>12</padding>
       </style>
+      <nodes>
+        <node text="网络优化">
+          <nodes>
+            <node text="减少请求数量">
+              <nodes>
+                <node text="JS、CSS 文件合并">
+                  <nodes>
+                    <node text="公共库合并" />
+                    <node text="不同页面单独合并" />
+                    <node text="问题">
+                      <nodes>
+                        <node text="缓存失效问题" />
+                        <node text="首屏渲染问题" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node text="图片处理">
+                  <nodes>
+                    <node text="使用雪碧图" />
+                    <node text="base64 只适用于小图&#xD;&#xA;">
+                      <nodes>
+                        <node text="由于Base64编码用8位字符表示信息中的6个位&#xD;&#xA;所以编码后大小大约比原始值扩大了 33%" />
+                      </nodes>
+                    </node>
+                    <node text="使用字体图标代替图片" />
+                  </nodes>
+                </node>
+                <node text="减少重定向">
+                  <nodes>
+                    <node text="当页面发生了重定向，就会延迟整个HTML文档的传输。在HTML文档到达之前，&#xD;&#xA;页面中不会呈现任何东西，也没有任何组件会被下载，降低了用户体验" />
+                    <node text="如果一定要使用重定向，如http重定向到https&#xD;&#xA;要使用301永久重定向，而不是302临时重定向" />
+                  </nodes>
+                </node>
+                <node text="使用缓存" />
+                <node text="不使用CSS @import">
+                  <nodes>
+                    <node text="CSS的@import会造成额外的请求" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="减小资源大小">
+          <nodes>
+            <node text="压缩">
+              <nodes>
+                <node text="HTML压缩" />
+                <node text="CSS压缩" />
+                <node text="JS压缩与混乱">
+                  <nodes>
+                    <node text="子主题 1">
+                      <nodes>
+                        <node text="JS压缩与混乱包括无效字符及注释的删除&#xD;&#xA;代码语义的缩减和优化、降低代码可读性，实现代码保护" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="webp">
+              <nodes>
+                <node text="在安卓下可以使用webp格式的图片，它具有更优的图像数据压缩算法&#xD;&#xA;能带来更小的图片体积，同等画面质量下，体积比jpg、png少了25%以上，&#xD;&#xA;而且同时具备了无损和有损的压缩模式、Alpha 透明以及动画的特性" />
+              </nodes>
+            </node>
+            <node text="开启gzip">
+              <nodes>
+                <node text="HTTP协议上的GZIP编码是一种用来改进WEB应用程序性能的技术" />
+                <node text="服务器将网页内容压缩后传回到客户端" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="优化网络连接">
+          <nodes>
+            <node text="合理使用 CDN">
+              <nodes>
+                <node text="CDN全称是Content Delivery Network，即内容分发网络，&#xD;&#xA;它能够实时地根据网络流量和各节点的连接、负载状况&#xD;&#xA;以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上" />
+              </nodes>
+            </node>
+            <node text="使用DNS预解析">
+              <nodes>
+                <node text="DNS Prefetch，即DNS预解析就是根据浏览器定义的规则&#xD;&#xA;提前解析之后可能会用到的域名，使解析结果缓存到系统缓存中&#xD;&#xA;缩短DNS解析时间，来提高网站的访问速度" />
+                <node text="&lt;link rel=&quot;dns-prefecth&quot; href=&quot;https://www.google.com&quot;&gt;" />
+              </nodes>
+            </node>
+            <node text="划分多个域名&#xD;&#xA;-----------------&#xD;&#xA;图片，静态资源">
+              <nodes>
+                <node text="由于在HTTP1.1协议下，chrome 每个域名的最大并发数是6个&#xD;&#xA;使用多个域名，可以增加并发数" />
+              </nodes>
+            </node>
+            <node text="连接重用">
+              <nodes>
+                <node text="http的请求头中设置Connection: keep-alive" />
+              </nodes>
+            </node>
+            <node text="管道化连接" />
+          </nodes>
+        </node>
+        <node text="优化资源加载">
+          <nodes>
+            <node text="资源加载位置">
+              <nodes>
+                <node text="CSS文件放在head中">
+                  <nodes>
+                    <node text="CSS 放在 head 中不会阻塞 html 的解析" />
+                  </nodes>
+                </node>
+                <node text="JS文件放在body底部" />
+              </nodes>
+            </node>
+            <node text="资源加载时机">
+              <nodes>
+                <node text="异步script 标签">
+                  <nodes>
+                    <node text="defer&#xD;&#xA;------------------------------------------------------------&#xD;&#xA;异步加载，在HTML解析完成后执行。defer的实际效果&#xD;&#xA;与将代码放在body底部类似" />
+                    <node text="async&#xD;&#xA;---------------------------------------&#xD;&#xA;异步加载，加载完成后立即执行" />
+                  </nodes>
+                </node>
+                <node text="模块按需加载" />
+                <node text="资源预加载或预读取">
+                  <nodes>
+                    <node text="　preload&#xD;&#xA;--------------------------------------------------&#xD;&#xA;让浏览器提前加载指定资源，需要执行时再执行，可以加&#xD;&#xA;速本页面的加载速度">
+                      <nodes>
+                        <node text="一旦页面关闭了，它就会立即停止 preload 获取资源" />
+                      </nodes>
+                    </node>
+                    <node text="prefetch&#xD;&#xA;--------------------------------------------------------------------&#xD;&#xA;告诉浏览器加载下一页面可能会用到的资源，可以加速下一个页面&#xD;&#xA;的加载速度" />
+                  </nodes>
+                </node>
+                <node text="懒加载(例如图片)" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="减少重绘和回流">
+          <nodes>
+            <node text="避免使用层级较深的选择器，或其他一些复杂的选择器&#xD;&#xA;以提高CSS渲染效率" />
+            <node text="避免使用CSS表达式，CSS表达式是动态设置CSS属性的强大但危险方法，它的问题就在于计算频率很快。&#xD;&#xA;不仅仅是在页面显示和缩放时，就是在页面滚动、乃至移动鼠标时都会要重新计算一次" />
+            <node text="给图片设置尺寸。如果图片不设置尺寸，首次载入时，&#xD;&#xA;占据空间会从0到完全出现，上下左右都可能位移，发生回流" />
+          </nodes>
+        </node>
+        <node text="DOM 优化">
+          <nodes>
+            <node text="缓存DOM">
+              <nodes>
+                <node text="查询DOM比较耗时，在同一个节点无需多次查询的情况下，可以缓存DOM" />
+              </nodes>
+            </node>
+            <node text="批量操作DOM" />
+            <node text="在内存中操作DOM">
+              <nodes>
+                <node text="使用DocumentFragment对象，让DOM操作发生在内存中，而不是页面上" />
+              </nodes>
+            </node>
+            <node text="DOM元素离线更新">
+              <nodes>
+                <node text="对DOM进行相关操作时，例、appendChild等都可以使用&#xD;&#xA;Document Fragment对象进行离线操作，&#xD;&#xA;待元素“组装”完成后再一次插入页面，或者&#xD;&#xA;使用display:none 对元素隐藏，在元素“消失”后进行相关操作" />
+              </nodes>
+            </node>
+            <node text="DOM读写分离">
+              <nodes>
+                <node text="览器具有惰性渲染机制，连接多次修改DOM可能只触发浏览器的一次渲染。&#xD;&#xA;而如果修改DOM后，立即读取DOM 则会触发渲染" />
+              </nodes>
+            </node>
+            <node text="事件代理" />
+          </nodes>
+        </node>
+      </nodes>
     </node>
   </nodes>
 </map>
