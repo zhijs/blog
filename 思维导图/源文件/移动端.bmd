@@ -156,6 +156,7 @@
         </node>
         <node text="Flutter" />
         <node text="小程序" />
+        <node text="静态页面本地化" />
       </nodes>
     </node>
   </nodes>
