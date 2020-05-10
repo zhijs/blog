@@ -245,7 +245,11 @@
             </node>
             <node text="const">
               <nodes>
-                <node text="只有声明和初始化&#xD;&#xA;没有赋值操作，所以不可变" />
+                <node text="只有声明和初始化&#xD;&#xA;没有赋值操作，所以不可变">
+                  <nodes>
+                    <node text="必须声明的时候初始化，否则报错" />
+                  </nodes>
+                </node>
                 <node text="只保证了指向的内存地址不可变">
                   <nodes>
                     <node text="const obj = {}&#xD;&#xA;obj.name = 'xx' // ok&#xD;&#xA;obj = 'xx' // Error" />
@@ -278,6 +282,11 @@
                     </node>
                   </nodes>
                 </node>
+              </nodes>
+            </node>
+            <node text="Iterator">
+              <nodes>
+                <node text="遍历器（Iterator）就是这样一种机制&#xD;&#xA;它是一种接口，为各种不同的数据结构提供统一的访问机制" />
               </nodes>
             </node>
           </nodes>
@@ -665,6 +674,7 @@
             </node>
           </nodes>
         </node>
+        <node text="for in 和 for of 区别" />
       </nodes>
     </node>
   </nodes>
