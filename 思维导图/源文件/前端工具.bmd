@@ -239,6 +239,22 @@
                         </node>
                       </nodes>
                     </node>
+                    <node text="devServer">
+                      <nodes>
+                        <node text="是一个小型的Node.js Express服务器&#xD;&#xA;它使用webpack-dev-middleware来服务于 webpack 的包" />
+                        <node text="webpack-dev-middleware">
+                          <nodes>
+                            <node text="一个 express 中间件" />
+                            <node text="用于提供  webpack 编译出来的 bundle 提供静态文件服务，和&#xD;&#xA;express.static 不同的是，该中间件服务的静态文件是在内存中的" />
+                          </nodes>
+                        </node>
+                        <node text="webpack-dev-server">
+                          <nodes>
+                            <node text="是一个 express 服务&#xD;&#xA;会使用 webpack-dev-middleware 作为中间件" />
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
                   </nodes>
                 </node>
                 <node text="loader" />

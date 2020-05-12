@@ -100,7 +100,7 @@ npm install --save-dev electron
  */
 
 // app 代表整个应用程序
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 
 function createWindow () {   
   // 创建浏览器窗口
@@ -114,11 +114,50 @@ function createWindow () {
 
   // 加载index.html文件 - 可以加载远程或者本地的页面
   win.loadFile('view/index.html')
-   win.webContents.openDevTools()
+  // 设置菜单栏
+  const menu = Menu.buildFromTemplate([
+    {
+      label: '打开',
+      click: async () => {
+        console.log('start---')    
+      }
+    },
+    {
+      label: '关闭',
+      click: async () => {
+        console.log('end-----')  
+      }
+    }
+  ])
+  win.setMenu(menu)
+  win.webContents.openDevTools()
 }
 // 当 Electron 初始化完成创建一个窗口
 app.whenReady().then(createWindow)
 ```
+其界面效果为  
+
+![](./images/electron.png)  
+
+简陋的标题，我们可以用 HTML 去构建菜单，然后点击的时候，何主进程通信， 为了便于开发，我们引入 Vue 进行页面开发
+
+4. 渲染进程内调用 node 功能
+
+
+
+5. 渲染进程想关闭应用
+
+
+
+
+#### 5
+
+
+
+
+
+
+
 
 
 
