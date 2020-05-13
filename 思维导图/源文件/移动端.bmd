@@ -157,6 +157,16 @@
         <node text="Flutter" />
         <node text="小程序" />
         <node text="静态页面本地化" />
+        <node text="兼容性问题">
+          <nodes>
+            <node text="样式兼容问题" />
+            <node text="功能性兼容问题">
+              <nodes>
+                <node text="引入 polyfill" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
       </nodes>
     </node>
   </nodes>

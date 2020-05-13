@@ -82,6 +82,28 @@
                     </node>
                   </nodes>
                 </node>
+                <node text="template">
+                  <nodes>
+                    <node text="正则解析转化为 AST">
+                      <nodes>
+                        <node text="optimize 优化">
+                          <nodes>
+                            <node text="标记静态节点&#xD;&#xA;--------------------------&#xD;&#xA;在 diff 的时候可以掠过">
+                              <nodes>
+                                <node text="生成 render 函数">
+                                  <nodes>
+                                    <node text="VNode" />
+                                  </nodes>
+                                </node>
+                                <node text="vue3 在这里做了优化，静态节点不进入 diff 过程" />
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
               </nodes>
             </node>
             <node text="diff 算法">
@@ -95,6 +117,43 @@
                     </node>
                     <node text="相同类型的两个组件产生的 DOM 结构是类似的" />
                     <node text="对于同一层级的一组子节点，分配唯一 id 区分 (key)" />
+                    <node text="对于列表元素">
+                      <nodes>
+                        <node text="用四个指针(old 旧 VNode 列表，now 新 VNode 列表) &#xD;&#xA;----------------------------------------------------------&#xD;&#xA;old: oSIndex oEIndex&#xD;&#xA;now: sIndex eIndex">
+                          <nodes>
+                            <node text="两两分别比较">
+                              <nodes>
+                                <node text="sameVnode(old(oSIndex), now(nSIndex ))">
+                                  <nodes>
+                                    <node text="新旧列表第一个元素相同&#xD;&#xA;直接更新 oldVNode 中 elm 的值为 newVnode 中的数据值&#xD;&#xA;（dom 操作更新）&#xD;&#xA;-----------------------------------------------------------------&#xD;&#xA;指针移动(oSIndex++, nSIndex++)&#xD;&#xA;" />
+                                  </nodes>
+                                </node>
+                                <node text="sameVnode(old(oEIndex), now(nEIndex ))">
+                                  <nodes>
+                                    <node text="新旧列表最后一个元素相同&#xD;&#xA;直接更新 oldVNode 中 elm 的值为 newVnode 中的数据值&#xD;&#xA;（dom 操作更新）&#xD;&#xA;-----------------------------------------------------------------&#xD;&#xA;指针移动(oSIndex++, nSIndex++)" />
+                                  </nodes>
+                                </node>
+                                <node text="sameVnode(old(oSIndex), now(eSIndex ))">
+                                  <nodes>
+                                    <node text="新列表的最后一个元素和旧列表第一个元素相同，说明移动了&#xD;&#xA;直接更新 oldVNode 中 elm 的值为 newVnode 中的数据值&#xD;&#xA;同时将新生成的 dom 移动到最后(dom 更新 + 移动)&#xD;&#xA;--------------------------------------------------------------------&#xD;&#xA;指针移动(oSIndex++,  eSIndex-- )" />
+                                  </nodes>
+                                </node>
+                                <node text="sameVnode&#xD;&#xA;--------------&#xD;&#xA;是否值得比较">
+                                  <nodes>
+                                    <node text="key 相同 且">
+                                      <nodes>
+                                        <node text="tag 相同(标签名，组件名) &amp;&amp;&#xD;&#xA;同是注释节点或者非注释节点 &amp;&amp;&#xD;&#xA;组件的 data 都有定义 &amp;&amp;&#xD;&#xA;同一中 input 类型" />
+                                        <node text="同属于异步函数组件 &amp;&amp;&#xD;&#xA;异步工厂函数相同 &amp;&amp;&#xD;&#xA;新节点必须没有工厂函数错误回调" />
+                                      </nodes>
+                                    </node>
+                                  </nodes>
+                                </node>
+                              </nodes>
+                            </node>
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
                   </nodes>
                 </node>
               </nodes>
@@ -117,7 +176,7 @@
               <nodes>
                 <node text="index 作为 Key 和  id 作为 key 的区别 ">
                   <nodes>
-                    <node text="以实际场景出发，index 作为 key, 或者 key 为 undefined 时候&#xD;&#xA;假设在列表第一个插入一个元素，则会导致所有的列表&#xD;&#xA;都重新更新，无法复用&#xD;&#xA;------------------------------------------------------------&#xD;&#xA;或者排序的时候会出现问题，DOM 会被直接更新而不是移动" />
+                    <node text="以实际场景出发，index 作为 key, 或者 key 为 undefined 时候&#xD;&#xA;假设在列表第一个插入一个元素，则会导致所有的列表&#xD;&#xA;都 dom 都重新更新，无法复用&#xD;&#xA;------------------------------------------------------------&#xD;&#xA;或者排序的时候会出现问题，DOM 会被直接更新而不是移动" />
                   </nodes>
                 </node>
                 <node text="没有 key 的情况下默认为 undefined" />
@@ -355,7 +414,16 @@
           </nodes>
         </node>
         <node text="pros" />
-        <node text="组件通信方式" />
+        <node text="组件通信方式">
+          <nodes>
+            <node text="父子组件">
+              <nodes>
+                <node text="props" />
+                <node text="$parent/$children" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
         <node text="keep-alive">
           <nodes>
             <node text="函数式组件">

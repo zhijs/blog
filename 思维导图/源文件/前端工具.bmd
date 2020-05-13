@@ -253,6 +253,12 @@
                             <node text="是一个 express 服务&#xD;&#xA;会使用 webpack-dev-middleware 作为中间件" />
                           </nodes>
                         </node>
+                        <node text="webpack-hot-middleware">
+                          <nodes>
+                            <node text="和 webpack-dev-server&#xD;&#xA;是二选一的" />
+                            <node text="可以允许你用自己的 express 服务" />
+                          </nodes>
+                        </node>
                       </nodes>
                     </node>
                   </nodes>

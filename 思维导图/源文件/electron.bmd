@@ -45,12 +45,14 @@
                 <node text="创建渲染进程（可多个）  " />
                 <node text="控制了应用生命周期（启动、退出APP以及对APP做一些事件监听）" />
                 <node text="调用系统底层功能、调用原生资源  " />
+                <node text="打包到 node 环境" />
               </nodes>
             </node>
             <node text="渲染进程">
               <nodes>
-                <node text="lectron 使用了 Chromium 来展示 web 页面，所以 Chromium &#xD;&#xA;的多进程架构也被使用到。 每个 Electron 中的 web页面运行&#xD;&#xA;在它自己的渲染进程中。你可以把渲染进程想像成一个浏览器窗口&#xD;&#xA;它能存在多个并且相互独立，不过和浏览器不同的是，它能调用Node AP" />
+                <node text="electron 使用了 Chromium 来展示 web 页面，所以 Chromium &#xD;&#xA;的多进程架构也被使用到。 每个 Electron 中的 web页面运行&#xD;&#xA;在它自己的渲染进程中。你可以把渲染进程想像成一个浏览器窗口&#xD;&#xA;它能存在多个并且相互独立，不过和浏览器不同的是，它能调用Node AP" />
                 <node text="存在 API 调用限制" />
+                <node text="打包到浏览器目标前端代码" />
               </nodes>
             </node>
             <node text="通信">
@@ -76,6 +78,73 @@
                     </node>
                   </nodes>
                 </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="性能优化">
+          <nodes>
+            <node text="渲染进程优化">
+              <nodes>
+                <node text="骨架屏" />
+                <node text="使用现代的 JavaScript/CSS 代码">
+                  <nodes>
+                    <node text="ectron 每个版本都会预装当时最新的 Chrome" />
+                    <node text="代码量更少，性能也更好" />
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="主进程">
+              <nodes>
+                <node text="延后加载 node 模块" />
+                <node text="打包合并 node 模块" />
+                <node text="分离 CPU 密集型操作到单独进程或 Worker" />
+                <node text="减少主进程负荷" />
+              </nodes>
+            </node>
+            <node text="模块懒加载" />
+            <node text="打包优化，压缩" />
+            <node text="避免同步操作" />
+            <node text="使用 V8 的启动快照（startup snapshot）">
+              <nodes>
+                <node text="node 启动过程">
+                  <nodes>
+                    <node text="先创建 V8::Isolate，其次是 V8::Context，接着才是 node::Environment。&#xD;&#xA;然后准备创建 process 对象，以及其它对象，后运行 bootstrap_node.js 设置运&#xD;&#xA;行环境。只有执行完上述所有的任务后，Node.js 才开始运行用户脚本&#xA;" />
+                  </nodes>
+                </node>
+                <node text="可以提升创建 V8 isolate 和 V8 contexts 的效率">
+                  <nodes>
+                    <node text="使用快照就不需要再从头开始建立 isolate，V8 可以简单地把之前序列化的 &#xD;&#xA;isolate 对象图进行反序列化就可以了。这同样适用于 context 快照。&#xD;&#xA;这样一来，V8 能够显著加快启动">
+                      <style>
+                        <back_color>Red</back_color>
+                      </style>
+                    </node>
+                    <node text="V8 isolate (隔离)">
+                      <nodes>
+                        <node text="以理解为 nodejs 的 vm&#xD;&#xA;一个 V8 引擎实例" />
+                        <node text="包含堆管理，垃圾回收管理等" />
+                        <node text="一般一个线程对应一个isolate" />
+                      </nodes>
+                    </node>
+                    <node text="V8 contexts">
+                      <nodes>
+                        <node text="是 javascript 的执行上下文">
+                          <nodes>
+                            <node text="A Context中的js变量完全独立于B Context&#xD;&#xA;一般用Context来做 js 的安全隔离" />
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node text="采用 Node 原生模块&#xD;&#xA;-----------------------&#xD;&#xA;调用 c++ 实现的模块">
+              <nodes>
+                <node text="性能监控模块" />
+                <node text="埋点上报模块等" />
+                <node text="悬浮球模块" />
               </nodes>
             </node>
           </nodes>
