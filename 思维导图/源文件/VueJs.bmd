@@ -104,6 +104,15 @@
                     </node>
                   </nodes>
                 </node>
+                <node text="为什么需要 virtual dom">
+                  <nodes>
+                    <node text="直接操作DOM比较低效，比较慢">
+                      <nodes>
+                        <node text="在一个复杂的单页面应用中，经常会涉及到大量的DOM操作&#xD;&#xA;这将引起多次计算，使得整个流程变得低效，这应该尽量避免。" />
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
               </nodes>
             </node>
             <node text="diff 算法">
