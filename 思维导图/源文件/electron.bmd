@@ -140,11 +140,23 @@
                 </node>
               </nodes>
             </node>
-            <node text="采用 Node 原生模块&#xD;&#xA;-----------------------&#xD;&#xA;调用 c++ 实现的模块">
+            <node text="采用 Node 原生模块&#xD;&#xA;----------------------------------------------------&#xD;&#xA;调用 c++ 实现的模块( node-gyp 编译 c++ 模块)">
               <nodes>
                 <node text="性能监控模块" />
                 <node text="埋点上报模块等" />
                 <node text="悬浮球模块" />
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node text="代码保护">
+          <nodes>
+            <node text="asar 命令将程序文件打包" />
+            <node text="代码压缩混淆 uglify " />
+            <node text="编译成子节码 (用 bytecode)" />
+            <node text="功能设计保护">
+              <nodes>
+                <node text="禁用 devtools 调试工具" />
               </nodes>
             </node>
           </nodes>
