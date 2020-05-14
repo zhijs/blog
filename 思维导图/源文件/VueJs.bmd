@@ -108,7 +108,11 @@
                   <nodes>
                     <node text="直接操作DOM比较低效，比较慢">
                       <nodes>
-                        <node text="在一个复杂的单页面应用中，经常会涉及到大量的DOM操作&#xD;&#xA;这将引起多次计算，使得整个流程变得低效，这应该尽量避免。" />
+                        <node text="在一个复杂的单页面应用中，经常会涉及到大量的DOM操作&#xD;&#xA;这将引起多次计算，使得整个流程变得低效，这应该尽量避免。">
+                          <nodes>
+                            <node text="那些本该直接作用于真实DOM的改动，都会先作用于Virtual DOM&#xD;&#xA;然后再将要改动的部分通知到真实DOM。这样可以大幅&#xD;&#xA;减少DOM操作带来的重计算步骤" />
+                          </nodes>
+                        </node>
                       </nodes>
                     </node>
                   </nodes>
