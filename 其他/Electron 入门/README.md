@@ -141,6 +141,8 @@ app.whenReady().then(createWindow)
 
 简陋的标题，我们可以用 HTML 去构建菜单，然后点击的时候，何主进程通信， 为了便于开发，我们引入 Vue 进行页面开发
 
+
+
 4. 渲染进程内调用 node 功能
 
 
