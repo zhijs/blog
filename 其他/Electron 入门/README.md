@@ -89,18 +89,18 @@ npm init
 
 #### 3.4.2 安装依赖
 ```bash
-npm install --save-dev electron
+npm install --save-dev Electron
 ```
 
 
 #### 3.4.3 创建界面窗口
 ```javascript
 /**
- * electron模块包含了 Electron 提供的所有API和功能
+ * Electron模块包含了 Electron 提供的所有API和功能
  */
 
 // app 代表整个应用程序
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu } = require('Electron')
 
 function createWindow () {   
   // 创建浏览器窗口
@@ -137,7 +137,7 @@ app.whenReady().then(createWindow)
 ```
 其界面效果为  
 
-![](./images/electron.png)  
+![](./images/Electron.png)  
 
 简陋的菜单和标题，我们可以用 HTML 去构建菜单，然后点击的时候，与主进程通信， 为了便于提高开发效率，我们引入 Vue 进行页面开发
 
@@ -226,16 +226,16 @@ module.exports = merge(base, {
 })
 
 ```
-即是我们通过传统的 vue + webpack 的开发模式来开发渲染进程的页面，我们通过构建本地页面服务，然后再 electron 主进程中加载本地服务页面
+即是我们通过传统的 vue + webpack 的开发模式来开发渲染进程的页面，我们通过构建本地页面服务，然后再 Electron 主进程中加载本地服务页面
 
 ```javascript
 /**
 * main.js - 主进程
-* electron模块包含了 Electron 提供的所有API和功能
+* Electron模块包含了 Electron 提供的所有API和功能
 */
 
 // app 代表整个应用程序
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu } = require('Electron')
 
 function createWindow () {   
   // 创建浏览器窗口
@@ -276,7 +276,7 @@ app.whenReady().then(createWindow)
 下面我们分别用两种方式实现
 
 #### 3.4.5 渲染进程直接使用 Node 模块
-我们知道，electron 在主进程注入了 Node 的环境，所以，我们可以像是在 Node 环境一样 使用 require 方式加载 Node
+我们知道，Electron 在主进程注入了 Node 的环境，所以，我们可以像是在 Node 环境一样 使用 require 方式加载 Node
 模块，所以有如下代码：  
 
 
@@ -359,7 +359,7 @@ Electron 中，主要提供了两个对象 ipcMain, ipcRenderer 来支持渲染�
 通过 ipcRenderer 给主进程发送消息，并监听主进程回应的数据内容
 
 ```javascript
-const { ipcRenderer } = __non_webpack_require__('electron');
+const { ipcRenderer } = __non_webpack_require__('Electron');
 export default {
   mounted() {
     // 监听主进程回复事件
@@ -384,7 +384,7 @@ export default {
 
 ```javascript
 // 监听渲染进程发来的事件
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('Electron')
 const fsPromises = require('fs').promises;
 
 ipcMain.on('readFile', async (event, args) => {
@@ -402,7 +402,7 @@ ipcMain.on('readFile', async (event, args) => {
 
 #### 3.4.7 原生能力 
 
-Eelectron 提供了通知，截屏，触摸板，系统托盘等原生操作接口，主要的系统底层功能功能都只能通过主进程调用，渲染进程想要操作系统底层功能的话，一般通过给主进程发送事件，委托主进程操作：
+EElectron 提供了通知，截屏，触摸板，系统托盘等原生操作接口，主要的系统底层功能功能都只能通过主进程调用，渲染进程想要操作系统底层功能的话，一般通过给主进程发送事件，委托主进程操作：
 
 例如想在渲染进程内，调用系统通知：  
 
@@ -416,7 +416,7 @@ Eelectron 提供了通知，截屏，触摸板，系统托盘等原生操作接�
   </div>
 </template>
 <script>
-const { ipcRenderer } = __non_webpack_require__('electron');
+const { ipcRenderer } = __non_webpack_require__('Electron');
 export default {
   methods: {
     notify () {
@@ -431,7 +431,7 @@ export default {
 ```
 
 #### 3.4.8. 管理应用状态
-在主进程中，应用程序对象 app 提供了很多管理应用程序的方法和事件，比如应用退出，应用隐藏，应用重启等，详细可以参考[官方文档](https://www.electronjs.org/docs/api/app), 我们可能需要在渲染进程中控制应用的状态，同样这里也有两种方式可以选择：  
+在主进程中，应用程序对象 app 提供了很多管理应用程序的方法和事件，比如应用退出，应用隐藏，应用重启等，详细可以参考[官方文档](https://www.Electronjs.org/docs/api/app), 我们可能需要在渲染进程中控制应用的状态，同样这里也有两种方式可以选择：  
 
 - IPC 方式向主进程发送特定事件
 - remote 远程调用主进程的方法
@@ -450,7 +450,7 @@ IPC 通信和上述文件操作例子类似，这里讲述 remote 远程调用
   </div>
 </template
 <script>
-const { app } = __non_webpack_require__('electron').remote;
+const { app } = __non_webpack_require__('Electron').remote;
 export default {
     quitOut () {
       app.quit()
@@ -473,7 +473,7 @@ export default {
 Electron 以其强大的 UI 构建，和跨平台能力极大的提高了应用的开发效率，最小化的节约了开发成本，但是🐟和熊掌不可兼得，Electron 在带来及其方便的同时，也带来了一些挑战，其中比较大的缺点是内存占用大(因为其内置了 Chromium), 同时，对于也存在源码泄露的风险
 
 
-对于其中优化以及代码保护相关的内容，可[点击这里](https://github.com/zhijs/blog/blob/master/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/images/electron.jpg)  
+对于其中优化以及代码保护相关的内容，可[点击这里](https://github.com/zhijs/blog/blob/master/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/images/Electron.jpg)  
 
 
 
@@ -500,7 +500,7 @@ Electron 以其强大的 UI 构建，和跨平台能力极大的提高了应用�
 
 ### 参考文章  
 [用JS开发跨平台桌面应用，从原理到实践](https://segmentfault.com/a/1190000019426512)  
-[Electron 官方文档](https://www.electronjs.org/)
+[Electron 官方文档](https://www.Electronjs.org/)
 
 
 
