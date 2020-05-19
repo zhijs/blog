@@ -134,7 +134,7 @@ app.whenReady().then(createWindow)
 ```
 其界面效果为  
 
-![](./images/Electron.png)  
+![](./images/electron.png)  
 
 简陋的菜单和标题，我们可以用 HTML 去构建菜单，然后点击的时候，与主进程通信， 为了便于提高开发效率，我们引入 Vue 进行页面开发
 
