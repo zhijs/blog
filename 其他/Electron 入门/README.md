@@ -5,7 +5,6 @@
 
 
 ## 1 What  
-----  
 Electron 是由 Github 开发的，一个用 HTML，CSS 和 JavaScript 来构建跨平台桌面应用程序的一个开源库。
 
 ### 1.1 原理
@@ -27,10 +26,10 @@ Chromium 为Electron 提供强大的UI能力，可以在不考虑兼容性的情
 ### 1.2 谁在使用  
 <div style="display: flex; flex-diraction: row; justify-content:space-between">
     <img src="./images/atom.jpg" width="100" height="100" style="border-radius: 50%"/>
-   <img src="./images/vscode.jpg" width="100" height="100" style="border-radius: 50%"/>
-     <img src="./images/github.png" width="100" height="100" style="border-radius: 50%"/>
-     <img src="./images/ding.jpg" width="100" height="100" style="border-radius: 50%"/>
-      <img src="./images/thunderx.jpg" width="100" height="100" style="border-radius: 50%"/>
+   <img src="./images/vscode.jpg" width="100" height="100" style="border-radius: 50%; margin-left:10px"/>
+     <img src="./images/github.png" width="100" height="100" style="border-radius: 50%;margin-left:10px"/>
+     <img src="./images/ding.jpg" width="100" height="100" style="border-radius: 50%;margin-left:10px"/>
+      <img src="./images/thunderx.jpg" width="100" height="100" style="border-radius: 50%;margin-left:10px"/>
 </div>
 等。。。。。。
 
