@@ -25,16 +25,16 @@ Chromium 为Electron 提供强大的UI能力，可以在不考虑兼容性的情
 
 ### 1.2 谁在使用  
 <div style="display: flex; flex-diraction: row; justify-content:space-between">
-    <img src="./images/atom.jpg" width="100" height="100" style="border-radius: 50%"/>
-   <img src="./images/vscode.jpg" width="100" height="100" style="border-radius: 50%; margin-left:10px"/>
-     <img src="./images/github.png" width="100" height="100" style="border-radius: 50%;margin-left:10px"/>
-     <img src="./images/ding.jpg" width="100" height="100" style="border-radius: 50%;margin-left:10px"/>
-      <img src="./images/thunderx.jpg" width="100" height="100" style="border-radius: 50%;margin-left:10px"/>
+    <img src="./images/atom.jpg" width="100" height="100" style="border-radius:50%"/>
+   <img src="./images/vscode.jpg" width="100" height="100" style="border-radius:50%; margin-left:10px"/>
+     <img src="./images/github.png" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
+     <img src="./images/ding.jpg" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
+      <img src="./images/thunderx.jpg" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
 </div>
+
 等。。。。。。
 
 ## 2 Why
-----
 - 节省人力人本  
 一次编写，多平台运行， Electron 兼容 Mac、Windows 和 Linux，可以构建出三个平台的应用程序
 
