@@ -23,6 +23,8 @@
 - [HTTP 协议导图](./思维导图/images/计算机网络.jpg)
 ### 其他
 - [WebRTC入门](https://github.com/zhijs/blog/tree/master/%E5%85%B6%E4%BB%96/webRTC%E5%85%A5%E9%97%A8)  
-- [NW.JS 是如何整合 Nodejs 和 Chromium 的](https://livebook.manning.com/book/cross-platform-desktop-applications/chapter-6/23)
+- [NW.JS 是如何整合 Nodejs 和 Chromium 的](https://livebook.manning.com/book/cross-platform-desktop-applications/chapter-6/23)  
+- [Electron 入门](https://github.com/zhijs/blog/blob/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/README.md)  
+
 
 持续更新中...
