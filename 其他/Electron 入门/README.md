@@ -25,7 +25,13 @@ Chromium 为Electron 提供强大的UI能力，可以在不考虑兼容性的情
 
 
 ### 1.2 谁在使用  
-![](./images/atom.jpg)![](./images/vscode.jpg)![](./images/github.png)![](./images/ding.jpg)![](./images/thunderx.jpg)
+<div style="display: flex; flex-diraction: row; justify-content:space-between">
+    <img src="./images/atom.jpg" width="100" height="100" style="border-radius: 50%"/>
+   <img src="./images/vscode.jpg" width="100" height="100" style="border-radius: 50%"/>
+     <img src="./images/github.png" width="100" height="100" style="border-radius: 50%"/>
+     <img src="./images/ding.jpg" width="100" height="100" style="border-radius: 50%"/>
+      <img src="./images/thunderx.jpg" width="100" height="100" style="border-radius: 50%"/>
+</div>
 等。。。。。。
 
 ## 2 Why
