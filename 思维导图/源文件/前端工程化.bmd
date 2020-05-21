@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<map name="新文档" document_type="Blumind" editor_version="1.3.16.0">
+<map name="前端工程化" document_type="Blumind" editor_version="1.3.16.0">
   <!--Create by Blumind, you can download it free from http://www.blumind.org/download-->
   <info />
   <layout>MIND_MAP</layout>
@@ -30,6 +30,13 @@
         <node text="ESlint" />
         <node text="持续化集成部署" />
         <node text="单元测试" />
+        <node text="前端规范">
+          <nodes>
+            <node text="JavaScript 编码规范" />
+            <node text="TypeScript 编码规范" />
+            <node text="CSS 编码规范" />
+          </nodes>
+        </node>
       </nodes>
     </node>
   </nodes>

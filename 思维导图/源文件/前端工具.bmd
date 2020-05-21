@@ -239,7 +239,7 @@
                         </node>
                       </nodes>
                     </node>
-                    <node text="devServer">
+                    <node text="devServer&#xD;&#xA;---------------------------------------------&#xD;&#xA;一般配合 webpack-dev-server 使用&#xD;&#xA;提供内存静态文件服务，可通过访问&#xD;&#xA;http://host:port/webpack-dev-server&#xD;&#xA;来查看静态文件列表">
                       <nodes>
                         <node text="是一个小型的Node.js Express服务器&#xD;&#xA;它使用webpack-dev-middleware来服务于 webpack 的包" />
                         <node text="webpack-dev-middleware">
@@ -257,6 +257,19 @@
                           <nodes>
                             <node text="和 webpack-dev-server&#xD;&#xA;是二选一的" />
                             <node text="可以允许你用自己的 express 服务" />
+                          </nodes>
+                        </node>
+                        <node text="配置">
+                          <nodes>
+                            <node text="host&#xD;&#xA;--------------------------------&#xD;&#xA;配置 ip 地址，默认 localhost " />
+                            <node text="port&#xD;&#xA;----------------------------------------&#xD;&#xA;静态服务端口地址 默认 8080" />
+                            <node text="contentBase" />
+                            <node text="publicPath&#xD;&#xA;------------------------------------------------------------&#xD;&#xA;指定静态文件的目录，会给 bundle 的地址加上该目录" />
+                          </nodes>
+                        </node>
+                        <node text="使用">
+                          <nodes>
+                            <node text="webpack-dev-server --config webpack.devser.config.js" />
                           </nodes>
                         </node>
                       </nodes>
