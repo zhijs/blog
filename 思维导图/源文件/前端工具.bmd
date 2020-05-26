@@ -404,6 +404,7 @@
                                         <node text="use&#xD;&#xA;-------------------------&#xD;&#xA;指定使用的 loader">
                                           <nodes>
                                             <node text="Array&lt;UseEntry&gt; / function(info)&#xD;&#xA;---------------------------------------------&#xD;&#xA;其中函数的返回值需为 Array&lt;UseEntry&gt;" />
+                                            <node text="use 指定的 loader  会被链式的调用" />
                                           </nodes>
                                         </node>
                                         <node text="enfore" />
