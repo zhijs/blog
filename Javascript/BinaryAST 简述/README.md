@@ -15,7 +15,7 @@
 ### 1. JavaScript AST
 在进入正题之前，我们先来了解一下什么是 AST， AST, Abstract Syntax Tree 抽象语法树，简称语法树，指代码在计算机内存的一种树状数据结构，便于计算机理解和阅读,也就是说，一种编程语言的源代码，通过构建语法树的形式将源代码中的语句映射到树中的每一个节点上,如下图是 JavaScript 的一个语句和 AST 的映射关系：  
 
-![](./src/images/ast-type.png) 
+![](./images/ast-type.png) 
 
 对于一些源代码的更改需求，我们可以更改(增加，删除，替换) AST,然后将 AST 重新生成源代码，实现代码的灵活更改，这也是 AST 可以用来做 IDE插件(如代码语法检查，代码风格检查，代码的格式化，代码高亮，代码错误), 转换代码的工具，代码的混淆压缩重要原因。
 
@@ -46,11 +46,11 @@
 
 通常而言，在冷启动性能的影响因素中，最重要的是资源的下载速度，然而在目前大多数的复交互型的应用中，影响冷启动性能的一个很大因素是 JavaScript 解析时间。在开始执行代码之前，JavaScript 引擎首先需要解析下载的代码，确保里面没有包含语法错误，然后将其编译成初始字节码，随着网速速度的加快，解析和编译将成为影响冷启动性能的主要因素。下图为 Web应用程序执行流程:  
 
-![](./src/images/desktop-without-BinJS.png)  
+![](./images/desktop-without-BinJS.png)  
 
 如果是较差的设备的话，执行时间会更长
 
-![](./src/images/LowEnd-device-without-BinJS.png)  
+![](./images/LowEnd-device-without-BinJS.png)  
 
 设备的性能（CPU或内存性能）是JavaScript 解析时间差异中最重要的因素也是应用程序启动的时间长短的重要因素。
 
@@ -87,11 +87,11 @@ function f() {
 
 对于要在浏览器中执行的常规 JavaScript 代码，源代码被解析为一个称为 AST 的中间表示，它描述了代码的语法结构。然后，可以将此 AST(AST，abstract syntax tree 抽象语法树，是源代码的抽象语法结构的树状表现形式，这里特指编程语言的源代码) 编译为字节码或机器码以供执行, 其示意图如下：  
 
-![](./src/images/without-binAST.png)  
+![](./images/without-binAST.png)  
 
 也就是说，浏览器加载执行 JavaScript 都会经过如下图所示的步骤：  
 
-![](./src/images/js-parse.png)  
+![](./images/js-parse.png)  
  
 
 解析 JavaScript 不是一项简单的任务，无论使用哪种优化，它仍然需要逐字符读取整个文本文件，同时跟踪额外的上下文进行语法分析。
@@ -101,14 +101,14 @@ BinaryAST 的目标是通过在解析器需要的时间和地点提供额外的�
 
 要执行以 BinaryAST 方式传递的 JavaScript，所需要的唯一步骤是： 
 
-![](./src/images/With-BinAST.png)  
+![](./images/With-BinAST.png)  
 
 
 BinaryAST 的另一个好处是它可以只解析启动所需的关键代码，完全跳过未使用的位， 这可以显著提高初始加载时间。  
 
-![](./src/images/desktop-without-BinJS-1.png)   
+![](./images/desktop-without-BinJS-1.png)   
 
-![](./src/images/desktop-with-BinJS.png)  
+![](./images/desktop-with-BinJS.png)  
 
 上述内容大概讲述了 BinaryAST 大方向是优化 JavaScript 解析速度的方式，接下来我们来看看 BinaryAST 具体是有那些方面的优势。
 
@@ -143,13 +143,13 @@ f()
 而 BinaryAST 通过存储所有作用域信息，可以直接查找作用域信息定位到指定的作用域，从而减少作用域查找的时间。  
  
 
-![](./src/images/var-scope.png)   
+![](./images/var-scope.png)   
 
 
 
 用 JSON 表示初始的 AST 和增强的 AST 之前的区别，如下图所示：  
 
-![](./src/images/ast-scope.jpg)   
+![](./images/ast-scope.jpg)   
 
 
 ### 优点3 加快解析过程
