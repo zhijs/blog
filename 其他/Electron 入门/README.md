@@ -10,7 +10,7 @@ Electron 是由 Github 开发的，一个用 HTML，CSS 和 JavaScript 来构建
 ### 1.1 原理
 Electron 通过将 Chromium 和 Node.js 合并到同一个运行时环境中，并将其打包为 Mac，Windows 和 Linux 系统下的应用。  
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/components.png)    
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/components.png)    
 
 其中：
 - Chromium 负责构建 web 页面  
@@ -25,11 +25,11 @@ Chromium 为Electron 提供强大的UI能力，可以在不考虑兼容性的情
 
 ### 1.2 谁在使用  
 <div style="display: flex; flex-diraction: row; justify-content:space-between">
-    <img src="https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/atom.jpg" width="100" height="100" style="border-radius:50%"/>
-   <img src="https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/vscode.jpg" width="100" height="100" style="border-radius:50%; margin-left:10px"/>
-     <img src="https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/github.png" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
-     <img src="https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/ding.jpg" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
-      <img src="https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/thunderx.jpg" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
+    <img src="https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/atom.jpg" width="100" height="100" style="border-radius:50%"/>
+   <img src="https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/vscode.jpg" width="100" height="100" style="border-radius:50%; margin-left:10px"/>
+     <img src="https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/github.png" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
+     <img src="https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/ding.jpg" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
+      <img src="https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/thunderx.jpg" width="100" height="100" style="border-radius:50%;margin-left:10px"/>
 </div>
 
 等。。。。。。
@@ -49,7 +49,7 @@ Electron 使用 HTML, CSS 和 JavaScript 构建界面应用， 相比于传统�
 ## 3 How
 Electron 主要运行着有两种进程：『主进程』和『渲染进程』。部分模块只能在两者之一上运行，而有些则无限制。主进程更多地充当幕后角色，而渲染进程则是应用程序的各个窗口，主进程和渲染进程间采用 IPC 进行通信。
   
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/process.png)      
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/process.png)      
 
 
 ### 3.1 主进程  
@@ -71,7 +71,7 @@ Electron 使用了 Chromium 来展示 web 页面，所以 Chromium 的多进程�
 ### 3.3 主进程和渲染进程 API
 主进程和渲染可调用的 API 如下图所示  
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/api.png)  
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/api.png)  
 
 ### 3.4 开发过程
 
@@ -134,7 +134,7 @@ app.whenReady().then(createWindow)
 ```
 其界面效果为  
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/electron.png)  
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/electron.png)  
 
 简陋的菜单和标题，我们可以用 HTML + JS + CSS 去构建菜单，然后点击的时候，与主进程通信， 为了便于提高开发效率，我们引入 Vue 进行页面开发
 
@@ -260,7 +260,7 @@ app.whenReady().then(createWindow)
 ```
 其展示结果如下：  
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/vue-render.png)  
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/vue-render.png)  
 
 
 #### 3.4.4 渲染进程内调用 Node 功能
@@ -315,12 +315,12 @@ export default {
 
 but。。。。。  
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/require-error.png)  
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/require-error.png)  
 
 what????
 
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/fake.jpg)
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/fake.jpg)
 
 造成这个的原因是因为 webpack 处理了 require 命令，导致查找模块的时候会去 node_modules 目录下找，但是因为 fs 模块是 Node 的核心模块，所以在 node_modules 下是找不到的，所以会报错，我们可以改成将 require 命令改成 __non_webpack_require__ (webpack 提供的变量，表示模块不需要 webpack 处理，而是使用当前环境的 require 方法)
 
@@ -333,7 +333,7 @@ const fsPromises = __non_webpack_require__('fs').promises; // +
 
 点击读取文件后：  
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/read.png)
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/read.png)
 
 
 
@@ -348,7 +348,7 @@ const fsPromises = __non_webpack_require__('fs').promises; // +
 
 Electron 中，主要提供了两个对象 ipcMain, ipcRenderer 来支持渲染进程和主进程之间的通信
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/ipc.png)  
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/ipc.png)  
 
 
 渲染进程：
@@ -460,7 +460,7 @@ export default {
 
 我们可以看看 remote 中提供了那些可远程调用的对象：  
 
-![](https://raw.githubusercontent.com/zhijs/blog/master/其他/Electron 入门/images/remote.png) 
+![](https://raw.githubusercontent.com/zhijs/blog/master/%E5%85%B6%E4%BB%96/Electron%20%E5%85%A5%E9%97%A8/images/remote.png) 
 
 也就是这些方法，我们都可以在渲染进程，通过远程调用 remote 方式调用，就像是在主进程使用一样。
 
