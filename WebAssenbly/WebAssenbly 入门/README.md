@@ -54,7 +54,7 @@
 
 这里的性能好，是相对的，是相对于传统的 JavaScript 在浏览器上的运行性能，以 Chrome 的 v8 引擎为例，JavaScript 在浏览器中运行的过程如下：
 
-![](./images/v8-code-run.png)
+![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly%20入门/images/v8-code-run.png)
 
 
 可以看到，V8 执行代码的时候，最终会将代码转化为机器码，交给系统处理器执行。
@@ -73,7 +73,7 @@
 答： 其实一开始 V8 并没有字节码，而是直接将 AST 转换为机器码，由于执行机器码的效率是非常高效的，所以这种方式在发布后的一段时间内运行效果是非常好的。但是随着 Chrome 在手机上的广泛普及，特别是运行在 512M 内存的手机上，内存占用问题也暴露出来了，因为 V8 需要消耗大量的内存来存放转换后的机器码。为了解决内存占用问题，V8 团队大幅重构了引擎架构，引入字节码，并且抛弃了之前的编译器。
 
 JavaScript 源码，字节码，机器码的形式如下图所示：
-![](./images/bytecode.jpg)  
+![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly%20入门/images/bytecode.jpg)  
 
 
 从图中可以看出，机器码所占用的空间远远超过了字节码，所以使用字节码可以减少系统的内存使用。
@@ -82,7 +82,7 @@ JavaScript 源码，字节码，机器码的形式如下图所示：
 
 WebAssembly 加载执行的过程如下图所示：  
 
-![](./images/wasm-run.jpeg)    
+![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly%20入门/images/wasm-run.jpeg)    
 
 相比于 JavaScript 的加载执行，WebAssembly 有以下的优势：
 
@@ -94,6 +94,36 @@ WebAssembly 加载执行的过程如下图所示：
 
 
 ## WebAssembly 代码实战
+这里我们通过一个简单的例子来学习一下 WebAssembly
+
+### 第一步：下载 WebAssembly 编译镜像 (需要提前安装好 docker 环境)
+```bash
+docker pull trzeci/emscripten
+```
+
+### 第二步：编写 c/c++ 代码
+例如这里编写一个数组去重的方法
+
+
+### 第三步：编译 c/c++ 模块为 wasm
+```bash
+ docker run \
+  --rm \
+  -v "$(pwd):$(pwd)" \
+  -u $(id -u):$(id -g) \
+  trzeci/emscripten \
+  emcc "$(pwd)/unique.cpp" -s "EXPORTED_FUNCTIONS=['_uniqueArr']" -s WASM=1 -o "$(pwd)/unique.wasm"
+```
+其中 pwd 代表当前路径，即使 c++ 主模块的路径
+其中 EXPORTED_FUNCTIONS 指定需要导出的模块方法，注意必须要加下划线
+
+### 第四步：调用 c++ 模块
+
+
+
+
+
+
 
 
 

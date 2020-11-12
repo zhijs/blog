@@ -1,0 +1,23 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "博客",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhijs/blog.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "zhijs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhijs/blog/issues"
+  },
+  "homepage": "https://github.com/zhijs/blog#readme",
+  "githubCdnPath": "https://raw.githubusercontent.com/zhijs/blog/master"
+}
