@@ -693,7 +693,7 @@ function checkDeferredModules() {
 
 对于编译打包时，是从入口文件开始分析，根据配置文件将入口模块及其依赖的模块，都进行函数包装，生成 以模块标识符为键，模块包装后的代码为值的模块对象集合，同时可以将 Webpack 模块管理，第三方模块代码，业务代码分别写入到不同的文件模块中：
 
-![](./images/bianyi.png)
+![](https:/raw.githubusercontent.com/zhijs/blog/master/blog/Webpack/Webpack中JavaScript的模块机制/images/bianyi.png)
 
 
 对于运行时，在下载执行每个文件模块的时候，如果 Webpack 模块管理器 manifest.js 未被下载和初始化，则暂存相应文件的 文件模块信息，模块对象集合信息，入口文件及其依赖信息。等到 manifest 下载完毕，在循环处理，也就是说，即使 script 脚本改变下载顺序，程序还是可以正常如期运行：
@@ -704,7 +704,7 @@ function checkDeferredModules() {
 ```
 最后是 Webpack 打包后的模块加载和执行流程：  
 
-![](./images/jiegou.png)
+![](https:/raw.githubusercontent.com/zhijs/blog/master/blog/Webpack/Webpack中JavaScript的模块机制/images/jiegou.png)
 
 
 

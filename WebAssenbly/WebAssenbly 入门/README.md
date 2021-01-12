@@ -1,5 +1,5 @@
 
-## 前言了
+## 前言
 前一周参加了一个线上的 WebAssembly 讨论分享会，对 WebAssembly 有了进一步的认识，所以通过这篇文章记录一下 WebAssembly 的学习总结。
 本文主要包含以下的内容
 
@@ -102,7 +102,21 @@ docker pull trzeci/emscripten
 ```
 
 ### 第二步：编写 c/c++ 代码
-例如这里编写一个数组去重的方法
+例如这里编写一个简单的运算方法
+
+```c++
+#include <iostream>
+using namespace std;
+
+extern "C" { 
+  int add(int a, int b);
+}
+int add(int a, int b);
+int add (int a, int b) {
+  return a + b;
+}
+```
+这里加上 extern 的目的是为了防止编译的时候被 mangle（可以把它想象成 C++ 的内部方法模块重命名系统，详细可以参考[这篇文章](https://cloud.tencent.com/developer/article/1005044)）
 
 
 ### 第三步：编译 c/c++ 模块为 wasm
@@ -112,12 +126,42 @@ docker pull trzeci/emscripten
   -v "$(pwd):$(pwd)" \
   -u $(id -u):$(id -g) \
   trzeci/emscripten \
-  emcc "$(pwd)/unique.cpp" -s "EXPORTED_FUNCTIONS=['_uniqueArr']" -s WASM=1 -o "$(pwd)/unique.wasm"
+  emcc "$(pwd)/c_plus_modules.cpp" -s "EXPORTED_FUNCTIONS=['_add']" -s WASM=1 -o "$(pwd)/c_plus_modules.wasm"
 ```
 其中 pwd 代表当前路径，即使 c++ 主模块的路径
 其中 EXPORTED_FUNCTIONS 指定需要导出的模块方法，注意必须要加下划线
+>>
+至于为什么要加下划线，猜测是 gcc 编译机制的问题，在查看 CPP 编译后的代码，可以发现如下部分
+```javascript
+
+  .globl	_add                    ## -- Begin function add
+	.p2align	4, 0x90    _add:        
+```
+
+导出的函数增加了下划线命名
 
 ### 第四步：调用 c++ 模块
+```javascript
+function loadWASM (path, imports = {}) {
+  return fetch(path)
+  .then(response => response.arrayBuffer())
+  .then(buffer => WebAssembly.compile(buffer))
+  .then( module => {
+    return WebAssembly.instantiate(module, imports)
+  })
+}
+loadWASM('./unique.wasm')
+.then(instance => {
+  console.log(instance.exports)
+  console.log(instance.exports.add(2, 3))  
+})
+```
+
+结果如下图所示：
+![](./images/add.png)
+
+
+需要注意的是，Javascript 调用
 
 
 
@@ -141,6 +185,9 @@ docker pull trzeci/emscripten
 [What makes WebAssembly fast?](https://hacks.mozilla.org/2017/02/what-makes-WebAssembly-fast/)     
 [WebAssembly for Web Developers (Google I/O ’19)](https://www.youtube.com/watch?v=njt-Qzw0mVY) 
 [编译 C/C++ 为WebAssembly](https://segmentfault.com/a/1190000020868609))
+[理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)
+[Emscripting a C library to Wasm](https://developers.google.com/web/updates/2018/03/emscripting-a-c-library)
+
 
 
 
