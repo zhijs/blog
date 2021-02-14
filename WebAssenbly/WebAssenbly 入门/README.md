@@ -161,7 +161,12 @@ loadWASM('./unique.wasm')
 ![](./images/add.png)
 
 
-需要注意的是，Javascript 调用
+需要注意的是，Javascript 调用 wasm 方法的时候，只能传递一种类型的参数，那就是数字，所以如果我们想传递更负责的数据类型到 wasm 的方法的时候，只能通过传递内存的方式实现，也就是传递内存指针的方式。
+
+
+### wasm 实现 md5 生成
+
+
 
 
 
@@ -187,6 +192,7 @@ loadWASM('./unique.wasm')
 [编译 C/C++ 为WebAssembly](https://segmentfault.com/a/1190000020868609))
 [理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)
 [Emscripting a C library to Wasm](https://developers.google.com/web/updates/2018/03/emscripting-a-c-library)
+https://www.cntofu.com/book/150/zh/ch2-c-js/ch2-04-data-exchange.md
 
 
 

@@ -28,3 +28,9 @@
 
 
 持续更新中...
+
+## 更新图片地址为 cdn 地址：
+```bash
+cd scripts
+node replaceImage.js ./Webpack/Webpack中JavaScript的模块机制
+```

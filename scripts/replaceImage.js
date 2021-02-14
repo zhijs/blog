@@ -15,6 +15,7 @@ class TransForm {
   parseCommand () {
     const args = process.argv
     const scriptPath = process.cwd()
+    console.log('relativePath---', args[2])
     return {
       rootPath: path.resolve(scriptPath, '..'),
       relativePath: args[2]    
@@ -24,6 +25,7 @@ class TransForm {
   // 替换地址
   replacePath ({rootPath, relativePath }) {
     const filePath = path.join(rootPath, relativePath, 'README.md')
+  
     const content = fs.readFileSync(filePath, {
       encoding: 'utf-8'
     })
