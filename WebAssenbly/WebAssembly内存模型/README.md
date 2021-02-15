@@ -14,5 +14,119 @@ JavaScript中的 ArrayBuffer 无法直接访问，必须通过某种类型的 Ty
 
 Emscripten已经为Module.buffer创建了常用类型的TypedArray，见下表：
 
-![](./images/typearray.png)   
+![](./images/typearray.png) 
+
+
+### 在JavaScript中访问C/C++内存
+我们实现通过在 c++ 的方法中放回变量指针，然后在 Javascript 中得到这个指针，并用这个指针拿到 c++ 里面定义存储的数据：
+
+首先是 c++ 代码：
+
+```c++
+// memory.cpp
+#include <iostream>
+
+extern "C" { 
+  int* get_int_addr();
+}
+
+int a = 17;
+
+int* get_int_addr(){
+  return &a;
+}
+
+```
+第二步： 通过 trzeci/emscripten 镜像编译 c++ 文件，生成 index.wasm 和胶水代码 index.js
+
+```shell
+ docker run \
+  --rm \
+  -v "$(pwd):$(pwd)" \
+  -u $(id -u):$(id -g) \
+  trzeci/emscripten \
+  emcc "$(pwd)/memory.cpp" -s "EXPORTED_FUNCTIONS=['_get_int_addr']" -s WASM=1 -s MODULARIZE=1 -s ENVIRONMENT=web -o "$(pwd)/index.js"  
+```
+
+第三步：index.htm 引入胶水代码（胶水代码里面会自动引入并初始化 wasm 文件模块）
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>wasm demo</div>
+</body>
+<script src="./index.js"></script>
+<script src="./main-memory.js"></script>
+</html>
+```
+
+第四步：使用 wasm 模块对象
+胶水代码会自动引入并初始化 wasm, 同时会挂载 wasm 模块对象到环境中。
+
+````javascript
+if (typeof exports === 'object' && typeof module === 'object')
+  module.exports = Module;
+else if (typeof define === 'function' && define['amd'])
+  define([], function() { return Module; });
+else if (typeof exports === 'object')
+  exports["Module"] = Module;
+    
+````
+可以看到， 胶水代码以 umd 的方式导出了模块，默认模块名称为 Module, 我们可以在编译的时候更改名称：
+
+编译的时候增加参数
+
+```shell
+-s EXPORT_NAME="WasmModule"
+```
+
+得到：
+
+```javascript
+if (typeof exports === 'object' && typeof module === 'object')
+  module.exports = WasmModule;
+else if (typeof define === 'function' && define['amd'])
+  define([], function() { return WasmModule; });
+else if (typeof exports === 'object')
+  exports["WasmModule"] = WasmModule;
+```
+
+调用 wasm 导出的方法，得到 c++ 的内存地址（需要注意的是，得到的指针是以字节 byte 为单位的偏移量）：
+
+```javascript
+
+
+/**
+ * main-memory.js
+ * Javascript 访问 c/c++ 内存里面的数据
+ */
+
+
+// wasm 胶水代码导出一个 wasm 对象为 Promise
+window.WasmModule().then(module => {
+
+  // 调用  c++ 导出的方法，得到内存地址，内存地址是偏移的字节数
+  const pr = module._get_int_addr()
+
+  //用 HEAP32 来访问内存中对应的数据，表示将内存地址按每个元素 4 个字节来访问
+  console.log(module.HEAP32[pr / 4]) // 17
+})
+```
+
+结果如下图所示：
+
+![](./images/point.jpeg)  
+
+
+
+
+
+
 
