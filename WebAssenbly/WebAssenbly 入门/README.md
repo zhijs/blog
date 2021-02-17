@@ -165,9 +165,22 @@ loadWASM('./unique.wasm')
 
 
 ### 如何通过内存和 wasm 交换数据
-我们可以通过 Module 对象提供的 Module.HEAP+ 属性来访问 c/c++ 里面的内存，Module.HEAP+ 等对象的名称虽然为“堆”（HEAP），但事实上它们指的是C/C环境的整个内存空间，因此位于C/C++ 栈上的数据也可以通过 Module.HEAP32 等对象来访问
+我们可以通过 Module 对象提供的 Module.HEAP+ 属性来访问 c/c++ 里面的内存，Module.HEAP+ 等对象的名称虽然为“堆”（HEAP），但事实上它们指的是C/C环境的整个内存空间，因此位于C/C++ 栈上的数据也可以通过 Module.HEAP32 等对象来访问。
 
-### wasm 实现 md5 生成
+### wasm 实现文件 md5 计算
+
+>>
+Emscripten 导出了 C 的 malloc()/free() 函数来申请和释放内存（因为 wasm 没有垃圾回收机制，所以需要释放）
+
+
+通过上述以及 Javascript 和 wasm 模块内存交互的相关知识，我们可以知道实现文件 MD5 计算的基本过程：
+
+![](./images/md5-process.jpeg)  
+
+#### c++ 代码
+
+
+
 
 
 

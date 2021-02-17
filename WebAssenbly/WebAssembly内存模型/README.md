@@ -125,7 +125,56 @@ window.WasmModule().then(module => {
 ![](./images/point.jpeg)  
 
 
+同时我们可以在 Javascript 中通过 module.HEAP+ 来设置 c/c++ 内存的数据，然后在 c/c++ 访问设置的数据:
 
+c++ 里面增加输出函数
+
+```c++
+extern "C" { 
+  void print_var();
+}
+
+void print_var () {
+  cout << " value is: " << a << endl;
+}
+```
+
+编译增加导出函数
+```shell
+-s "EXPORTED_FUNCTIONS=['_get_int_addr', '_print_var']"
+```
+
+
+javascript 增加修改数据和输出数据
+
+```javascript
+// wasm 胶水代码导出一个 wasm 对象为 Promise
+window.WasmModule().then(module => {
+
+  // 调用  c++ 导出的方法，得到内存地址，内存地址是偏移的字节数
+  const pr = module._get_int_addr()
+
+  //用 HEAP32 来访问内存中对应的数据，表示将内存地址按每个元素 4 个字节来访问
+  console.log(module.HEAP32[pr / 4]) // 17
+   
+  // 更改 c++ 里面的变量数据
+  module.HEAP32[pr / 4] = 20
+  
+  // 输出更改后的结果
+  console.log(module._print_var())
+
+})
+```
+
+结果如下图所示：  
+
+![](./images/change.jpeg)  
+
+
+
+在使用 wasm 模块时，对于 Javascript 环境来说，c/c++ 模块的内存数据都存在于一个 ArrayBuffer 中，可以通过 wasm 模块的 HEAP+ 来访问这段内存区域：
+
+![](./images/memory.jpeg)
 
 
 
