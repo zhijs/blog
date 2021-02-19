@@ -345,7 +345,7 @@ md5 ./index.html
 ## 总结
 通过这篇文章，我们知道了什么是 Websembly（低级编程语言）, 以及为什么 WebAssembly 性能好（JavaScrpipt 在富媒体场景下无法满足性能要求），以及通过实战学习了如果使用 WebAssembly。
 
-
+[相关事例代码](https://github.com/zhijs/example/tree/master/c-and-c%2B%2B/webassembly)
 
 
 
