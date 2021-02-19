@@ -19,6 +19,10 @@
 - [nodejs 知识导图](./思维导图/images/nodejs.jpg)  
 - [关于 NodeJS 和 libuv 的一些常见错误认知-外链](https://medium.com/the-node-js-collection/what-you-should-know-to-really-understand-the-node-js-event-loop-and-its-metrics-c4907b19da4c)  
 
+### webassembly
+- [webassembly 从入门到实现文件 md5](https://github.com/zhijs/blog/tree/master/WebAssenbly/WebAssenbly%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6md5)  
+
+
 ### 计算机网络
 - [HTTP 协议导图](./思维导图/images/计算机网络.jpg)
 ### 其他
