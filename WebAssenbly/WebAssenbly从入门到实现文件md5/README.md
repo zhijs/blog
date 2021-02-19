@@ -347,11 +347,7 @@ md5 ./index.html
 
 [相关事例代码](https://github.com/zhijs/example/tree/master/c-and-c%2B%2B/webassembly)
 
-
-
-
-
-
+最后推荐可以通过 [3dgen大佬](https://github.com/3dgen) 的书 [C/C++面向WebAssembly编程](https://www.cntofu.com/book/150/index.html) 学习 WebAssembly 的知识。
 
 
 
@@ -377,6 +373,9 @@ md5 ./index.html
 
 
 ## 参考文章
+[C/C++面向WebAssembly编程](https://www.cntofu.com/book/150/index.html)
+
+
 [An Interpreter for V8 [BlinkOn]](https://docs.google.com/presentation/d/1OqjVqRhtwlKeKfvMdX6HaCIu9wpZsrzqpIVIwQSuiXQ/edit#slide=id.g1453eb7f19_0_391)    
 [编译器和解释器](https://blog.poetries.top/browser-working-principle/guide/part3/lesson14.html#%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8C%E8%A7%A3%E9%87%8A%E5%99%A8) 
 
@@ -390,6 +389,7 @@ md5 ./index.html
 [理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)  
 
 [Emscripting a C library to Wasm](https://developers.google.com/web/updates/2018/03/emscripting-a-c-library)
+
 
 
 
