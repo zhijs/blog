@@ -1,6 +1,6 @@
 
 ## 前言
-前一周参加了一个线上的 WebAssembly 讨论分享会，对 WebAssembly 有了进一步的认识，所以通过这篇文章记录一下 WebAssembly 的学习总结。
+前前前..周参加了一个线上的 WebAssembly 讨论分享会，对 WebAssembly 有了进一步的认识，所以通过这篇文章记录一下 WebAssembly 的学习总结。
 本文主要包含以下的内容
 
 1. WebAssembly 是什么
@@ -89,7 +89,7 @@ WebAssembly 加载执行的过程如下图所示：
 1. 获取 WebAssembly 所需的时间更少，因为它紧凑的二进制格式，更方便压缩，所以梯级更小
 2. 解码 WebAssembly 比解析 JavaScript 花费的时间更少，不需要经过 parse 生成 AST 的过程。
 3. 编译和优化花费的时间更少，因为 WebAssembly 比 JavaScript 更接近机器代码，并且已经在服务器端进行了优化。
-4. 去优化不需要发生，因为 WebAssembly 内置了类型和其他信息，因此 JS引擎不需要推测它何时优化 JavaScript 的方式。
+4. 去优化不需要发生，因为 WebAssembly 内置了类型和其他信息，因此 JS 引擎不需要推测它何时优化 JavaScript 的方式。
 5. 由于内存是手动管理，因此不需要垃圾收集。
 
 
@@ -178,20 +178,179 @@ Emscripten 导出了 C 的 malloc()/free() 函数来申请和释放内存（因�
 ![](./images/md5-process.jpeg)  
 
 #### c++ 代码
+```c++
+#include <iostream>
+#include "md5.h"
+
+using namespace std;
+
+md5::MD5 imd5;
+
+extern "C" {
+  char* getMd5(char pr[]);
+}
+
+extern "C" {
+  void printMd5();
+}
+
+extern "C" {
+  void printText(char pr[]);
+}
+
+char result[64];
+
+// 成功之后将地址返回给调用处
+char* getMd5(char pr[]) {
+  strcpy(result, imd5.digestString(pr));
+  cout<< result << endl;
+  return result;
+}
+
+
+// 检验是否可以正常输出 md5
+void printMd5 () {
+  char text[] = "hello world";
+  cout<< imd5.digestString(text) << endl;
+}
+
+// 检验文件内容是否正常传输
+void printText (char pr[]) {
+  cout<< pr << endl;
+}
+
+```
+在 c++ 代码中，我们用一个 char 数组来保存生成的 md5 值， 同时导出一个打印外部传入文件内容的方法。以及打印一个 hello word 字符串 md5 值的方法，目的是检测 md5 的结果是否正常(可以和在线 md5 进行对比)，最后到处一个生成 md5 的方法，并返回一个地址。
 
 
 
-#### 编译 c++ 为 wasm
+#### 编译 c++ 为 wasm，并生成胶水代码
 ```shell
  docker run \
   --rm \
   -v "$(pwd):$(pwd)" \
   -u $(id -u):$(id -g) \
   trzeci/emscripten \
-  emcc "$(pwd)/md5-example.cpp" -s "EXPORTED_FUNCTIONS=['_getMd5', '_printMd5']" -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="WasmModule"  -s ENVIRONMENT=web -o "$(pwd)/index.js"
+  emcc "$(pwd)/md5-example.cpp" -s "EXPORTED_FUNCTIONS=['_getMd5', '_printMd5', '_printText']" -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="WasmModule"  -s ENVIRONMENT=web -o "$(pwd)/index.js"
+
 ```
 
-注意： 这里导出了两个方法，一个是获取 md5, 另外一个打印 md5(检测 'hello word' md5)， 同时生成 index.js, 里面会包含胶水代码(导出 wasm 模块等各种初始化的逻辑)
+
+#### JavaScript 接受文件内容并传入 wasm 模块
+
+```javascript
+
+
+/**
+ * md5-example.js
+ * wasm 实现文本的的 md5 计算
+ */
+
+let _module // 保存 wasm 模块对象
+
+// wasm 胶水代码导出一个 wasm 对象为 Promise
+window.WasmModule().then(module => {
+  console.log('hello world md5 值')
+  module._printMd5()
+  _module = module
+});
+
+
+// 处理文件读取
+document.getElementById('file').onchange = function(e){
+  let file = e.target.files[0],
+    reader = new FileReader(),
+    buffer;
+
+  if(file){
+    reader.readAsArrayBuffer(file)
+  }
+  reader.onloadend = function(event){ 
+    // console.log(event.target.result)
+    buffer = event.target.result
+    // console.log(buffer.byteLength)
+    // console.log(_module)
+    // wasm 模块分配内存,大小为文件 buffer 的字节
+    const pr = _module._malloc(buffer.length)
+
+    // 在 wasm 内存中，从 pr 偏移到 pr + buffer.byteLength 写入 buffer
+    const tyarr = new Uint8Array(buffer)
+    for (let i = 0; i < buffer.byteLength; i++) {
+      _module.HEAP8[pr + i] = tyarr[i]
+    }
+
+
+    // 传入 c++, 输出字符串，检测是否正常传入
+    console.log('=============wasm 输出文本内容 start===============')
+    _module._printText(pr)
+    console.log('=============wasm 输出文本内容 end===============\n\n')
+    
+   // 计算 md5 并返回指针
+   console.log('=============wasm 计算 md5 start===============')
+   const md5pr = _module._getMd5(pr)
+   console.log('=============wasm 计算 md5 end===============\n\n')
+
+   // buffer 转化为字符串, 每个字符占一个字节
+   const ab2str = function (buf) {
+     return String.fromCharCode.apply(null, new Uint8Array(buf)); //apply将数组参数传给方法作为分开的实参，见apply的用法
+   }
+
+   // 输出文件内容 md5 的结果
+   console.log('=============javaScript 访问内存得到 md5 start===============')
+   console.log(ab2str(_module.HEAP8.slice(md5pr, md5pr + 64)))
+   console.log('=============javaScript 访问内存得到 md5 end===============')
+   
+   // 最后释放内存
+   _module._free(pr)
+
+  }
+  
+}
+```
+
+运行的结果如下图所示：
+![](./images/md5-result.png)  
+
+
+我们来检测一下 hello world 的 md5 值：
+```shell
+ md5 -s 'hello world'
+ 
+```
+
+结果为：
+
+![](./images/hello-world.png)
+
+
+结果和上图的一致
+
+
+同时，我们也用命令检测 index.html 的文件 md5 值
+
+```shell
+md5 ./index.html 
+```
+
+结果为：
+
+![](./images/file-md5.png)  
+
+说明和 wasm 模块生成的一致
+
+## WebAssembly 的未来展望
+随着网络技术的发展，特别是 5G 的高网速的来临，越来越多的应用在 web 上实现成为一种可能，特别是各种富媒体的应用，音频流，视频流，直播等，而传统的 JavaScript 由于历史的原因，其在多媒体的处理，以及复 CPU 密集型的操作上存在比较大的性能问题，而 WebAssembly 则为我们提供了补充 JavaScript 缺陷的可能。
+
+
+## 总结
+通过这篇文章，我们知道了什么是 Websembly（低级编程语言）, 以及为什么 WebAssembly 性能好（JavaScrpipt 在富媒体场景下无法满足性能要求），以及通过实战学习了如果使用 WebAssembly。
+
+
+
+
+
+
+
 
 
 
@@ -225,7 +384,7 @@ Emscripten 导出了 C 的 malloc()/free() 函数来申请和释放内存（因�
 [编译 C/C++ 为WebAssembly](https://segmentfault.com/a/1190000020868609))
 [理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)
 [Emscripting a C library to Wasm](https://developers.google.com/web/updates/2018/03/emscripting-a-c-library)
-https://www.cntofu.com/book/150/zh/ch2-c-js/ch2-04-data-exchange.md
+
 
 
 
