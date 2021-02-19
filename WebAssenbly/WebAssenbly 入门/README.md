@@ -181,6 +181,23 @@ Emscripten 导出了 C 的 malloc()/free() 函数来申请和释放内存（因�
 
 
 
+#### 编译 c++ 为 wasm
+```shell
+ docker run \
+  --rm \
+  -v "$(pwd):$(pwd)" \
+  -u $(id -u):$(id -g) \
+  trzeci/emscripten \
+  emcc "$(pwd)/md5-example.cpp" -s "EXPORTED_FUNCTIONS=['_getMd5', '_printMd5']" -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="WasmModule"  -s ENVIRONMENT=web -o "$(pwd)/index.js"
+```
+
+注意： 这里导出了两个方法，一个是获取 md5, 另外一个打印 md5(检测 'hello word' md5)， 同时生成 index.js, 里面会包含胶水代码(导出 wasm 模块等各种初始化的逻辑)
+
+
+
+
+
+
 
 
 
