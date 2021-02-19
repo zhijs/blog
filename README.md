@@ -20,7 +20,9 @@
 - [关于 NodeJS 和 libuv 的一些常见错误认知-外链](https://medium.com/the-node-js-collection/what-you-should-know-to-really-understand-the-node-js-event-loop-and-its-metrics-c4907b19da4c)  
 
 ### WebAssembly
-- [WebAssembly 从入门到实现文件 md5](https://github.com/zhijs/blog/tree/master/WebAssenbly/WebAssenbly%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6md5)  
+- [WebAssembly 从入门到实现文件 md5](https://github.com/zhijs/blog/tree/master/WebAssenbly/WebAssenbly%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6md5) 
+- [WebAssembly 内存模型](https://github.com/zhijs/blog/tree/master/WebAssenbly/WebAssembly%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B) 
+
 
 
 ### 计算机网络
