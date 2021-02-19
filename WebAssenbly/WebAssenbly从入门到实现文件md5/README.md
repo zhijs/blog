@@ -54,7 +54,7 @@
 
 这里的性能好，是相对的，是相对于传统的 JavaScript 在浏览器上的运行性能，以 Chrome 的 v8 引擎为例，JavaScript 在浏览器中运行的过程如下：
 
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly%20入门/images/v8-code-run.png)
+![](./images/v8-code-run.png)
 
 
 可以看到，V8 执行代码的时候，最终会将代码转化为机器码，交给系统处理器执行。
@@ -73,7 +73,7 @@
 答： 其实一开始 V8 并没有字节码，而是直接将 AST 转换为机器码，由于执行机器码的效率是非常高效的，所以这种方式在发布后的一段时间内运行效果是非常好的。但是随着 Chrome 在手机上的广泛普及，特别是运行在 512M 内存的手机上，内存占用问题也暴露出来了，因为 V8 需要消耗大量的内存来存放转换后的机器码。为了解决内存占用问题，V8 团队大幅重构了引擎架构，引入字节码，并且抛弃了之前的编译器。
 
 JavaScript 源码，字节码，机器码的形式如下图所示：
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly%20入门/images/bytecode.jpg)  
+![](./images/bytecode.jpg)  
 
 
 从图中可以看出，机器码所占用的空间远远超过了字节码，所以使用字节码可以减少系统的内存使用。
@@ -82,7 +82,7 @@ JavaScript 源码，字节码，机器码的形式如下图所示：
 
 WebAssembly 加载执行的过程如下图所示：  
 
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly%20入门/images/wasm-run.jpeg)    
+![](./images/wasm-run.jpeg)    
 
 相比于 JavaScript 的加载执行，WebAssembly 有以下的优势：
 
@@ -377,12 +377,18 @@ md5 ./index.html
 
 
 ## 参考文章
-[An Interpreter for V8 [BlinkOn]](https://docs.google.com/presentation/d/1OqjVqRhtwlKeKfvMdX6HaCIu9wpZsrzqpIVIwQSuiXQ/edit#slide=id.g1453eb7f19_0_391)  
-[编译器和解释器](https://blog.poetries.top/browser-working-principle/guide/part3/lesson14.html#%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8C%E8%A7%A3%E9%87%8A%E5%99%A8)   
+[An Interpreter for V8 [BlinkOn]](https://docs.google.com/presentation/d/1OqjVqRhtwlKeKfvMdX6HaCIu9wpZsrzqpIVIwQSuiXQ/edit#slide=id.g1453eb7f19_0_391)    
+[编译器和解释器](https://blog.poetries.top/browser-working-principle/guide/part3/lesson14.html#%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8C%E8%A7%A3%E9%87%8A%E5%99%A8) 
+
 [What makes WebAssembly fast?](https://hacks.mozilla.org/2017/02/what-makes-WebAssembly-fast/)     
-[WebAssembly for Web Developers (Google I/O ’19)](https://www.youtube.com/watch?v=njt-Qzw0mVY) 
-[编译 C/C++ 为WebAssembly](https://segmentfault.com/a/1190000020868609))
-[理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)
+
+[WebAssembly for Web Developers (Google I/O ’19)](https://www.youtube.com/watch?v=njt-Qzw0mVY)   
+
+[编译 C/C++ 为WebAssembly](https://segmentfault.com/a/1190000020868609)   
+
+
+[理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)  
+
 [Emscripting a C library to Wasm](https://developers.google.com/web/updates/2018/03/emscripting-a-c-library)
 
 
