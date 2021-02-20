@@ -97,7 +97,7 @@ WebAssembly 加载执行的过程如下图所示：
 这里我们通过一个简单的例子来学习一下 WebAssembly
 
 ### 第一步：下载 WebAssembly 编译镜像 (需要提前安装好 docker 环境)
-这里 emscripten 编译环境我们可以直接使用 docker 镜像，省去了繁杂的环境配置，但是需要先安装 docker 环境，传送门(win 安装配置 Docker 环境)[https://www.runoob.com/docker/windows-docker-install.html](mac 安装配置 Docker 环境)[https://www.runoob.com/docker/macos-docker-install.html]
+这里 emscripten 编译环境我们可以直接使用 docker 镜像，省去了繁杂的环境配置，但是需要先安装 docker 环境，传送门 (win 安装配置 Docker 环境)[https://www.runoob.com/docker/windows-docker-install.html]  (mac 安装配置 Docker 环境)[https://www.runoob.com/docker/macos-docker-install.html]
 ```bash
 docker pull trzeci/emscripten
 ```
