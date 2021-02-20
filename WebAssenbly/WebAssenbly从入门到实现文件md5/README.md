@@ -54,7 +54,7 @@
 
 这里的性能好，是相对的，是相对于传统的 JavaScript 在浏览器上的运行性能，以 Chrome 的 v8 引擎为例，JavaScript 在浏览器中运行的过程如下：
 
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/v8-code-run.png)
+![](./images/v8-code-run.png)
 
 
 可以看到，V8 执行代码的时候，最终会将代码转化为机器码，交给系统处理器执行。
@@ -73,7 +73,7 @@
 答： 其实一开始 V8 并没有字节码，而是直接将 AST 转换为机器码，由于执行机器码的效率是非常高效的，所以这种方式在发布后的一段时间内运行效果是非常好的。但是随着 Chrome 在手机上的广泛普及，特别是运行在 512M 内存的手机上，内存占用问题也暴露出来了，因为 V8 需要消耗大量的内存来存放转换后的机器码。为了解决内存占用问题，V8 团队大幅重构了引擎架构，引入字节码，并且抛弃了之前的编译器。
 
 JavaScript 源码，字节码，机器码的形式如下图所示：
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/bytecode.jpg)  
+![](./images/bytecode.jpg)  
 
 
 从图中可以看出，机器码所占用的空间远远超过了字节码，所以使用字节码可以减少系统的内存使用。
@@ -82,7 +82,7 @@ JavaScript 源码，字节码，机器码的形式如下图所示：
 
 WebAssembly 加载执行的过程如下图所示：  
 
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/wasm-run.jpeg)    
+![](./images/wasm-run.jpeg)    
 
 相比于 JavaScript 的加载执行，WebAssembly 有以下的优势：
 
@@ -159,7 +159,7 @@ loadWASM('./unique.wasm')
 ```
 
 结果如下图所示：
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/add.png)
+![](./images/add.png)
 
 
 需要注意的是，Javascript 调用 wasm 方法的时候，只能传递一种类型的参数，那就是数字，所以如果我们想传递更负责的数据类型到 wasm 的方法的时候，只能通过传递内存的方式实现，也就是传递内存指针的方式。
@@ -177,7 +177,7 @@ Emscripten 导出了 C 的 malloc()/free() 函数来申请和释放内存（因�
 
 通过上述以及 Javascript 和 wasm 模块内存交互的相关知识，我们可以知道实现文件 MD5 计算的基本过程：
 
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/md5-process.jpeg)  
+![](./images/md5-process.jpeg)  
 
 #### c++ 代码
 ```c++
@@ -311,7 +311,7 @@ document.getElementById('file').onchange = function(e){
 ```
 
 运行的结果如下图所示：
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/md5-result.png)  
+![](./images/md5-result.png)  
 
 
 我们来检测一下 hello world 的 md5 值：
@@ -322,7 +322,7 @@ document.getElementById('file').onchange = function(e){
 
 结果为：
 
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/hello-world.png)
+![](./images/hello-world.png)
 
 
 结果和上图的一致
@@ -336,7 +336,7 @@ md5 ./index.html
 
 结果为：
 
-![](https:/raw.githubusercontent.com/zhijs/blog/master/WebAssenbly/WebAssenbly从入门到实现文件md5/images/file-md5.png)  
+![](./images/file-md5.png)  
 
 说明和 wasm 模块生成的一致
 
