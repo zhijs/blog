@@ -97,6 +97,7 @@ WebAssembly 加载执行的过程如下图所示：
 这里我们通过一个简单的例子来学习一下 WebAssembly
 
 ### 第一步：下载 WebAssembly 编译镜像 (需要提前安装好 docker 环境)
+这里 emscripten 编译环境我们可以直接使用 docker 镜像，省去了繁杂的环境配置，但是需要先安装 docker 环境，传送门(win 安装配置 Docker 环境)[https://www.runoob.com/docker/windows-docker-install.html](mac 安装配置 Docker 环境)[https://www.runoob.com/docker/macos-docker-install.html]
 ```bash
 docker pull trzeci/emscripten
 ```
@@ -165,8 +166,9 @@ loadWASM('./unique.wasm')
 
 
 ### 如何通过内存和 wasm 交换数据
-我们可以通过 Module 对象提供的 Module.HEAP+ 属性来访问 c/c++ 里面的内存，Module.HEAP+ 等对象的名称虽然为“堆”（HEAP），但事实上它们指的是C/C环境的整个内存空间，因此位于C/C++ 栈上的数据也可以通过 Module.HEAP32 等对象来访问。
+我们可以通过 Module 对象提供的 Module.HEAP+ 属性来访问 c/c++ 里面的内存，Module.HEAP+ 等对象的名称虽然为“堆”（HEAP），但事实上它们指的是C/C环境的整个内存空间，因此位于C/C++ 栈上的数据也可以通过 Module.HEAP32 等对象来访问，建议先看文章[WebAssembly 内存模型](https://github.com/zhijs/blog/tree/master/WebAssenbly/WebAssembly%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B)
 
+下文的例子通过 emscripten 直接生成 wasm 模块的胶水代码，方便我们更好的使用。
 ### wasm 实现文件 md5 计算
 
 >>
