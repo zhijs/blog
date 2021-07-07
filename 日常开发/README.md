@@ -24,3 +24,11 @@ cookie 的作用域是 domain 本身以及 domain 下的所有子域名
 xhr = new XMLHttpRequest();
 xhr.withCredentials= true;  //关键句
 ```
+
+
+### nodejs
+
+#### 环境变量设置
+nodejs 无法运行时动态设置 process.env.xxx = '', 必须要在启动 nodejs 那会注入
+
+
