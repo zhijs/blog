@@ -32,3 +32,22 @@ xhr.withCredentials= true;  //关键句
 nodejs 无法运行时动态设置 process.env.xxx = '', 必须要在启动 nodejs 那会注入
 
 
+
+
+###  构建工具
+
+#### webpack
+1. koa-webpack-middleware  要支持 hmr 的话，entry 必须是数组（需要动态插入 hmr  的脚本）
+2. webpack 数组 entry
+```javascript
+entry: ['./app.js', 'lodash']
+
+// 等价于
+entry: {
+  main: ['./app.js', 'lodash']
+}
+```
+
+
+
+
