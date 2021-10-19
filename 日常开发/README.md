@@ -26,13 +26,6 @@ xhr.withCredentials= true;  //关键句
 ```
 
 
-### nodejs
-
-#### 环境变量设置
-nodejs 无法运行时动态设置 process.env.xxx = '', 必须要在启动 nodejs 那会注入
-
-
-
 
 ###  构建工具
 
