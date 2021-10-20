@@ -33,6 +33,7 @@
 
 ### 日常开发
 - [小知识点](https://github.com/zhijs/blog/tree/master/%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91)
+- [nginx 响应被截断问题](https://github.com/zhijs/blog/tree/master/%E8%B8%A9%E8%BF%87%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91/nginx%20%E8%BF%94%E5%9B%9E%E6%88%AA%E6%96%AD%E9%97%AE%E9%A2%98)
 
 ### 其他
 - [WebRTC入门](https://github.com/zhijs/blog/tree/master/%E5%85%B6%E4%BB%96/webRTC%E5%85%A5%E9%97%A8)  
